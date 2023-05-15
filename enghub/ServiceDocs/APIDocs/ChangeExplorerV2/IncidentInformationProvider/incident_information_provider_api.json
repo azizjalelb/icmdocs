@@ -1,0 +1,205 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Change Explorer API",
+        "description": "All APIs for ChangeExplorerV2."
+    },
+    "servers": [
+        {
+            "url": "https://{environment}.fcm.com/",
+            "description": "URL",
+            "variables": {
+                "environment": {
+                    "default": "api.dev",
+                    "enum": [
+                        "api",
+                        "api.dev",
+                        "api.stg"
+                    ]
+                }
+            }
+        },
+        {
+            "url": "https://{region}.api.azure.com/",
+            "variables": {
+                "region": {
+                    "default": "us-west-2",
+                    "enum": [
+                        "us-west-2",
+                        "us-east-2"
+                    ]
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/v1/incident/{id}": {
+            "get": {
+                "summary": "Parametrizes CSS filters based on IncidentId.",
+                "description": "This endpoint returns parametrized fields for a given ICM IncidentId.",
+                "deprecated": false,
+                "operationId": "getParametersByIncidentId",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "incidentId",
+                        "description": "Unique identifier for the ICM Incident.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of distinct parameters that can be used to search for changes (i.e. fed into CSS APIs).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetParametersByIncidentId_ResponseBody"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No content.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NoContentResult"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InternalServerError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "GetParametersByIncidentId_ResponseBody": {
+                "type": "object",
+                "required": [
+                    "incidentId",
+                    "incidentTitle",
+                    "parameters"
+                ],
+                "properties": {
+                    "incidentId": {
+                        "description": "Unique identifier of the incident.",
+                        "type": "string"
+                    },
+                    "incidentTitle": {
+                        "type": "string",
+                        "description": "Title of the incident."
+                    },
+                    "parameters": {
+                        "type": "array",
+                        "description": "Field containing the time range, location and service parameters for the given IncidentId.",
+                        "items": {
+                            "$ref": "#/components/schemas/Parameters"
+                        }
+                    }
+                }
+            },
+            "Parameters": {
+                "description": "Contains the time range, location and service parameters for a given IncidentId.",
+                "type": "object",
+                "required": [
+                    "startTime",
+                    "endTime",
+                    "includeLocationIds",
+                    "services"
+                ],
+                "properties": {
+                    "startTime": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "endTime": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "includeLocationIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "services": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "serviceTreeGuid": {
+                                    "type": "string"
+                                },
+                                "components": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "NoContentResult": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    }
+                }
+            },
+            "BadRequestError": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "example": "BadRequestError"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Bad request error. Reason: <detail>."
+                    }
+                }
+            },
+            "InternalServerError": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "example": "InternalServerError"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Internal server error. Reason: <detail>."
+                    }
+                }
+            }
+        }
+    }
+}

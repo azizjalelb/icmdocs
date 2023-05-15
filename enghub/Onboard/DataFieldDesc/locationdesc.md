@@ -1,0 +1,45 @@
+# Location Types
+
+| Location Type |
+|:--------------|
+| region  |
+| datacenter  |
+| Cluster  |
+| Unkown  |
+| RegionalHub  |
+| ToRRouter  |
+| ClusterSpine  |
+| DCSpine  |
+| RegionalShim  |
+| SwanRouter  |
+| BackEndToRRouter  |
+| CoreRouter  |
+| RegionalAggregator  |
+| torrouter  |
+| dcspine  |
+| storagetenant  |
+| backendclusterspine  |
+| minit  |
+| clusterspine  |
+| backendtorrouter  |
+| loadbalancer  |
+| farm  |
+| borderleaf  |
+| coret  |
+| regionalhub  |
+| internetcorerouter  |
+| corerouter  |
+| zone  |
+| internetedgerouter  |
+| internetroutereflector  |
+| aggswitch  |
+| internetbackbonerouter  |
+| regionalshim  |
+| corporateaggregaterouter  |
+| swanrouter  |
+| aggrouter  |
+| regionalaggregator  |
+| BorderLeaf  |
+| BackendClusterSpine  |
+| wanrouter  |
+| node  |

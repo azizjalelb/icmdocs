@@ -1,0 +1,20 @@
+- Name: Change Card Overview
+  href: ChangeCardOverview.md
+- Name: How Change Card Works
+  href: HowCCWorks.md
+- Name: Search Experience
+  items:
+    - Name: Search Experience Overview
+      href: SearchExperience/SearchExOverview.md
+    - Name: Search by Service Name
+      href: SearchExperience/ServiceName.md
+    - Name: Search by Resource ID
+      href: SearchExperience/Resource.md
+    - Name: Search by Change ID
+      href: SearchExperience/ChangeID.md
+    - Name: Search by Free Text
+      href: SearchExperience/FreeText.md
+- Name: Linking Changes In Change Card 
+  href: LinkingChanges.md
+- Name: Troubleshooting
+  href: Troubleshooting.md

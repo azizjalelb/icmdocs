@@ -1,0 +1,20 @@
+﻿- name: Exception Request email failed
+  href: ExceptionRequestEmailFailed.md
+- name: Lens Orchestrator job failed
+  href: LensOrchestratorJobFailed.md
+- name: Archive an Exception Request
+  href: ArchiveExceptionRequest.md
+- name: Whitelist a Subscription
+  href: WhitelistSubscription.md
+- name: Database Deadlocks causing Exceptions
+  href: DatabaseDeadlocksCausingExceptions.md
+- name: Pause CXP Retrieval
+  href: PauseCXPRetrieval.md
+- name: EV2 blocking Non-Production/Test deployments during CCOA events
+  href: Ev2BlockingTestDeployments.md
+- name: Changes in ServiceTree don't reflect in ChangeGuard
+  href: ChangesServiceTreeDontReflectInChangeGuard.md
+- name: Sev2:Fired Application Insights, ChangeGuard Critical Event requires attention
+  href: CriticalEventRequiresAttention.md
+- name: Sev2:Fired Application Insights:Log [SEV-2] ChangeGuard Critical Event requires attention !!
+  href: CriticalEventRequiresAttention-Certs.md

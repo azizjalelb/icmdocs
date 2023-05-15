@@ -1,0 +1,50 @@
+- Name: Overview
+  href: overview.md
+- name: Why FCM?
+  href: whyFCM.md
+- name: FCM Scenarios
+  href: FCMscenarios.md
+- name: FCM Architecture
+  items:
+    - name: FCM Architecture 
+      href: FCMArchitecture/FCMarchitecture.md
+    - name: Kusto
+      items:
+        - name: Kusto Information
+          href: FCMArchitecture/kusto/kusto.md
+        - name: Kusto Queries
+          href: FCMArchitecture/kusto/kustoqueries.md
+    - name: Lens Explorer
+      href: FCMArchitecture/lensexplorer.md
+- name: Sending Changes to FCM PPE
+  items:
+    - name: Overview
+      href: sendingchangestoppe/overview.md 
+    - name: Get IFX Agentless bits
+      href: sendingchangestoppe/ifxagentless.md
+    - name: Create appid and associate certificate
+      href: sendingchangestoppe/createappid.md
+    - name: Write the code to send Change Event
+      href: sendingchangestoppe/writecode.md
+    - name: Validate changes are Sent
+      href: sendingchangestoppe/validatechanges.md
+- name: Sending Data to FCM Production
+  items:
+    - name: Overview
+      href: senddatatoprod/overview.md
+    - name: How to send data to FCM Production
+      href: senddatatoprod/sendingdata.md
+- name: Data Field Descriptions
+  items:
+    - name: Change Event Field Descriptions
+      href: DataFieldDesc/changeeventdesc.md
+    - name: ChangeType(ActionName) Field Descriptions
+      href: DataFieldDesc/ChangeType.md
+    - name: Status Name Field Descriptions
+      href: DataFieldDesc/statusnamedesc.md
+    - name: Environment Field Descriptions
+      href: DataFieldDesc/environmentdesc.md
+    - name: Location Field Descriptions
+      href: DataFieldDesc/locationdesc.md
+    - name: DateTime Formatting
+      href: DataFieldDesc/datetimeformatting.md

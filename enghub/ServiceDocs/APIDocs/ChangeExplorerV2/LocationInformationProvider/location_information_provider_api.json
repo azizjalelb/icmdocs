@@ -1,0 +1,244 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Location Information Provider API(s)",
+      "description": "API schema for Location Information Provider Service"
+    },
+    "paths": {
+      "/v1/locations/search": {
+        "get": {
+          "summary": "API to search locations in the network toplogy starting with a keyword",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "keyword",
+              "schema": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "Keyword to use for searching all the locations in the network topology"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return locations starting with the provided keyword",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SearchLocationsResponse"
+                  }
+                }
+              }
+            },
+            "204": {
+              "description": "Return No-Content http status to show that no locations are found starting with the keyword"
+            },
+            "400": {
+              "description": "Error out to show that the client has sent a bad input",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LocationInformationProviderServiceError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error out to show that the client request cannot be processed and provide the failure reason",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LocationInformationProviderServiceError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v1/locations/{id}": {
+        "get": {
+          "summary": "API to get location details for the provided location identifier",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "Location identifier for which location details should be retrieved"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return location details for the provided location identifier",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetLocationDetailsResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error out to show that the client has sent a bad input",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LocationInformationProviderServiceError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Error out to show that no location exists with the provided location identifier",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LocationInformationProviderServiceError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error out to show that the client request cannot be processed and provide the failure reason",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LocationInformationProviderServiceError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "SearchLocationsResponse": {
+          "type": "object",
+          "description": "API response of /v1/locations/search/",
+          "properties": {
+            "locations": {
+              "type": "array",
+              "description": "List of locations containing the provided keyword",
+              "items": {
+                "$ref": "#/components/schemas/LocationNode"
+              }
+            }
+          }
+        },
+        "GetLocationDetailsResponse": {
+          "type": "object",
+          "description": "API response of /v1/locations/{id}",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/LocationNode"
+            },
+            {
+              "properties": {
+                "parentHierarchy": {
+                  "type": "array",
+                  "description": "List of all parent locations from immediate parent to the root parent in the network topology",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationHierarchyNode",
+                    "maxItems": 20
+                  }
+                },
+                "children": {
+                  "type": "array",
+                  "description": "List of immediate child locations of this node in the network topology",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationNode",
+                    "maxItems": 50
+                  }
+                },
+                "numberOfDirectChildren": {
+                  "type": "integer",
+                  "description": "Attribute representing total number of immediate child locations for the provided location in the network topology",
+                  "example": "250"
+                }
+              }
+            }
+          ]
+        },
+        "LocationNode": {
+          "type": "object",
+          "description": "This entity represents the key information about the node",
+          "properties": {
+            "locationId": {
+              "type": "string",
+              "description": "Unique id to represent the location in the network topology",
+              "example": "usEast0111"
+            },
+            "locationName": {
+              "type": "string",
+              "description": "Human readable friendly name assigned to this location",
+              "example": "US East"
+            },
+            "locationType": {
+              "type": "string",
+              "enum": [
+                "region",
+                "dataCenter",
+                "cluster"
+              ],
+              "description": "Represents the kind/type of location in the network topology",
+              "example": "region"
+            }
+          },
+          "required": [
+            "locationId",
+            "locationName",
+            "locationType"
+          ]
+        },
+        "LocationHierarchyNode": {
+          "type": "object",
+          "description": "This entity represents the hierarchy with respect to the asked node in the network topology",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/LocationNode"
+            },
+            {
+              "properties": {
+                "children": {
+                  "type": "array",
+                  "description": "This will represent child location of the root node all the way to the asked location node. This will provide hierarchy tree from the topmost node to the inquired node.",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationHierarchyNode",
+                    "maxItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "LocationInformationProviderServiceError": {
+          "type": "object",
+          "description": "Base error for all errors thrown by LIPS (Location Information Provider Service)",
+          "properties": {
+            "errorCode": {
+              "type": "string",
+              "enum": [
+                "LocationIdFormatInvalid",
+                "RetryableError"
+              ],
+              "description": "Error code to allow clients to react and run custom business logic depending on the code provided"
+            },
+            "errorMessage": {
+              "type": "string",
+              "description": "Error message explaining the details of the error to help client take action/debug"
+            }
+          },
+          "required": [
+            "errorCode",
+            "errorMessage"
+          ]
+        }
+      }
+    }
+  }

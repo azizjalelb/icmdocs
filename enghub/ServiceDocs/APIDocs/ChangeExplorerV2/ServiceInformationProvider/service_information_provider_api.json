@@ -1,0 +1,287 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "FCM - Service Information Provider API"
+    },
+    "servers": [
+      {
+        "url": "https://{environment}.fcm.com/",
+        "description": "URL",
+        "variables": {
+          "environment": {
+            "default": "api.dev",
+            "enum": [
+              "api",
+              "api.dev",
+              "api.stg"
+            ]
+          }
+        }
+      },
+      {
+        "url": "https://{region}.api.azure.com/",
+        "variables": {
+          "region": {
+            "default": "us-west-2",
+            "enum": [
+              "us-west-2",
+              "us-east-2"
+            ]
+          }
+        }
+      }
+    ],
+    "paths": {
+      "/v1/service/search": {
+        "get": {
+          "summary": "Get the List of Services based on keyword",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "keyword",
+              "schema": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "Keyword to search service(s)"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A JSON array of service details",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "description": "list of services",
+                    "items": {
+                      "$ref": "#/components/schemas/service"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/badrequesterror"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Resource/Results not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/resourcenotfounderror"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/internalservererror"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v1/service/{id}": {
+        "get": {
+          "summary": "Get the Service and its Dependencies",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "Service ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Service and its dependencies",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/serviceDetails"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/badrequesterror"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Resource/Results not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/resourcenotfounderror"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/internalservererror"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "component": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "example": "component_id"
+            },
+            "name": {
+              "type": "string",
+              "example": "component_name"
+            },
+            "description": {
+              "type": "string",
+              "example": "component_description"
+            },
+            "type": {
+              "type": "string",
+              "example": "component_type"
+            }
+          }
+        },
+        "service": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "example": "service_guid"
+            },
+            "name": {
+              "type": "string",
+              "example": "service_name"
+            },
+            "description": {
+              "type": "string",
+              "example": "service_description"
+            },
+            "shortName": {
+              "type": "string",
+              "example": "service_shortname"
+            },
+            "serviceGroup": {
+              "type": "string",
+              "example": "service_group"
+            },
+            "organization": {
+              "type": "string",
+              "example": "organization_name"
+            },
+            "division": {
+              "type": "string",
+              "example": "division_name"
+            },
+            "teamGroup": {
+              "type": "string",
+              "example": "teamgroup_name"
+            },
+            "type": {
+              "type": "string",
+              "example": "service_type"
+            },
+            "organizationPath": {
+              "type": "string",
+              "example": "division\\organization\\servicegroup\\teamgroup"
+            },
+            "components": {
+              "type": "array",
+              "description": "list of components associated with service",
+              "items": {
+                "$ref": "#/components/schemas/component"
+              }
+            }
+          }
+        },
+        "serviceDetails": {
+          "type": "object",
+          "properties": {
+            "service": {
+              "$ref": "#/components/schemas/service"
+            },
+            "dependentServices": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/service"
+              }
+            }
+          }
+        },
+        "badrequesterror": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "example": "Invalid Request Error"
+            },
+            "message": {
+              "type": "string",
+              "example": "keyword parameter not sent"
+            }
+          }
+        },
+        "resourcenotfounderror": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "example": "Resource Not found"
+            },
+            "message": {
+              "type": "string",
+              "example": "No results found"
+            }
+          }
+        },
+        "internalservererror": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "example": "Internal Server Error"
+            },
+            "message": {
+              "type": "string",
+              "example": "Our API servers took a break"
+            }
+          }
+        }
+      }
+    }
+  }
