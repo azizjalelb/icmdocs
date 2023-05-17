@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content=" | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p>The incident occurs when there is more than 1 hr delay in event processing. The delay is measure from the time the event is ingested and the time it is being processed by the connectors. </p>
+<p>There are 2 types of connectors which drains the incoming data </p>
+<ol>
+<li><p>Standard deployment event conenctors – Which drains data pulled my FCM from standard deployment systems like EV2, AzDeployer, GenevaAction etc </p>
+</li>
+<li><p>Custom Event Connectors – This drains data being ingested to FCM by customers using our SDK. </p>
+</li>
+</ol>
+<p>Note : Most of the time the delay is mostly because of standard deployment data, because of the volume being high. </p>
+<p><strong>Step1: Measure latency</strong></p>
+<p>   For the standard deploymet use Jarvis Query below and make sure the timelines are set properly          </p>
+<ul>
+<li>StandardEvents Jarvis Url : <a href="https://portal.microsoftgeneva.com/s/8EB4065F">https://portal.microsoftgeneva.com/s/8EB4065F</a>         </li>
+</ul>
+<p>   Note:  If there&#39;s only one tenant, it will show at the bottom of the pane; you can expand to all columns by clicking on &#39;5 of 6 columns&#39; and including the missing column in the list.  </p>
+<p><img src="Media/EventProcessingLatencyJarvis.png" alt="EventProcessingLatency-Jarvis">  </p>
+<p>   For the custom deploymet use Jarvis Query below and make sure the timelines are set properly   </p>
+<ul>
+<li><p>Custome Events Javis Url : <a href="https://portal.microsoftgeneva.com/s/80DD558A">https://portal.microsoftgeneva.com/s/80DD558A</a> </p>
+<p>The query will return which partitions are being slowly processed and which tenant is processing it.<br>We have noticed east instances drain very slowly compared to west. 
+Stopping the east will allows the west to process the records and catchup. </p>
+<p>Note: We need to investigate and get RCA why east is slower </p>
+</li>
+</ul>
+<p><strong>Step2 :  Check the eventhub if there is change in ingress of data</strong></p>
+<p>  Check the ingress and outgress of the eventhubs if the ingress is greater than outgress then we are not draining the queue faster. This could be either issue with the connectors reading the messages from eventhub or WebAPI&#39;s latency </p>
+<p>  StandardEvents Event hub fcmstandardevents - Microsoft Azure </p>
+<p><a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/8830ba56-a476-4d01-b6ac-d3ee790383dc/resourceGroups/fcmeraccounts/providers/Microsoft.EventHub/namespaces/fcmstandardevents/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/8830ba56-a476-4d01-b6ac-d3ee790383dc/resourceGroups/fcmeraccounts/providers/Microsoft.EventHub/namespaces/fcmstandardevents/overview</a></p>
+<p>  As shown in the below chart , the incoming and outgoing messages should overlay on each other and outgoing messages = incoming messages. </p>
+<p><img src="Media/StandardEventsEventHub.png" alt="EventProcessingLatency-StandardEventHub">  </p>
+<p>  CustomEvents Event hub customchanges (fcmcustomchanges/customchanges) - Microsoft Azure </p>
+<p>  <a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/8830ba56-a476-4d01-b6ac-d3ee790383dc/resourceGroups/fcmeraccounts/providers/Microsoft.EventHub/namespaces/fcmcustomchanges/eventhubs/customchanges/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/8830ba56-a476-4d01-b6ac-d3ee790383dc/resourceGroups/fcmeraccounts/providers/Microsoft.EventHub/namespaces/fcmcustomchanges/eventhubs/customchanges/overview</a></p>
+<p>  As shown in the below chart , the incoming and outgoing messages should overlay on each other and outgoing messages = incoming messages.</p>
+<p><img src="Media/CustomEventsEventHub.png" alt="EventProcessingLatency-CustomEventHub"></p>
+<p>  If there is influx of messages and the connectors are not sufficient, increase the instances of connectors.  </p>
+<p><strong>Step3 : Check the connectors cloud services</strong></p>
+<p>  Go to the portal for the below services and make sure they are healthy and running </p>
+<p>  Standardevent processing cloudservice -  </p>
+<p>   East  US - prodstandarddeploymenteventconnectoreastus - Microsoft Azure </p>
+<p><a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMPRODEASTUS/providers/Microsoft.Compute/cloudServices/prodstandarddeploymenteventconnectoreastus/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMPRODEASTUS/providers/Microsoft.Compute/cloudServices/prodstandarddeploymenteventconnectoreastus/overview</a></p>
+<p>   West US - prodstandarddeploymenteventconnectorwestus - Microsoft Azure </p>
+<p><a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMPRODWESTUS/providers/Microsoft.Compute/cloudServices/prodstandarddeploymenteventconnectorwestus/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMPRODWESTUS/providers/Microsoft.Compute/cloudServices/prodstandarddeploymenteventconnectorwestus/overview</a></p>
+<p>  Customevent processing cloudservice -  </p>
+<p>  East  US - prodcustomeventconnectoreastus - Microsoft Azure</p>
+<p><a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMPRODEASTUS/providers/Microsoft.Compute/cloudServices/prodcustomeventconnectoreastus/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMPRODEASTUS/providers/Microsoft.Compute/cloudServices/prodcustomeventconnectoreastus/overview</a></p>
+<p>  West US - prodcustomeventconnectorwestus - Microsoft Azure </p>
+<p> <a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMPRODWESTUS/providers/Microsoft.Compute/cloudServices/prodcustomeventconnectorwestus/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMPRODWESTUS/providers/Microsoft.Compute/cloudServices/prodcustomeventconnectorwestus/overview</a></p>
+<p><strong>Step 4:Check the WebAPI cloud services</strong></p>
+<p>  Go to the portal for the below services and make sure they are healthy and running </p>
+<p>  East US WebAPI:</p>
+<p><a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMProdEastUS/providers/Microsoft.Compute/cloudServices/prodwebapiwriteeastus/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMProdEastUS/providers/Microsoft.Compute/cloudServices/prodwebapiwriteeastus/overview</a>
+  West US WebAPI:</p>
+<p><a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMProdWestUS/providers/Microsoft.Compute/cloudServices/prodwebapiwritewestus/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/FCMProdWestUS/providers/Microsoft.Compute/cloudServices/prodwebapiwritewestus/overview</a></p>
+<pre><code> **Check the latency of WebAPI**
+</code></pre><p>   Check webapi latency and any issues </p>
+<p>   <a href="https://portal.microsoftgeneva.com/s/D7CAB95B&quot;https://portal.microsoftgeneva.com/s/D7CAB95B">https://portal.microsoftgeneva.com/s/D7CAB95B"https://portal.microsoftgeneva.com/s/D7CAB95B</a> </p>
+<p>   The expected latency is around 300ms<br>   If the latencies are high, check the database status </p>
+<p><strong>Step 5: Check Database status</strong></p>
+<pre><code>    Shard 0 - ﷟HYPERLINK &quot;https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/Default-SQL-WestUS/providers/Microsoft.Sql/servers/x2altnc1cm/databases/MSChangeShard_0/overview&quot;MSChangeShard_0 (x2altnc1cm/MSChangeShard_0) - Microsoft Azure 
+
+    Shard 1 - ﷟HYPERLINK &quot;https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/Default-SQL-WestUS/providers/Microsoft.Sql/servers/x2altnc1cm/databases/MSChangeShard_1/overview&quot;MSChangeShard_1 (x2altnc1cm/MSChangeShard_1) - Microsoft Azure 
+
+    Shard2 - ﷟HYPERLINK &quot;https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/Default-SQL-WestUS/providers/Microsoft.Sql/servers/x2altnc1cm/databases/MSChangeShard_2/overview&quot;MSChangeShard_2 (x2altnc1cm/MSChangeShard_2) - Microsoft Azure 
+
+    Shard3-﷟HYPERLINK &quot;https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/Default-SQL-WestUS/providers/Microsoft.Sql/servers/x2altnc1cm/databases/MSChangeShard_3/overview&quot;MSChangeShard_3 (x2altnc1cm/MSChangeShard_3) - Microsoft Azure 
+
+    ShardMap - MSChange (x2altnc1cm/MSChange) - Microsoft Azure 
+</code></pre><p><strong>Step 6: Check the Errors . If there are errors being encountered, we can use appinsights to look for any errors</strong></p>
+<p>  Run the below query, Make sure you are using correct time lines. 
+  Go to Log Analytics and run query </p>
+<p><a href="https://ms.portal.azure.com#@33e01921-4d64-4f8c-a055-5bdaffd5e33d/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Ffbc17084-a3a3-42bf-a9dc-8bc7f996a679%2FresourceGroups%2Fprodchangeapiuswest1%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2Fmsdial.change.core.webapi/source/LogsBlade.AnalyticsShareLinkToQuery/q/H4sIAAAAAAAAA4WPwUrDUBBF9%252F2K8dFFsnGlyyxEaglSlSyEruSRd9M8TWfizAS76MfbFEQUwe053OGM4n2CuR3po4eCOO5BrbDHzFaEVhEdoSTR32oa01ktjq%252BSmd4yp2pA5zI5tMChxehZ2E5bpuVsLmWExhm%252B1Kmqlpp3%252FU%252B4%252BMooFDYNfisJ1EcbFV0%252BULgKc8jf7jpQGTlRZobuxXwDs7gDXXw33z02q3r9QPer7fyJuZ64h393z1mGcyNJR09NvblptvORUH4CYn8BvkABAAA%253D/timespan/P1D">https://ms.portal.azure.com#@33e01921-4d64-4f8c-a055-5bdaffd5e33d/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Ffbc17084-a3a3-42bf-a9dc-8bc7f996a679%2FresourceGroups%2Fprodchangeapiuswest1%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2Fmsdial.change.core.webapi/source/LogsBlade.AnalyticsShareLinkToQuery/q/H4sIAAAAAAAAA4WPwUrDUBBF9%252F2K8dFFsnGlyyxEaglSlSyEruSRd9M8TWfizAS76MfbFEQUwe053OGM4n2CuR3po4eCOO5BrbDHzFaEVhEdoSTR32oa01ktjq%252BSmd4yp2pA5zI5tMChxehZ2E5bpuVsLmWExhm%252B1Kmqlpp3%252FU%252B4%252BMooFDYNfisJ1EcbFV0%252BULgKc8jf7jpQGTlRZobuxXwDs7gDXXw33z02q3r9QPer7fyJuZ64h393z1mGcyNJR09NvblptvORUH4CYn8BvkABAAA%253D/timespan/P1D</a></p>
+<p><strong>Miscellaneous</strong></p>
+<p>The more detailed logs are also available in Jarvis </p>
+<p>All the logs are available in Jarvis Namespace : changemdsfcmprod </p>
+<p>and Events are </p>
+<p>ChangeEventConnector </p>
+<p>ChangeWebapi </p>
+<p>QosEventPartC </p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/TSG/Events processing Latency/EventProcessingLatency.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

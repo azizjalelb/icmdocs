@@ -1,0 +1,633 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>FCM Data Platform API | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="FCM Data Platform API | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="fcm-data-platform-api">FCM Data Platform API</h1>
+
+<table>
+<thead>
+<tr>
+<th>Owner(s): <strong>Andy (andresro@)</strong></th>
+<th>Status: <strong>WIP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Approvers: <strong>TBD</strong></td>
+<td>Last Updated: <strong>05/12/2023</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#fcm-data-platform-api">FCM Data Platform API</a><ul>
+<li><a href="#contents">Contents</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#objective">Objective</a></li>
+<li><a href="#use-cases">Use Cases</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#api-design">API Design</a><ul>
+<li><a href="#getentitychangeevent"><strong>GetEntityChangeEvent</strong></a><ul>
+<li><a href="#parameters">Parameters</a></li>
+<li><a href="#responses">Responses</a></li>
+<li><a href="#example-curl">Example cURL</a></li>
+<li><a href="#getentitychangeevent-200-response">GetEntityChangeEvent 200 Response</a></li>
+</ul>
+</li>
+<li><a href="#searchentitychangeevents"><strong>SearchEntityChangeEvents</strong></a><ul>
+<li><a href="#parameters-1">Parameters</a></li>
+<li><a href="#responses-1">Responses</a></li>
+<li><a href="#example-curl-1">Example cURL</a></li>
+<li><a href="#searchentitychangeevents-200-response">SearchEntityChangeEvents 200 Response</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#pagination">Pagination</a><ul>
+<li><a href="#stateless-offset">Stateless Offset</a></li>
+<li><a href="#kusto-stored-query-results">Kusto Stored Query Results</a></li>
+</ul>
+</li>
+<li><a href="#versioning">Versioning</a></li>
+<li><a href="#rate-limiting">Rate Limiting</a></li>
+<li><a href="#metrics-and-alarms">Metrics and Alarms</a></li>
+<li><a href="#scalability">Scalability</a></li>
+<li><a href="#testing">Testing</a><ul>
+<li><a href="#unit-testing">Unit Testing</a></li>
+<li><a href="#integration-testing">Integration Testing</a></li>
+<li><a href="#load-testing">Load Testing</a></li>
+<li><a href="#canaries">Canaries</a></li>
+</ul>
+</li>
+<li><a href="#infrastructure">Infrastructure</a><ul>
+<li><a href="#bicep-vs-arm">Bicep vs ARM</a></li>
+<li><a href="#uniform-resource-naming-conventions">Uniform Resource Naming Conventions</a></li>
+<li><a href="#airgap-support">Airgap Support</a></li>
+<li><a href="#region-agnostic-deployment">Region Agnostic Deployment</a></li>
+</ul>
+</li>
+<li><a href="#deployments">Deployments</a></li>
+<li><a href="#azure-compliance">Azure Compliance</a><ul>
+<li><a href="#authentication">Authentication</a><ul>
+<li><a href="#curl">cURL</a></li>
+<li><a href="#headers">Headers</a></li>
+</ul>
+</li>
+<li><a href="#microsoft-ursa-rest-api-scans">Microsoft URSA Rest API Scans</a></li>
+<li><a href="#opentelemetry-audit">OpenTelemetry Audit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<style>
+r { color: Red }
+o { color: Orange }
+g { color: Green }
+</style>
+
+<h2 id="summary">Summary</h2>
+<p>This document proposes the low-level design to develop FCM’s Data Platform APIs. The purpose is to evaluate different design choices for the API, highlight requirements and outline tasks that must be completed to comply with functional and non-functional requirements. </p>
+<p>For information regarding the high-level design, see <a href="https://microsoft.sharepoint.com/:w:/r/teams/WAG/EngSys/ServiceMgmt/ChangeMgmt/Shared%20Documents/Entity%20Model/Design%20Documents/FCM%20Data%20Platform.docx?d=w07b4c2ca404941f5a4acb334ded64d38&amp;csf=1&amp;web=1&amp;e=5gnhS1">FCM Data Platform</a>. </p>
+<h2 id="objective">Objective</h2>
+<p>FCM DataPlatform will create standard APIs that that satisfy the requirements of exposing the <a href="https://microsoft.sharepoint.com/:w:/t/SilverstoneProject/Eeqg50_nDm1ItTXBogvLcq8BybpPWO41X2Yq7FG-UTHlAA?e=Vyla9Q">EntityModel</a>. To support this, we are creating new APIs that adhere to the following: </p>
+<ul>
+<li>Support the concept of an EntityModel </li>
+<li>Expose high quality APIs with predefined SLAs. </li>
+</ul>
+<h2 id="use-cases">Use Cases</h2>
+<p>The following are a set of a use cases that these API will address:</p>
+<ol>
+<li>Client wants to know the risk score for a given deployment; they can use <strong>GetEntityChangeEvents</strong> to find this information.</li>
+<li>A team wants to build an experience similar to <a href="https://changeexplorer.fcm.azure.microsoft.com/home">ChangeExplorerV2</a>. They can use this set of APIs to expose the standardized <code>EntityModel</code>.</li>
+<li>Client wants to search for all <code>EntityChangeEvent</code>s given a specific location. They can utilize <strong>SearchEntityChangeEvents</strong> to find this information. Similarly, they can use other search criteria to find <code>EntityChangeEvent</code>s.</li>
+<li>Client has an incident. Given search criteria, they want find all <code>EntityChangeEvent</code>s within a given time frame and rank them by risk score. Utilizing <strong>SearchEntityChangeEvents</strong>, they can execute this search. </li>
+</ol>
+<h2 id="requirements">Requirements</h2>
+<p>The technical requirements are: </p>
+<ul>
+<li>Each API must be highly available and horizontally scalable.  </li>
+<li>Every component must have its own test base, health monitors &amp; alarms. The health monitors and alarms must be generated via code.</li>
+<li>APIs must be deployable in automated fashion meeting coding, deployment, monitoring and security best practices. </li>
+<li>Infrastructure management must be standardized and source controlled across components.</li>
+<li>All APIs must be compliant with Azure policies (see <a href="#azure-compliance">Azure Compliance</a> section).</li>
+<li>All APIs must have integration and load tests for INT, PPE and PROD environments. </li>
+<li>APIs must be versioned and backwards compatible. API override is not supported. </li>
+<li>Design docs and TSGs will be onboarded to <a href="https://msazure.visualstudio.com/One/_git/FCM-Engineering-Hub">Engineering Hub</a>. </li>
+</ul>
+<h2 id="api-design">API Design</h2>
+<h3 id="getentitychangeevent"><strong>GetEntityChangeEvent</strong></h3>
+<p><strong><code>GET</code></strong> /v1/entityChangeEvents?changeActivityId={<g><strong>ChangeActivity</strong></g>}&amp;entityId={<g><strong>EntityId</strong></g>}</p>
+<h5 id="parameters">Parameters</h5>
+<blockquote><table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>data type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ChangeActivity</code></td>
+<td>required</td>
+<td>string</td>
+<td>Unique Id from the source that tracks the deployment.</td>
+</tr>
+<tr>
+<td><code>EntityId</code></td>
+<td>required</td>
+<td>string</td>
+<td>Location Id of the deployment.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h5 id="responses">Responses</h5>
+<blockquote><table>
+<thead>
+<tr>
+<th>http code</th>
+<th>content-type</th>
+<th>response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>200</code></td>
+<td><code>application/json</code></td>
+<td><code>EntityChangeEvent</code>; <a href="#getentitychangeevent-200-response">see below</a></td>
+</tr>
+<tr>
+<td><code>204</code></td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>400</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;400&quot;,&quot;message&quot;:&quot;Bad Request&quot;}</code></td>
+</tr>
+<tr>
+<td><code>401</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;401&quot;,&quot;message&quot;:&quot;Unauthorized&quot;}</code></td>
+</tr>
+<tr>
+<td><code>404</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;404&quot;,&quot;message&quot;:&quot;Not Found&quot;}</code></td>
+</tr>
+<tr>
+<td><code>429</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;404&quot;,&quot;message&quot;:&quot;Too Many Requests&quot;}</code></td>
+</tr>
+<tr>
+<td><code>500</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;500&quot;,&quot;message&quot;:&quot;Internal Server Error&quot;}</code></td>
+</tr>
+<tr>
+<td><code>503</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;503&quot;,&quot;message&quot;:&quot;Service Unavailable&quot;}</code></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h5 id="example-curl">Example cURL</h5>
+<blockquote><pre><code class="lang-javascript"> curl -X GET https://fcmdp.azurefd.com/v1/entityChangeEvents?changeActivityId={ChangeActivity}&amp;entityId={EntityId}
+</code></pre></blockquote>
+<h5 id="getentitychangeevent-200-response">GetEntityChangeEvent 200 Response</h5>
+<blockquote><pre><code class="lang-json">{
+   &quot;SchemaVersion&quot;: &quot;string&quot;,
+   &quot;Timestamp&quot;: &quot;datetime&quot;,
+   &quot;StartTime&quot;: &quot;datetime&quot;,
+   &quot;EndTime&quot;: &quot;datetime&quot;,
+   &quot;EntityType&quot;: &quot;string&quot;,
+   &quot;EntityId&quot;: &quot;string&quot;,
+   &quot;ChangeType&quot;: &quot;string&quot;,
+   &quot;Payload&quot;: &quot;string&quot;,
+   &quot;ChangeActivity&quot;: &quot;string&quot;,
+   &quot;MetaData&quot;: &quot;dynamic&quot;,
+   &quot;Source&quot;: &quot;string&quot;,
+   &quot;PlannedInterruption&quot;: &quot;string&quot;,
+   &quot;ImpactDuration&quot;: &quot;int&quot;,
+   &quot;ChangeOwner&quot;: &quot;string&quot;,
+   &quot;ChangeOwnerType&quot;: &quot;string&quot;,
+   &quot;ParentChangeActivity&quot;: &quot;string&quot;,
+   &quot;ChangeState&quot;: &quot;string&quot;,
+   &quot;EntityCorrelationResult&quot;: {
+       &quot;LastUpdatedTime&quot;: &quot;datetime&quot;,
+       &quot;Score&quot;: &quot;double&quot;,
+       &quot;MeasureCategory&quot;: &quot;string&quot;
+   }
+}
+</code></pre></blockquote>
+<h3 id="searchentitychangeevents"><strong>SearchEntityChangeEvents</strong></h3>
+<p><strong><code>GET</code></strong> /v1/entityChangeEvents?startTime={<g><strong>StartTime</strong></g>}&amp;endTime={<g><strong>EndTime</strong></g>}&amp;entityId={<g><strong>EntityId</strong></g>}&amp;serviceTreeId={<g><strong>ServiceTreeId</strong></g>}&amp;pageSize={<g><strong>PageSize</strong></g>}&amp;offset={<g><strong>Offset</strong></g>}&amp;sortBy={<g><strong>SortBy</strong></g>}</p>
+<h5 id="parameters-1">Parameters</h5>
+<blockquote><table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>data type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StartTime</code></td>
+<td>required</td>
+<td>datetime</td>
+<td>Start time of <code>EntityChangeEvent</code> search. Max 1 week range with <code>EndTime</code>.</td>
+</tr>
+<tr>
+<td><code>EndTime</code></td>
+<td>required</td>
+<td>datetime</td>
+<td>End time of <code>EntityChangeEvent</code> search. Max 1 week range with <code>StartTime</code>.</td>
+</tr>
+<tr>
+<td><code>EntityId</code></td>
+<td>At least one of <code>EntityId</code> or <code>ServiceTreeId</code> must be used.</td>
+<td>string</td>
+<td>Location Id of the deployment.</td>
+</tr>
+<tr>
+<td><code>ServiceTreeId</code></td>
+<td>At least of <code>EntityId</code> or <code>ServiceTreeId</code> must be used.</td>
+<td>string</td>
+<td><a href="https://microsoftservicetree.com/home">ServiceTreeId</a> to utilize for search.</td>
+</tr>
+<tr>
+<td><code>PageSize</code></td>
+<td>optional</td>
+<td>int</td>
+<td>Page size of results to return. Defaults to <code>50</code>; max <code>1000</code>.</td>
+</tr>
+<tr>
+<td><code>Offset</code></td>
+<td>optional</td>
+<td>int</td>
+<td>Offset to calculate next set page of results. Defaults to <code>0</code>.</td>
+</tr>
+<tr>
+<td><code>SortBy</code></td>
+<td>optional</td>
+<td>string</td>
+<td>Location Id of the deployment. Defaults to <code>StartTime</code>.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>Multiple <strong><code>EntityId</code></strong> and <strong><code>ServiceTreeId</code></strong> can be searched, up to a maximum of 10 each. Syntax is ...entityChangeEvents?entityId={<g><strong>EntityId</strong></g>}&amp;entityId={<g><strong>EntityId</strong></g>}entityId={<g><strong>EntityId</strong></g>}...&amp;serviceTreeId={<g><strong>ServiceTreeId</strong></g>}&amp;serviceTreeId={<g><strong>ServiceTreeId</strong><g></g>}...<p>
+<h5 id="responses-1">Responses</h5>
+<blockquote><table>
+<thead>
+<tr>
+<th>http code</th>
+<th>content-type</th>
+<th>response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>200</code></td>
+<td><code>application/json</code></td>
+<td>List of <code>EntityChangeEvent</code>s; <a href="#searchentitychangeevents-200-response">see below</a></td>
+</tr>
+<tr>
+<td><code>204</code></td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>400</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;400&quot;,&quot;message&quot;:&quot;Bad Request&quot;}</code></td>
+</tr>
+<tr>
+<td><code>401</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;401&quot;,&quot;message&quot;:&quot;Unauthorized&quot;}</code></td>
+</tr>
+<tr>
+<td><code>404</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;404&quot;,&quot;message&quot;:&quot;Not Found&quot;}</code></td>
+</tr>
+<tr>
+<td><code>429</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;404&quot;,&quot;message&quot;:&quot;Too Many Requests&quot;}</code></td>
+</tr>
+<tr>
+<td><code>500</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;500&quot;,&quot;message&quot;:&quot;Internal Server Error&quot;}</code></td>
+</tr>
+<tr>
+<td><code>503</code></td>
+<td><code>application/json</code></td>
+<td><code>{&quot;code&quot;:&quot;503&quot;,&quot;message&quot;:&quot;Service Unavailable&quot;}</code></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h5 id="example-curl-1">Example cURL</h5>
+<blockquote><pre><code class="lang-javascript"> curl -X GET https://fcmdp.azurefd.com/v1/entityChangeEvents?startTime={StartTime}&amp;endTime={EndTime}&amp;entityId={EntityId}&amp;serviceTreeId={ServiceTreeId}&amp;pageSize={PageSize}&amp;offset={Offset}&amp;sortBy={SortBy}
+</code></pre></blockquote>
+<h5 id="searchentitychangeevents-200-response">SearchEntityChangeEvents 200 Response</h5>
+<blockquote><pre><code class="lang-json">{
+   &quot;Count&quot;: &quot;int&quot;,
+   &quot;SortBy&quot;: &quot;string&quot;,
+   &quot;Offset&quot;: &quot;int&quot;,
+   &quot;EntityChangeEvents&quot;: [
+       {
+           &quot;SchemaVersion&quot;: &quot;string&quot;,
+           &quot;Timestamp&quot;: &quot;datetime&quot;,
+           &quot;StartTime&quot;: &quot;datetime&quot;,
+           &quot;EndTime&quot;: &quot;datetime&quot;,
+           &quot;EntityType&quot;: &quot;string&quot;,
+           &quot;EntityId&quot;: &quot;string&quot;,
+           &quot;ChangeType&quot;: &quot;string&quot;,
+           &quot;Payload&quot;: &quot;string&quot;,
+           &quot;ChangeActivity&quot;: &quot;string&quot;,
+           &quot;MetaData&quot;: &quot;dynamic&quot;,
+           &quot;Source&quot;: &quot;string&quot;,
+           &quot;PlannedInterruption&quot;: &quot;string&quot;,
+           &quot;ImpactDuration&quot;: &quot;int&quot;,
+           &quot;ChangeOwner&quot;: &quot;string&quot;,
+           &quot;ChangeOwnerType&quot;: &quot;string&quot;,
+           &quot;ParentChangeActivity&quot;: &quot;string&quot;,
+           &quot;ChangeState&quot;: &quot;string&quot;,
+           &quot;EntityCorrelationResult&quot;: {
+               &quot;LastUpdatedTime&quot;: &quot;datetime&quot;,
+               &quot;Score&quot;: &quot;double&quot;,
+               &quot;MeasureCategory&quot;: &quot;string&quot;
+           }
+       }
+   ]
+}
+</code></pre></blockquote>
+<h2 id="pagination">Pagination</h2>
+<p>There are two approaches to tackle pagination. We will present both here but are opting for the stateless option.</p>
+<h3 id="stateless-offset">Stateless Offset</h3>
+<p>For the stateless option, we will utilize an <code>Offset</code> value to calculate the number of records we will skip to start returning results to the client. We will pass the parameter into our database solution (currently Kusto); example below:</p>
+<pre><code class="lang-sql">.create-or-altar SearchEntityChangeEvents(StartTime: datetime, EndTime: datetime, EntityId: dynamic, ..., Offset: int, PageSize: int, SortBy: string) { 
+EntityChangeEventMaterializedView
+    | where StartTime between ...
+    .
+    .
+    .
+    | sort by SortBy
+    | where _row &gt; Offset
+    | take PageSize
+}
+</code></pre><p>The benefits of this option are that:</p>
+<ol>
+<li>We don&#39;t have to maintain stored query results in a storage account. Based on user patterns, these might expire often or not be used. </li>
+<li>Additionally with (1), we would have to come up with an expulsion mechanism to clean old records.</li>
+<li>Since this set of API does not have complex queries, we assume that the query time will be low, so rerunning queries should have minimal effect on performance. </li>
+</ol>
+<h3 id="kusto-stored-query-results">Kusto Stored Query Results</h3>
+<p>Our data lives in Azure Data Explorer (Kusto). Therefore, it would be beneficial to store query results using ADX&#39;s built in functionality <a href="https://learn.microsoft.com/en-us/azure/data-explorer/kusto/management/stored-query-results">Stored query results</a>. Below is an example of the workflow:</p>
+<pre><code class="lang-sql">.set stored_query_result StoredQueryResultName &lt;| SearchEntityChangeEvents(...);
+stored_query_result(&quot;StoredQueryResultName&quot;)
+| where Idx between(StoredQueryResultOffset .. PageSize)
+</code></pre><p>Some of the limitations of this are:</p>
+<ul>
+<li>We can&#39;t exceed 500 columns; otherwise the stored query results cannot be saved. This is not an issue given the <strong>EntityChangeEvent</strong> model. </li>
+<li>The query results are saved to a storage account associated with the cluster. If we implement a distributed Kusto cluster and cache for our data, we would have to revisit the complexity of using the built in tools.</li>
+<li>Stored query results last up to 24 hours and can be access by the same service principle. If we find ourselves using an large amount of storage space, we can run a job that clears stored query results in excess of N minutes, likely 15 or 30. </li>
+</ul>
+<h2 id="versioning">Versioning</h2>
+<p>Generally, we have the following strategies available to version our API:</p>
+<ol>
+<li>URI path</li>
+<li>Query parameter</li>
+<li>Custom header</li>
+</ol>
+<p>For this set of APIs, we will utilize <strong>URI path</strong> versioning (easiy debugable, less prone to breaking changes, readily modifyable). We will also support past versions of the API up to 1 year before deprecation. For API deprecation, we will create a campaign to support onboarding to the newer version.</p>
+<h2 id="rate-limiting">Rate Limiting</h2>
+<p>Rate limiting will be handled by an <a href="https://learn.microsoft.com/en-us/azure/api-management/api-management-key-concepts">APIM</a> layer that sits behind our <a href="https://azure.microsoft.com/en-us/products/frontdoor">Front Door</a>. Since our authentication method will utilize AAD compliant bearer tokens, we will opt for a <a href="https://learn.microsoft.com/en-us/azure/api-management/rate-limit-by-key-policy">rate limit policy set by key</a> and return a <code>429</code> <strong>Too Many Requests</strong> message on exhaustion. See below for an example inbound rule:</p>
+<pre><code class="lang-json">&lt;policies&gt;
+    &lt;inbound&gt;
+        &lt;base /&gt;
+              &lt;rate-limit-by-key calls=&quot;10&quot;
+                renewal-period=&quot;60&quot;
+                counter-key=&quot;@(context.Request.Headers.GetValueOrDefault(&quot;Authorization&quot;,&quot;&quot;).AsJwt()?.Subject)&quot; /&gt;
+    &lt;/inbound&gt;
+    &lt;outbound&gt;
+        &lt;base /&gt;
+    &lt;/outbound&gt;
+&lt;/policies&gt;
+</code></pre><div class="NOTE"><h5>Note</h5><p>Should we utilize the bearer token as part of the authorization header as the <code>rate-key</code> or something else?</p>
+</div>
+<h2 id="metrics-and-alarms">Metrics and Alarms</h2>
+<p>Metrics will be auto-configured via <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net">Application Insights</a> on all http triggered functions; we will refrain from creating custom logs and metrics whenever possible. On cases where custom metrics are required (such as individual method processing time), we will utilize a dependency injected <code>ILogger</code> interface applicable to <a href="https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide#logging">isolated process azure functions</a> to emit the log for alert triggering.</p>
+<p>Alarms will be configured utilizing either (1) built in metrics or (2) custom log metrics via <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview">Alert Rules</a>. These alerts will be configured through ARM templates; for further reading, see the <a href="https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/2018-03-01/metricalerts?pivots=deployment-language-arm-template">metricAlerts</a> documentation. Since email notification is not a sufficient alerting mechanism, we will utilize the <strong>FederatedChangemanagement-AzureMonitor</strong> ICM connector to generate ICM incidents as part of the alert rule&#39;s action group. For further reading on how this is set up, see <a href="https://eng.ms/docs/products/icm/developers/connectors/icmaction">Azure Monitor ICM Connector</a>.</p>
+<h2 id="scalability">Scalability</h2>
+<p>We will utilize isolated out-of-process Azure Functions on a premium plan hosted on Azure. For more details, see <a href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale">Azure Functions hosting options</a> and the <a href="https://teams.microsoft.com/_?culture=en-us&amp;country=us#/apps/d7958adf-f419-46fa-941b-1b946497ef84/sections/MyNotebook">ChangeExplorerV2 HLD</a> for pros and cons. Additionally, a dedicated or premium plan is required for serverless logging to Geneva/Jarvis.</p>
+<blockquote><p>Since we are designing this as a high TPS system, what are the limits of a distributed serverless implementation? Assuming we run on Windows, we can expecte 100 instances at 400 ACU capacity. This is ideal for high throughput systems with small code executions.</p>
+</blockquote>
+<h2 id="testing">Testing</h2>
+<h3 id="unit-testing">Unit Testing</h3>
+<p>All code must be unit tested and code coverage reports must be a pre-requisite of pull request approver. We use the following as guidelines:</p>
+<ul>
+<li>Continued use of NUnit3 as our preferred testing suite. Previously, we implemented very verbose unit tests via Mock packages, but the recommendation moving forward is to utilize tools such as <a href="https://github.com/AutoFixture/AutoFixture">Autofixture</a> to arrange our test cases to avoid writing big tests.</li>
+<li>Write small, testable functions; extract large methods into smaller helper methods. Test behavior, not implementation. </li>
+<li>Install <a href="https://github.com/features/copilot">GitHub Copilot</a> and utilize it to write tests. There is a directive from senior leaderships to utilize AI-powered tools to increase our productivity.</li>
+<li>Add code coverage for pull requests. For more info, see <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/test/codecoverage-for-pullrequests?view=azure-devops">code coverage for pull requests</a>.</li>
+</ul>
+<h3 id="integration-testing">Integration Testing</h3>
+<p>From documentation, it seems that utilizing the built in Test Plan feature of Azure DevOps is the way to run integration tests (such as with this guide here: <a href="https://learn.microsoft.com/en-us/azure/devops/test/run-automated-tests-from-test-hub?view=azure-devops">Run Automated tests from test plans</a>); however, I am open to suggestions on this.</p>
+<div class="NOTE"><h5>Note</h5><p>Are there any better solutions for integration testing? Ideally, the solution would be easily integrated with an ADO release pipeline. </p>
+</div>
+<h3 id="load-testing">Load Testing</h3>
+<p>For load testing, we will employ the use of <a href="https://azure.microsoft.com/en-us/products/load-testing/">Azure&#39;s load testing service</a> to determine performance and bottlenecks with our services. A couple of things to observe:</p>
+<ul>
+<li>For load testing, we have two options: either creating a simple GUI based test via the portal with limited configurability or creating a <a href="https://learn.microsoft.com/en-us/azure/load-testing/how-to-create-and-run-load-test-with-jmeter-script">JMeter load test</a> via JMeter script. Since our team has experience with the latter and it is highly configurable, we will utilize the second option.</li>
+<li>Load testing will be part of our CI/CD pipeline. This is to ensure that we don&#39;t introduce regressions in the form of performance or availability to our application on deployments. For further reading, see <a href="https://learn.microsoft.com/en-us/azure/load-testing/tutorial-identify-performance-regression-with-cicd?tabs=pipelines">automating load tests with CI/CD</a>.</li>
+</ul>
+<h3 id="canaries">Canaries</h3>
+<p>Logs and metrics are emmitted to application insights. Because of this, we can utilize the built in <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/availability-standard-tests#create-a-standard-test">standard test</a> feature to create REST calls to our backend at a configured interval. We can configure our success criteria to be just the status code returned (such as <code>200 OK</code>) or a content match (such as a specific json string for an <code>EntityChangeEvent</code> object). Alternatively, we can create a cron triggered function that invokes our REST APIs at a configured interval and use the <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/availability-azure-functions">TrackAvailability</a> feature to determine service health.</p>
+<blockquote><p>![NOTE] Is there a better way to run canaries? Would prefer a native solution.</p>
+</blockquote>
+<h2 id="infrastructure">Infrastructure</h2>
+<h3 id="bicep-vs-arm">Bicep vs ARM</h3>
+<blockquote><p>[IMPORTANT!] After conducting a PoC to determine the viability of utilizing Bicep with EV2, we will decline this option for now and opt for region agnostic conforming ARM templates. EV2 does not natively support Bicep files, which would require us to create ARM templates at build time. This works, but given that (1) our auxilary parameter files are configured for use with the region agnostic model and that (2) Bicep currently doesn&#39;t provide an inline solution for parameter population it becomes quite cumbersome to work with both of these at the same time. Thus, we will for now utilize ARM templates and will wait for further support to be released.</p>
+</blockquote>
+<p>We utilize ARM templates and EV2 deployments as our infrastructure solution for deploying our code. Moving forward, we will make it a P0 goal to utilize <a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview?tabs=bicep">Bicep</a> to deploy our infrastructure. In essence, Bicep is infrastructure as code; it&#39;s Azure&#39;s response to AWS&#39;s CDK or HashiCorp&#39;s Terrraform. For benefits, please see the difference between writing an ARM template vs writing an equivalent <a href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-bicep?tabs=CLI">Bicep file</a>.</p>
+<blockquote><p>Does EV2 support Bicep? No, EV2 (EV2 MSInternal, i.e. the build step in ADO release pipelines that deploys our code) currently does not natively support Bicep files, although it is in their roadmap to support. To circumvent this, we will generate ARM template file equivalents as a build step in our pipeline until the EV2 natively supports Bicep. For further reading, see this <a href="https://stackoverflow.microsoft.com/questions/263321">internal stackoverflow post</a>.</p>
+</blockquote>
+<h3 id="uniform-resource-naming-conventions">Uniform Resource Naming Conventions</h3>
+<p>One mistake we made with ChangeExplorerV2 is that we deployed resources into production without agreeing on naming conventions. This caused some heartache as we introduced more components into the system, as everyone had their own way of naming resources. Moving forward, we will come to an agreement on what best practices to follow when naming resources so we avoid this issue in the future. Some best pratices for azure can be found in <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming">define your naming convention</a>.</p>
+<h3 id="airgap-support">Airgap Support</h3>
+<p>TOOD: Vamshi will provide an example to me next day. </p>
+<h3 id="region-agnostic-deployment">Region Agnostic Deployment</h3>
+<p>Given the findings in <a href="#bicep-vs-arm">Bicep vs Arm</a>, we will create region agnostic model ARM templates for deployments. Creating these models is defined <a href="https://ev2docs.azure.net/getting-started/tutorial/add-resources/arm-template.html">in this Ev2 guide</a>. Examples of region agnostic models already in use in FCM can be found in this <a href="https://msazure.visualstudio.com/One/_git/FCM-ChangeExplorer-Backend?path=/.deploy/RegionAgnosticModel&amp;version=GBmain&amp;_a=contents"><code>RegionAgnosticModel</code></a> folder.</p>
+<h2 id="deployments">Deployments</h2>
+<p>We will generate four (4) different pipelines:</p>
+<ul>
+<li>FCM-DataPlatform-Backend-PullRequest: A build pipeline that is triggered whenever a new pull request is submmited to the <code>develop</code> branch. It&#39;s purpose it to validate that a pull request meets our team&#39;s requirements (such as code coverage, load tests, etc) to be merged. <em>squash merge</em> for all successful pull requests.</li>
+<li>FCM-DataPlatform-Backend-Official: A build pipeline that is triggered whenever a change is merged into <code>main</code>. <em>Basic merge</em> so that changes can be moved from <code>develop</code> into <code>main</code> easily with a single pullrequest.</li>
+<li>FCM-DataPlatform-Backend-INT: A release pipeline that deploys our code to Azure using EV2. This solely deploys to our INT subscription and does not require the use of approval. </li>
+<li>FCM-DataPlaform-Backend-PPE/PROD: A release pipeline that deploys our code to Azure using EV2. This deploys to our PPE environment first and requires approvals authenticated with JIT for our PPE and PROD subscriptions. </li>
+</ul>
+<h2 id="azure-compliance">Azure Compliance</h2>
+<h3 id="authentication">Authentication</h3>
+<p>FCM DataPlatform APIs will be enrolled via app registration. Authentication will initially be single tenant (Microsoft) via <a href="https://azure.microsoft.com/en-us/products/active-directory">Azure AD</a> with support for multi-tenant in the future if required. Bearer tokens will be generated and sent with API calls as an <code>authorization</code> header; example below:</p>
+<h5 id="curl">cURL</h5>
+<blockquote><pre><code class="lang-javascript"> curl -X GET -H &quot;Authorization: Bearer {AccessToken}&quot; https://fcmdp.azurefd.com/v1/entityChangeEvents?changeActivityId={ChangeActivity}&amp;entityId={EntityId}
+</code></pre></blockquote>
+<h5 id="headers">Headers</h5>
+<blockquote><table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>data type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AccessToken</code></td>
+<td>required</td>
+<td>string</td>
+<td>Bearer token granted after AAD authentication; single tenant</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<div class="NOTE"><h5>Note</h5><p>Should we support additional authentication methods, such as certificate based authentication?</p>
+</div>
+<h3 id="microsoft-ursa-rest-api-scans">Microsoft URSA Rest API Scans</h3>
+<p>All REST APIs must be onboarded to the <a href="https://eng.ms/docs/microsoft-security/security/azure-security/security-health-analytics/unified-remote-scanning-ursa/ursa-web-scanner/onboard/apionboard">URSA Web Scanner</a> for compliance reasons. ChangeExplorerV2 rest APIs are already onboarded onto the platform, so we will utilize the same access resources in each environment (i.e. <code>URSAWebScannerSecretUri</code>) for authentication. Scans will be executed <strong>on a monthly cadence as default</strong>, but we can choose to execute them as part of our CI/CD pipeline by triggering an immediate scan through the <a href="https://ursa.trafficmanager.net/swagger/index.html">URSA API</a>.</p>
+<h3 id="opentelemetry-audit">OpenTelemetry Audit</h3>
+<p>As part of Microsoft&#39;s effort to maintain security audit logs, we will onboard all of our applications (in this case Antares based) to emit audit logs through <a href="https://eng.ms/docs/products/geneva/collect/instrument/opentelemetryaudit/overview">OpenTelemetry logging</a>. We have already onboarded ChangeExplorerV2 components to OpenTel, so this would be a continuation of that. A couple of remarks:</p>
+<ul>
+<li>ChangeExplorerV2 APIs were <strong>read</strong> only; if this pattern continues then our logging should be minimal (i.e. log what are application is accessing). If our APIs allow modification of resources or execute privileged actions as defined in the OpenTel doc, we will need to evaluate our workflow to ensure we audit all related instances.</li>
+<li>Since Geneva Agents (GAs) are tied to service plans for Antares based apps, we will need to create a separate service plan only for use by our DataPlatform APIs.</li>
+<li>We will generate a new namespace in our Geneva Logs account for each environment, i.e. <code>fcmdataplatformint</code>.</li>
+</ul>
+</g></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/ServiceDocs/TeamDocs/DataPlatform/fcm_dataplatform_api.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

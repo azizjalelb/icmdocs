@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>UI Backend Service API: 5xx ResultCode | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="UI Backend Service API: 5xx ResultCode | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="ui-backend-service-api-5xx-resultcode">UI Backend Service API: 5xx ResultCode</h1>
+
+<h2 id="investigation--mitigation-steps">Investigation &amp; Mitigation Steps</h2>
+<div class="TIP"><h5>Tip</h5><p>For understanding what we mean by &quot;5xx resultcode&quot;, see the wiki page <em><a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors">5xx server errors</a></em>.</p>
+</div>
+<div class="TIP"><h5>Tip</h5><p>Most of the required access information below can be retrieved directly from the ticket; see the picture below:
+<img src="../media/ticket_parse_info_example.png" alt="alt text"></p>
+</div>
+<p>A <code>5xx</code> result code has been returned for either of the following UIBS APIs (<code>&lt;OPERATION_NAME&gt;</code>):</p>
+<ul>
+<li><code>SearchByAsync</code></li>
+</ul>
+<p>Investigate the error and mitigate if possible by executing the following steps:</p>
+<div class="WARNING"><h5>Warning</h5><p>If this is not a one-off error (i.e. all requests are failing with <code>5xx</code> errors) escalate immediately to the FCM manager. This would be considered an outage, not an availability dip.</p>
+</div>
+<ul>
+<li>Get JIT access for the relevant subscription (use the auto-cut ticket as request evidence).<ul>
+<li>PPE: 6ac089d6-2695-4daf-95df-ea06d302b618</li>
+<li>PROD: 8830ba56-a476-4d01-b6ac-d3ee790383dc</li>
+</ul>
+</li>
+<li>Log into your appropriate <code>ame.gbl</code> account on the <a href="portal.azure.com">Azure Portal</a>.</li>
+<li>Go to the related Application Insights.</li>
+<li>Execute the following query to get a list of API requests in descending duration for the past hour (note that you must modify the <code>&lt;OPERATION_NAME&gt;</code>, <code>&lt;ENVIRONMENT&gt;</code> and <code>&lt;REGION&gt;</code> fields in the query below.)</li>
+</ul>
+<pre><code class="lang-sql">requests
+| project
+    timestamp,
+    id,
+    operation_Name,
+    success,
+    resultCode,
+    duration,
+    operation_Id,
+    cloud_RoleName,
+    invocationId=customDimensions[&#39;InvocationId&#39;]
+| where timestamp &gt; ago(1h)
+| where cloud_RoleName =~ &quot;uibackendservice&lt;ENVIRONMENT&gt;&quot;  and operation_Name contains &quot;&lt;OPERATION_NAME&gt;&quot;
+| where resultCode startswith &quot;5&quot;
+</code></pre><p><img src="../media/result_code_example.png" alt="alt text"></p>
+<ul>
+<li>For every query that is returned, take note of the <code>operation_Id</code>. Join it with the <code>traces</code> and <code>exceptions</code> table to get the logs for that particular query:</li>
+</ul>
+<pre><code class="lang-sql">requests
+| project
+    timestamp,
+    id,
+    operation_Name,
+    success,
+    resultCode,
+    duration,
+    operation_Id,
+    cloud_RoleName,
+    invocationId=customDimensions[&#39;InvocationId&#39;]
+| where timestamp &gt; ago(30d)
+| where cloud_RoleName =~ &quot;uibackendservice&lt;ENVIRONMENT&gt;&quot;  and operation_Name contains &quot;&lt;OPERATION_NAME&gt;&quot;
+| order by timestamp desc
+| where resultCode startswith &quot;5&quot;
+| project operation_Id, invocationId
+| join kind = leftouter traces on $left.operation_Id == $right.operation_Id
+| join kind = leftouter exceptions on $left.operation_Id == $right.operation_Id
+| extend invocationKeyFromTraces = tostring(customDimensions[&quot;InvocationId&quot;])
+| where invocationId == invocationKeyFromTraces
+| project
+    timestamp,
+    message = iff(message != &#39;&#39;, message, iff(innermostMessage != &#39;&#39;, innermostMessage, customDimensions.[&#39;prop__{OriginalFormat}&#39;])),
+    logLevel = customDimensions.[&#39;LogLevel&#39;]
+| where logLevel == &quot;Error&quot;
+</code></pre><p>Results in:</p>
+<p><img src="../media/error_message_example.png" alt="alt text"></p>
+<ul>
+<li>You will now have the logs. Take a look at the error message to under the issue. For example, you might get something like: <code>Error executing POST request on</code>v1/changes/{*id}<code>endpoint with id: 3956131. Exception Semantic error: Relop semantic error: SEM0023: The total size of the arguments exceeded the allowed limit of 53 MB</code>  which would help in identifying the issue. Remember to write down your analysis on the ticket so that future oncall engineers can use your findings to resolve issues quickly.</li>
+</ul>
+<h3 id="specific-to-searchbyasync">Specific to <code>SearchByAsync</code></h3>
+<p>There is a lot of information related <code>SearchByAsync</code>. I suggest <a href="../../../ServiceDocs/TeamDocs/ChangeExplorerV2/IncidentInformationProvider/incident_information_provider_lld.html">taking a look at the docs</a> to understand how it works. A call can fail; we will attempt to retry but if this does not work we need to identify the which component caused us to error out. See the example below:</p>
+<p><img src="../media/search_by_async_example_5xx.png" alt="alt text"></p>
+<p>Usually if this API is slow, it means that another component is slow to response. Check if there is an associated component ticket to accompany this ticket.</p>
+<div class="NOTE"><h5>Note</h5><p>It is important to take a look at these errors to improve availability of our system. Do no disregard this type of ticket.</p>
+</div>
+<h2 id="commonknown-issues">Common/Known Issues</h2>
+<p>Use this section to add common/known issues. Additionally, use this section to share learnings with other engineers on how you investigated and resolved a ticket. Utilize the following format</p>
+<pre><code>### &lt;ICM TICKET ID&gt;: &lt;SOME THOUGHTFUL DESCRIPTION&gt;
+</code></pre><p>to add a new sub-section.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/TSG/ChangeExplorerV2/UIBackendService/ui_backend_service_api_availability.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>
