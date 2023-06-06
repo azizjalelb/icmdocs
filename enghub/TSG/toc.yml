@@ -32,3 +32,5 @@
   href: LensOrchestratorJobFailures/
 - name: ADOReleaseEvents
   href: ADOReleaseEvents/
+- name: Ingestion
+  href: Ingestion/
