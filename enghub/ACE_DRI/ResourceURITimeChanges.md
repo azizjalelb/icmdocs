@@ -1,0 +1,1 @@
+Coin in the only tool that can produce results for this scenario. FCM plans to consume this data in Gallium. Once FCM has, Coin will eventually be retired. Coin should only be used for a specific set of scenarios
