@@ -1,0 +1,45 @@
+{
+    "build": {
+      "content": [
+        {
+          "files": [ "**/*.yml", "**/*md", "**/*json" ]
+        },
+        {
+          "files": [
+            ".{md,yml,json}"
+          ]
+        }
+      ],
+      "resource": [
+        {
+          "files": [
+            "Images/**",
+            "Scripts/**",
+            "**/media/**"
+          ],
+          "exclude": [
+            "obj/**",
+            "_site/**"
+          ]
+        }
+      ],
+      "dest": "_site",
+      "globalMetadata": {
+        "_appTitle": "Federated Change Management",
+        "_enableSearch": "true",
+        "_enableNewTab": "true",
+        "_gitContribute": {
+          "branch": "master"
+        }
+        },
+      "fileMetadataFiles": [],
+      "template": [
+        "default"
+      ],
+      "postProcessors": [],
+      "noLangKeyword": false,
+      "keepFileLink": false,
+      "cleanupCacheHistory": false,
+      "disableGitFeatures": false
+    }
+  }

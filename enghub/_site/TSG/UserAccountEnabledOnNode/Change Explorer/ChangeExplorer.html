@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content=" | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p>The incident occurs when there are failures in requests to FCM change explorer. </p>
+<p><strong>Components involved</strong></p>
+<p> 1.<strong>Traffic Manager</strong></p>
+<p> 2.<strong>FCMWebApp</strong></p>
+<p> 3.<strong>WebAPI</strong></p>
+<p> 4.<strong>Kusto</strong></p>
+<p><strong>Step 1:Traffic Manger</strong>
+Check the traffic manager is health and in enabled state.</p>
+<p><a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/3ad6461f-70f3-4478-9e3e-78f4e6f846e3/resourceGroups/fcmwebappdns/providers/Microsoft.Network/trafficmanagerprofiles/fcmwebapp/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/3ad6461f-70f3-4478-9e3e-78f4e6f846e3/resourceGroups/fcmwebappdns/providers/Microsoft.Network/trafficmanagerprofiles/fcmwebapp/overview</a> </p>
+<p>Note: Currently the resource is in AzureEngSys – FCM subscription. We need to move it to prod subscription. </p>
+<p><img src="Media/ChangeExplorer-TrafficManager.png" alt="ChangeExplorer-TrafficManager">  </p>
+<p><strong>Step 2:FCMWebApp</strong></p>
+<p>We have 3 instances of webapp running </p>
+<ol>
+<li>fcmwebappsouthcentral.azurewebsites.net </li>
+<li>fcmwebapp.azurewebsites.net </li>
+<li>fcmwebappwestus2.azurewebsites.net 
+Resource URL:<a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/3ad6461f-70f3-4478-9e3e-78f4e6f846e3/resourceGroups/fcmwebappdns/providers/Microsoft.Network/trafficmanagerprofiles/fcmwebapp/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/3ad6461f-70f3-4478-9e3e-78f4e6f846e3/resourceGroups/fcmwebappdns/providers/Microsoft.Network/trafficmanagerprofiles/fcmwebapp/overview</a> </li>
+</ol>
+<p><img src="Media/ChangeExplorer-WebApps.png" alt="ChangeExplorer-WebApps"><br>Make sure they are helathy and in running state </p>
+<p>**Check for WebApp Errors **</p>
+<p>Appinsights for web apps is FCMNewAppInsights URL:</p>
+<p> <a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/fcmwebapp/providers/microsoft.insights/components/FCMNewAppInsights/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/fcmwebapp/providers/microsoft.insights/components/FCMNewAppInsights/overview</a></p>
+<p>Use the below query to check for Errors and troubleshoot the same. </p>
+<p><a href="https://ms.portal.azure.com/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Ffbc17084-a3a3-42bf-a9dc-8bc7f996a679%2FresourceGroups%2Ffcmwebapp%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FFCMNewAppInsights/source/LogsBlade.AnalyticsShareLinkToQuery/q/H4sIAAAAAAAAAytKLSxNLS4pVlCoUSjPSC1KVSguTU5OLS5WtFUKKSpNVQIAkEG9jyEAAAA%253D/timespan/P1D">https://ms.portal.azure.com/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Ffbc17084-a3a3-42bf-a9dc-8bc7f996a679%2FresourceGroups%2Ffcmwebapp%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FFCMNewAppInsights/source/LogsBlade.AnalyticsShareLinkToQuery/q/H4sIAAAAAAAAAytKLSxNLS4pVlCoUSjPSC1KVSguTU5OLS5WtFUKKSpNVQIAkEG9jyEAAAA%253D/timespan/P1D</a></p>
+<p><strong>Step 3:WebAPI(BackEnd)</strong></p>
+<p>We have 4 instances of WebAPI reads and load balanced using traffic manager<br><img src="Media/WebAPI-CSES.png" alt="WebAPI-CSES"><br><img src="Media/WebAPI-TrafficManager.png" alt="WebAPI-TrafficManager">  </p>
+<p>Make sure all the instances are healthy and running and traffic manager is enabled and in healthy state. </p>
+<p>Use the below query to check for Errors and troubleshoot the same. </p>
+<p>Go to Log Analytics and run query 
+<a href="https://ms.portal.azure.com/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Ffbc17084-a3a3-42bf-a9dc-8bc7f996a679%2FresourceGroups%2Fprodchangeapiuswest1%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2Fmsdial.change.core.webapi/source/LogsBlade.AnalyticsShareLinkToQuery/q/H4sIAAAAAAAAAzXLMQqAMAwAwK%252BkmdrV3Tco2A%252BEGrCgUZNGFx8vCK4Hp3w6W7MH7oWVwXWFskujKgYR6ahXp0wzJiCZwbwUNoPQY1Zn%252FFBoYwj%252FijgOU8b0AnPHVcpaAAAA/timespan/P1D">https://ms.portal.azure.com/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Ffbc17084-a3a3-42bf-a9dc-8bc7f996a679%2FresourceGroups%2Fprodchangeapiuswest1%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2Fmsdial.change.core.webapi/source/LogsBlade.AnalyticsShareLinkToQuery/q/H4sIAAAAAAAAAzXLMQqAMAwAwK%252BkmdrV3Tco2A%252BEGrCgUZNGFx8vCK4Hp3w6W7MH7oWVwXWFskujKgYR6ahXp0wzJiCZwbwUNoPQY1Zn%252FFBoYwj%252FijgOU8b0AnPHVcpaAAAA/timespan/P1D</a></p>
+<p><strong>Step 4: Check Kusto Health(Database)</strong> </p>
+<p>The prod kusto cluster is fcmdata 
+<a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/fcmkustoresources/providers/Microsoft.Kusto/clusters/fcmdata/overview">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/fcmkustoresources/providers/Microsoft.Kusto/clusters/fcmdata/overview</a></p>
+<p>Make sure Kusto is in healthy state and accessible. Connect using Kusto explorer and run few queries and veify. 
+Check for any Throttled queries in Kusto metrics View In Metrics Explorer ,Ideally you should not see throttling.
+Check for increase in concurrent queries and increase in load.
+<a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/fcmkustoresources/providers/Microsoft.Kusto/clusters/fcmdata/insights">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/fbc17084-a3a3-42bf-a9dc-8bc7f996a679/resourceGroups/fcmkustoresources/providers/Microsoft.Kusto/clusters/fcmdata/insights</a></p>
+<p><img src="Media/Kusto-Metrics.png" alt="Kusto-Metrics">  </p>
+<p>If you see throttling, find the queries being ran and consuming most resources. You can use the below query to look for queries</p>
+<p>.show queries | where StartedOn &gt;ago(2h)
+| project Text,StartedOn,Duration, MemoryPeak, TotalCpu,State
+| order by TotalCpu desc </p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/TSG/UserAccountEnabledOnNode/Change Explorer/ChangeExplorer.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

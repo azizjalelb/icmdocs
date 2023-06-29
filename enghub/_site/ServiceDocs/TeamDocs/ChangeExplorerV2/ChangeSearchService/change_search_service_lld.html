@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Change Search Service LLD | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Change Search Service LLD | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../index.html">
+                <img id="logo" class="svg" src="../../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="change-search-service-lld">Change Search Service LLD</h1>
+
+<h2 id="revision-history">Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Reviewer</th>
+<th>Approver</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.1</td>
+<td>05/16/2022</td>
+<td>andresro@</td>
+<td></td>
+<td></td>
+<td>Initial Draft</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#introduction">Introduction</a><ol>
+<li>Scope</li>
+<li>High Level Design Review</li>
+</ol>
+</li>
+<li><a href="#system">Low Level System Design</a></li>
+<li>API Contracts</li>
+<li>Testing</li>
+</ol>
+<h2 id="introduction-a-nameintroductiona">Introduction <a name="introduction"></a></h2>
+<h3 id="scope">Scope</h3>
+<p>The purpose of this document is to define the low level design (LLD) and API contracts for the Change Search Service (CSS hereafter) as described in the high level design (HLD) for <a href="https://microsoft-my.sharepoint.com/:w:/p/abhinavmisra/EXSIlJsYC3pKsG7WciHkcAYBsQSJLZBN4mk_Ee0iG5-NmQ?e=j3VKof">Change Explorer v2</a>. In scope is the CSS component to complete <a href="https://microsoft-my.sharepoint.com/:x:/p/naveend/Efr7cba_a5ZGuCL4J_zbBIYBexuxUIsK_gaIV8BqpXa0Rw?e=6sfCyt">Milestone 1 (M1) goals</a>; none of the other components listed in the HLD will be designed in this document. However, the following two points will be considered:</p>
+<ol>
+<li>The CSS service interfaces with the UI Backend Services (UBS hereafter). We will conduct rudimentary compatibility requirements with this component for future work. This is because UBS will not be completed in M1 and will directly operate with the frontend service. As such, to complete M1 goals, the frontend will have to temporarily handle some of the logic of UBS (such as ranking). </li>
+<li>From (1), we will in addition conduct rudimentary compatibility requirements with the frontend service to ensure that integreation testing and launch of MVP product is ready.</li>
+<li>For this intial design, we are not consdering the case of grouping by location. We will expand to include location in later milestone goals. The API is designed to not be updated with this change; that is, a <code>service</code> is considered a resource abstract from <code>location</code>.</li>
+</ol>
+<h3 id="high-level-design">High Level Design</h3>
+<p><img src="media/hld_diagram.jpg" alt="alt text"></p>
+<p>To review, CSS interfaces with the following components:</p>
+<ol>
+<li>UBS - This is a tightly coupled with the frontend. It&#39;s purpose is to transform payload and responses in a manner that is consistent with the frontend. </li>
+<li>Azure Data Explorer (Kusto) - Our db where we will find the changes to display.</li>
+<li>Change Analysis &amp; Recommendation Service (CARS) - Not in scope for MVP product; will likely be replaced by PossibleCauses API.</li>
+</ol>
+<p>At a high level, CSS is responsible for executing Kusto queries that are passed from the customer through the frontend. We are primarily going to expose two resources through REST APIs:</p>
+<ol>
+<li><code>service</code>: An abstraction of a microsoft service. This is not implemented in a db, but is meant to model it as a resource.</li>
+<li><code>change</code>: An abstract of the change resource from the Kusto db.</li>
+</ol>
+<h2 id="low-level-system-design-a-namesystema">Low Level System Design <a name="system"></a></h2>
+<p>CSS will have three main APIs it will expose to <strong>API Mangement</strong>:</p>
+<ol>
+<li><strong>POST</strong> <code>/v1/service{id}/change_count</code></li>
+<li><strong>POST</strong> <code>/v1/service/{id}/changes</code></li>
+<li><strong>POST</strong> <code>/v1/change/{id}</code></li>
+</ol>
+<p>Auth is assumed to be handled at the API management layer.</p>
+<h3 id="sequence-diagrams">Sequence Diagrams</h3>
+<p>For detailed API contracts, see the API Contracts section. (TODO: Include reference here)</p>
+<h4 id="post-v1serviceidchangecount"><strong>POST</strong> <code>/v1/service{id}/change_count</code></h4>
+<p>The purpose of this API is to display the count of top most parent changes for a given service. It filters changes further using the <code>filter</code> object that is passed through in the <em>requestBody</em>. This API will be called multiple times from UBS, as the Service Information Provider (SIP hereafter) will return a list of <code>serviceIds</code> to search for before the customer executes the change search functionality of Change Explorer V2. Things to consider:</p>
+<ol>
+<li>Since no pagination is required, all results will be returned to the frontend as a list of <code>serviceIds</code> and counts. As such, ranking should be established by UBS or the frontend service (i.e. dependent services will be shown after target services)</li>
+<li>There is no need to cache anything. </li>
+</ol>
+<pre><code class="lang-mermaid">sequenceDiagram
+    User-&gt;&gt;+Frontend: (navigates to changeexplorerv2.fcm.microsoft.com)
+    Frontend-&gt;&gt;+AuthenticationService: authenticateUser(userId)
+    alt if auth unsuccessful:
+        AuthenticationService-&gt;&gt;+Frontend: userId: String&lt;br/&gt;authorized: false&lt;br/&gt; reason: string
+        Frontend-&gt;&gt;+User: (display auth failed message)
+    end
+    AuthenticationService-&gt;&gt;+Frontend: userId: String&lt;br/&gt;authorized: true&lt;br/&gt;authToken: string
+    Frontend-&gt;&gt;+User: userId: String&lt;br/&gt;authToken: string
+    Frontend-&gt;&gt;+Frontend: (user selects filters)
+    Frontend-&gt;&gt;+UBS: getServiceProviders(filters.services)
+    UBS-&gt;&gt;+SIP: getServiceIds(filters.services)
+    SIP-&gt;&gt;+UBS: [{serviceName : string,&lt;br/&gt; serviceId: string}]
+    UBS-&gt;&gt;+Frontend: [ServiceName: string]
+    Frontend-&gt;&gt;+User: (displays the services)
+    User-&gt;&gt;+Frontend: (user hits the search button on the left pane)
+    Frontend-&gt;&gt;UBS: searchChanges(filters)
+    UBS-&gt;&gt;+UBS: createFilterObject(filters)
+    UBS-&gt;&gt;+UBS: getServiceChangeCount(serviceId: string)
+    UBS--)+CSS: POST /v1/service/{id}/change_count&lt;br/&gt;requestBody: JSON
+    CSS-&gt;&gt;+Kusto: Execute query
+    Kusto-&gt;&gt;+CSS: serviceId: string,&lt;br/&gt; serviceName: string,&lt;br/&gt; changeCount: integer
+    CSS-&gt;&gt;+UBS: serviceId: string,&lt;br/&gt; serviceName: string,&lt;br/&gt; changeCount: integer
+    UBS--)+UBS: (collect results from async calls)
+    UBS-&gt;&gt;+UBS: rankServices([services: string])
+    UBS-&gt;&gt;+Frontend: (ranked)&lt;br/&gt;serviceId: string,&lt;br/&gt; serviceName: string,&lt;br/&gt; changeCount: integer
+    Frontend-&gt;&gt;+User: (displays the results)                  
+</code></pre><h4 id="post-v1serviceidchanges">POST /v1/service/{id}/changes</h4>
+<p>The purpose of this API is to display the top-most parent changes in a given service based on the search criteria given by the customer. Things to consider:</p>
+<ol>
+<li>Again, we need to rank the chaanges based on relevancy. The API contract has <code>time</code> and <code>status</code> as ranking data, but we can add a more sophisticated ranking algorithm as well. In this sequence diagram, it is handled by CSS; again, the alternative is to have it handled by UBS or the frontend. </li>
+<li>We will require pagination to display childChanges using the <code>see more</code> functionality. Kusto explorer has a built in way of storing query results for fast pagination called <a href="https://docs.microsoft.com/en-us/azure/data-explorer/kusto/management/stored-query-results#pagination">stored query results</a>. We will have to conduct load testing to find the amount of storage space provided by Kusto via the <a href="https://docs.microsoft.com/en-us/azure/data-explorer/engine-v3">EngineV3</a>.</li>
+</ol>
+<pre><code class="lang-mermaid">sequenceDiagram
+    User-&gt;&gt;+Frontend: (uncollapse service name)
+    Frontend-&gt;&gt;+UBS: uncollapseServiceName(serviceId: string, filters)
+    UBS-&gt;&gt;+UBS: createFilterObject(filters)
+    UBS-&gt;&gt;+UBS: getServiceChanges(serviceId: string, storedQueryResultId: string, filter: object)
+    UBS-&gt;&gt;+CSS: POST /v1/service/{id}/changes&lt;br/&gt;requestBody: JSON
+    CSS-&gt;&gt;+Kusto: show stored_query_results()
+    Kusto-&gt;&gt;+CSS: [storedQueryResultId: string] (stored_query_results)
+    alt if storedQueryResultId cached:
+        CSS-&gt;&gt;+Kusto: stored_query_result(storedQueryResultId, limit, offset)
+        Kusto-&gt;&gt;+Storage Account: (retrieve)
+        Storage Account-&gt;&gt;+Kusto: storedQueryResultId: string,&lt;br/&gt;serviceName: string,&lt;br/&gt;parentChange: ChangeObject,&lt;br/&gt;childChanges: [ChangeObject]
+        Kusto-&gt;&gt;CSS: storedQueryResultId: string,&lt;br/&gt;serviceName: string,&lt;br/&gt;parentChange: ChangeObject,&lt;br/&gt;childChanges: [ChangeObject]
+    else if storedQueryResultId not cached:
+        CSS-&gt;&gt;+Kusto: set stored_query_result()
+        Kusto-&gt;&gt;CSS: storedQueryResultId: string,&lt;br/&gt;serviceName: string,&lt;br/&gt;parentChange: ChangeObject,&lt;br/&gt;childChanges: [ChangeObject]
+        Kusto-&gt;&gt;+Storage Account: (sets query in cache)
+    end
+    CSS-&gt;&gt;+UBS: storedQueryResultId: string,&lt;br/&gt;serviceName: string,&lt;br/&gt;parentChange: ChangeObject,&lt;br/&gt;childChanges: [ChangeObject]
+    UBS-&gt;&gt;+UBS: rankedTopMostParents(rankingCriteria)
+    UBS-&gt;&gt;+Frontend: rankedTopMostParents
+    Frontend-&gt;&gt;+User: (displays the results)    
+</code></pre><h4 id="post-change-searchchangesdetails">POST /change-search/changes/details</h4>
+<p>The purpose of this API is to display the details of a change and the details of its children in a paginated fashion. </p>
+<pre><code class="lang-mermaid">sequenceDiagram
+    user-&gt;&gt;+Frontend: (click change)
+    Frontend-&gt;&gt;+Frontend: (open new tab)
+    Frontend-&gt;&gt;+UBS: changeDetails(changeId: string, filters)
+    UBS-&gt;&gt;+UBS: transformFilters(filters)
+    UBS-&gt;&gt;+CSS: POST /change-search/changes/details&lt;br/&gt;requestBody: [{userId: string, changeId: string, &lt;br/&gt;limit: interger, offset: interger, transformedFilters}]
+    CSS-&gt;&gt;+Kusto: show stored_query_results(userId) 
+    Kusto-&gt;&gt;+CSS: stored_query_results: [userId: string]
+    alt if userId IN stored_query_results (cached):
+        CSS-&gt;&gt;+Kusto: stored_query_result(userId, limit, offset)
+        Kusto-&gt;&gt;+Storage Account: (retrieve)
+        Storage Account-&gt;&gt;+Kusto: [{parentChangeId: string, parentTitle: string, parentDetails,&lt;br/&gt;childChanges: [{childChangeId: string, childTitle: string, childDetails}]] == changeDetails
+        Kusto-&gt;&gt;CSS: changeDetails
+    else if userId NOT IN stored_query_results (not cached):
+        CSS-&gt;&gt;+Kusto: set stored_query_result(userId) | QUERY
+        Kusto-&gt;&gt;+CSS: [{parentChangeId: string, parentTitle: string, parentDetails,&lt;br/&gt;childChanges: [{childChangeId: string, childTitle: string, childDetails}]] == changeDetails
+        Kusto-&gt;&gt;+Storage Account: (sets query in cache)
+    end
+    CSS-&gt;UBS: changeDetails
+    UBS-&gt;&gt;+UBS: rankChildChanges(changeDetails.childChanges, ranking)
+    UBS-&gt;&gt;+Frontend: rankedChildChanges
+    Frontend-&gt;&gt;+user: (displays the results) 
+</code></pre><h3 id="data-design">Data Design</h3>
+<h4 id="database">Database</h4>
+<p>CSS will execute kusto queries on <strong>ChangeMaterializedViews</strong> and <strong>ChangeGroup</strong> tables.</p>
+<ol>
+<li><strong>ChangeMaterializedViews</strong>: Provides the latest change information regarding a change event. Establishes the <em>parent-child</em> relationshgip between changes. We will utilize the <a href="https://microsoft.sharepoint.com/:w:/r/teams/WAG/EngSys/ServiceMgmt/ChangeMgmt/Shared%20Documents/Requirements/ChangeSchema_Modified_v21.docx?d=w6cc72dca9a694a68a9b7bbc00968d570&amp;csf=1&amp;web=1">Change Explorer V2 Schema</a>.<ul>
+<li>Full schema can be found at <a href="https://fcmdata.kusto.windows.net">https://fcmdata.kusto.windows.net</a></li>
+</ul>
+</li>
+<li><strong>ChangeGroup</strong>: Groups changes based on group-type (top-most parent, in this case). <code>groupId</code> maps to the top most parent; if <code>groupId</code> does not exist then it will be considered the top-most parent and utilize its <code>externalId</code>.</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/ServiceDocs/TeamDocs/ChangeExplorerV2/ChangeSearchService/change_search_service_lld.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

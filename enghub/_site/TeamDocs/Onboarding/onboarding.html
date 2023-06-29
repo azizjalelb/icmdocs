@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Onboarding New Change System to FCM to send their changes to FCM via SDK | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Onboarding New Change System to FCM to send their changes to FCM via SDK | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="onboarding-new-change-system-to-fcm-to-send-their-changes-to-fcm-via-sdk">Onboarding New Change System to FCM to send their changes to FCM via SDK</h1>
+
+<h2 id="onboard-to-fcm-ppe">Onboard to FCM PPE:</h2>
+<p>In order for customers to send changes to FCM PPE, they require access to <code>fcmonboardtest</code> keyvault  (<a href="https://fcmonboardtest.vault.azure.net/">https://fcmonboardtest.vault.azure.net/</a>). This keyvault is in our corp subscription, <code>FCMProductionTransfer</code> (3a94e972-dca2-4a80-a437-5e856903d74a). In order to provide access to this keyvault, the app id of our customer needs to be added to 
+<code>FcmOnBoardTest</code> UserGroup. In order to that:</p>
+<ol>
+<li>Go to Azure Portal</li>
+<li>Go to Azure Active Directory</li>
+<li>Select Groups from the left panel</li>
+<li>Search and select <code>FcmOnBoardTest</code></li>
+<li>Go to <code>Members</code> from the left panel and add the app Id of the customer to direct members.
+If for any reason, this doesn’t work, you can give the app Id of the customer a <code>Get,List</code> access to the fcmonboardtest keyvault directly.
+At this point, the user should be able to send their changes to FCM PPE and see their changes under EventRouterSample change source system if they followed the guidelines for sending changes to FCM PPE.</li>
+</ol>
+<h2 id="onboard-to-fcm-prod">Onboard to FCM PROD:</h2>
+<h4 id="step-1-add-appid-to-fcmprodapps-user-group">Step 1: Add AppId to <code>FCMProdApps</code> user group.</h4>
+<p>In order for customers to send changes to FCM Prod, they require access to <code>fcmerhub</code> keyvault  (<a href="https://fcmerhub.vault.azure.net/">https://fcmerhub.vault.azure.net/</a>). This keyvault is in our corp subscription, <code>FCMProductionTransfer</code> (3a94e972-dca2-4a80-a437-5e856903d74a). In order to provide access to this keyvault, the app id of our customer needs to be added to 
+<code>FCMProdApps</code> UserGroup. In order to that:</p>
+<ol>
+<li>Go to Azure Portal</li>
+<li>Go to Azure Active Directory</li>
+<li>Select Groups from the left panel</li>
+<li>Search and select <code>FCMProdApps</code></li>
+<li>Go to <code>Members</code> from the left panel and add the app Id of the customer to direct members. If for any reason, this doesn’t work, you can give the app Id of the customer a Get,List access to the fcmerhub keyvault directly.</li>
+</ol>
+<p><code>If the Customer App ID is from AME tenant,S grant the access to the keyvault: fcmamehub in the Production Subscription.</code></p>
+<h4 id="step-2-add-sourcename-to-database">Step 2: Add SourceName to database</h4>
+<ol>
+<li><p>Update the ExternalSource table in all four primary write(shard) dbs. Insert the externalsource record in all the four primary write (shard) dbs.</p>
+<ol>
+<li>Connect Our primary sql server is <code>x2altnc1cm.database.windows.net</code> using Microsoft SQL Server Management Studio.</li>
+<li><p>Externalsourceid is a running number, get the next number by running the following query:</p>
+<p><code>SELECT * FROM [dbo].[ExternalSource]</code></p>
+</li>
+<li><p>We have 4 shards: <code>mschangeshard_0, mschangeshard_1, mschangeshard_2, mschangeshard_3</code>. After getting next number,  run the following query in all of those shards to insert the new source system in to the db. Don’t forget to change to value placeholders with the real ones</p>
+<p><code>INSERT INTO [dbo].[ExternalSource] VALUES (ExternalSourceId,&#39;ExternalSourceName&#39;, &#39;Description&#39;,&#39;&#39;, &#39;&#39;);</code></p>
+</li>
+</ol>
+</li>
+<li><p>Run powershell script for Writes<br> Step 1: Get JIT Access to our production subscriptions. Go to powershell, run the following command and login with your AME account.
+ <code>Login-AzureRmAccount</code></p>
+<p> Step 2:  Execute powershell script <code>AddnewExternalSourceToShardToWrite.ps1</code> (<a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/EngSys-ChangeManagement-FCM?path=/src/FCM/Msdial.Change.Deployment/Shard/Powershell">https://msazure.visualstudio.com/DefaultCollection/One/_git/EngSys-ChangeManagement-FCM?path=/src/FCM/Msdial.Change.Deployment/Shard/Powershell</a>) in<br> Powershell - Repos (visualstudio.com)</p>
+<p> Follow the instructions in the comments of  the powershell script. You need to update the ExternalSource, which ShardDb the record will go to and the password. You can find the password in <code>Secret-FCMSQLPassword - Microsoft Azure</code>  (<a href="https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/asset/Microsoft_Azure_KeyVault/Secret/https://fcmproduction-kv.vault.azure.net/secrets/Secret-FCMSQLPassword">https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/asset/Microsoft_Azure_KeyVault/Secret/https://fcmproduction-kv.vault.azure.net/secrets/Secret-FCMSQLPassword</a>) </p>
+</li>
+<li><p>Validate the write DBs<br> Run this on the Shard Write DB<br> <code>SELECT [MappingId]  
+     ,[Readable]  
+     ,[ShardId]  
+     ,[ShardMapId]  
+     ,[OperationId]  
+     ,[MinValue]  
+     ,[MaxValue]  
+     ,[Status]  
+     ,[LockOwnerId]  
+ FROM [__ShardManagement].[ShardMappingsGlobal]</code></p>
+<p> It should show the new externalSource in MinValue field in Hex format  </p>
+<p> Run this in the specific Shard db where<br> <code>SELECT [MappingId]  
+     ,[ShardId]  
+     ,[ShardMapId]  
+     ,[MinValue]  
+     ,[MaxValue]  
+     ,[Status]  
+     ,[LockOwnerId]  
+     ,[LastOperationId]  
+ FROM [__ShardManagement].[ShardMappingsLocal]  
+ ORDER BY MinValue</code></p>
+</li>
+</ol>
+<h4 id="step-3-stop-and-start-the-connectors-and-web-api">Step 3: Stop and Start the Connectors and Web API</h4>
+<p>Resources to be Stopped and Started:</p>
+<ol>
+<li><code>prodcustomeventconnectorwestus</code></li>
+<li><code>prodstandarddeploymenteventconnectorwestus</code></li>
+<li><code>prodwebapiwriteeastus</code></li>
+<li><code>prodwebapiwritewestus</code></li>
+</ol>
+<p>Stopping of resources should be done in the order listed above and the starting of them should be done in reverse order i.e. webapis to be started first and then the connectors</p>
+<p>In order to stop and start,</p>
+<pre><code>1.  Stop the resource from the overview tab
+2.  Wait until all of the instances are in the `Destroyed` state
+3.  Start the resource from the overview tab in the reverse order
+4.  Make sure that all of the instances are in ‘Started’ state
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/TeamDocs/Onboarding/onboarding.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>DRI Scenarios | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="DRI Scenarios | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="dri-scenarios">DRI Scenarios</h1>
+
+<p>To better understand our product and the problem we are solving, we have laid out a few DRI scenarios that detail the FCM User Experience.</p>
+<h2 id="background">Background:</h2>
+<p><strong>On-call Engineer (aka DRI). This is the engineer, who is the on-call for a given week (typically, weekly rotation) who first responds to an ICM incident, when an IcM incident is assigned to their service team.</strong></p>
+<p>Azure mostly follows a DevOps model, by which the developers working in an area rotate to take-on the on-call engineer duties.  The tenure and expertise of on-call engineers vary vastly, from being just a few weeks in the team to being a veteran of the service. Most teams have a strong on-boarding curriculum for the DRIs. However, due to the nature of the processes involved, coupled with the complexity of Azure and plethora of tools available, learning to be an effective DRI takes anywhere from a few weeks to several months.  </p>
+<p>DRIs are typically trained to ask ‘what’s changed?’ as the first course of investigation of an IcM incident. With about 50% of the incidents in Azure being caused due to a change (code/configuration/infrastructure), investigating and zeroing down on the culprit change that has led to the incident, is one of the most challenging aspects of a DRI’s role.  </p>
+<p>While most DRIs on the team have a way (although tedious) to find changes that are being deployed by their own services, there is not much visibility into the changes that are made by the dependent services. Thus, identifying ‘what changed’, either in their own service or in a dependent service and hence, led to an incident, is a critical investigation that the DRI needs to conduct as part of the mitigation measures. </p>
+<p>In the event, the change was made by the dependent service, identifying that change and engaging the DRI of the dependent service team is key to incident mitigation. </p>
+<p>‘Time to Engage (TTE)’ a DRI and ‘Time to Mitigate (TTM)’ an incident, are two (of the several key) metrics that are closely evaluated within Azure. Reducing the TTE and TTM not only improves the health of the DRI, but also provides a better customer experience to Azure customers.</p>
+<p><img src="media/TTM.png" alt="alt text"></p>
+<h2 id="scenario-1-dri-is-paged-for-an-icm-incident-that-has-been-raised-by-a-monitor-the-icm-incident-has-impacted-service-and-fine-grained-location-details">Scenario 1: DRI is paged for an IcM incident that has been raised by a monitor. The IcM incident has impacted service and fine-grained location details.</h2>
+<p>Log Analytics Control Plane DRI gets paged for a Sev 2 IcM Incident that was created. The DRI looks up the incident details in IcM and acknowledges the incident. </p>
+<p>The DRI navigates to <a href="aka.ms/fcm">FCM Change Explorer</a> to identify which change(s) could have caused the incident. The DRI only has to provide the IcM Incident # and Change Explorer auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. </p>
+<p>The list of changes made by Log Analytics Control Plane at the fine-grained location are displayed as the search results. 
+The DRI can now easily go through the finite list of changes to determine which change has caused the incident for the Log Analytics Control Plane team.   </p>
+<h2 id="scenario-2-icm-incident-does-not-have-a-recognizable-location-however-dri-knows-the-impacted-fine-grained-location-nodetenantstamp-and-the-impacted-servicecomponent">Scenario 2: IcM Incident does not have a recognizable location. However, DRI knows the impacted fine-grained location (node/tenant/stamp) and the impacted service/component</h2>
+<p>Log Analytics Control Plane DRI gets paged for a Sev 2 IcM Incident that was created. The DRI looks up the incident details in IcM and acknowledges the incident. The IcM incident does not mention the impacted location. The DRI checks the Azure DevOps Release to see if their team made any deployments. From Azure DevOps, the DRI knows that there were deployments, but it is a very tedious task to figure out the exact change that could have probably caused the incident. The DRI next looks up the Telemetry to find out the stamp (aks-useast-01, fine-grained location) that has been impacted by the incident. The DRI now knows that there were some deployments (but does not know what was deployed and when it was deployed) and the DRI knows the stamp that was impacted. </p>
+<p>With this knowledge, the DRI now navigates to <a href="aka.ms/fcm">FCM Change Explorer</a> to identify which change(s) could have caused the incident. The DRI only has to provide the IcM Incident # and FCM auto-populates the incident information from IcM, including the incident timeline. </p>
+<p>The DRI has the flexibility to refine the search by providing the fine-grained location and zeroing down on the Log Analytics Control Plane components. The list of changes made by Log Analytics Control Plane, for the specific components, at the aks-useast-01 location are displayed as the search results. The DRI can now easily go through the finite list of changes to determine which change has caused the incident for the Log Analytics Control Plane team.  </p>
+<h2 id="scenario-3-dri-knows-list-of-impact-fine-grained-locations-nodetenantsstamps-only-dri-does-not-know-if-a-servicecomponent-made-a-change">Scenario 3: DRI knows list of impact fine-grained locations (node/tenants/stamps) only. DRI, does not know if a service/component made a change.</h2>
+<p> XStore DRI gets paged for a Sev2 IcM incident that was created by a monitor. The DRI looks up the incident details in IcM and acknowledges the incident. Based on available internal XStore tools, DRI is able to retrieve the list of impact tenants. </p>
+<p> DRI navigates to <a href="aka.ms/fcm">FCM Change Explorer</a>. DRI provides the incident # to start with and FCM auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. The list of changes, grouped by all the XStore services, for the impact location are displayed as the search results. </p>
+<p> DRI can now further refine the search results, by filtering for the full list of impact tenants. The list of changes that were made across ALL the impact tenants, grouped by the XStore service are displayed. This helps to zero down on the change that was deployed on the list of impact tenants.</p>
+<h2 id="scenaro-4-dri-knows-their-service-did-not-deploy-any-changes-however-their-service-is-still-down">Scenaro 4: DRI knows their service did not deploy any changes, however, their service is still down.</h2>
+<p> ODSP DRI gets paged for a Sev2 IcM incident that was created as a response to a  ticket from a 1P Customer. The DRI looks up the incident details in IcM and acknowledges the incident. On checking the telemetry and logs, the DRI is able to confirm the regression but is unable to identify the cause of the regression. </p>
+<p> DRI navigates to <a href="aka.ms/fcm">FCM Change Explorer</a>. DRI provides the incident # to start with. FCM auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. </p>
+<p> DRI toggles the option to see the changes made by the dependent services. DRI de-selects their own services. Thus, all changes made by the dependent services, grouped by each of the dependent service, at the impact location is displayed. The DRI is able to zero down on the change made by the dependent service. The ODSP DRI, next selects the option to view the DRI point of contact of the dependent service and reaches out to the dependent service DRI for further mitigation</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/Onboard/FCMscenarios.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

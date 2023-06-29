@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Sending Change Event Data to FCM FAQs | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Sending Change Event Data to FCM FAQs | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="sending-change-event-data-to-fcm-faqs">Sending Change Event Data to FCM FAQs</h1>
+
+<h2 id="i-have-successfully-sent-the-changes-using-sample-application-but-dont-see-the-changes-in-ppe">I have successfully sent the changes using sample application but don’t see the changes in PPE.</h2>
+<p>The most common cause for this: </p>
+<p>&#39;EventRouterSample&#39; is not used as ChangeSource. </p>
+<p>If that is not the case, then make sure you are sending the right values as suggested in this documentation. </p>
+<p>Also, FCM PPE is mostly stable but yet it is not production. So, we sometimes make changes to different parts of PPE like API/UI/DB and Event processor. You might be impacted for that and not seeing changes for that. But it should not be for long time. Please try again later and you should see your changes. If you don’t see your changes in FCM PPE for an extended time, then please email fcmsupport. Please provide the externalId when the event was sent and what changes you made to the sample application. </p>
+<h2 id="i-am-successfully-sending-changes-using-the-sample-application-and-can-see-it-in-ppe-ui-but-getting-errors-when-i-use-similar-code-in-another-project">I am successfully sending changes using the sample application and can see it in PPE UI but getting errors when I use similar code in another project.</h2>
+<p>There are few things that can go wrong: </p>
+<ul>
+<li>You are using an old version of Event Router. Please get the latest one. </li>
+<li>You are not initializing the Event router credentials (account. clientId or thumbprint) </li>
+<li>You are not instantiating Change event correctly with the right values </li>
+</ul>
+<h2 id="my-changes-are-not-showing-under-my-service-in-fcm-ppe-ui">My changes are not showing under my service in FCM PPE UI.</h2>
+<p>Please make sure you are doing the following: </p>
+<ul>
+<li>You are already onboarded to service tree </li>
+<li>You are already onboarded to FCM </li>
+<li>You are sending your ServiceTreeGUID in the change event&#39;s impactedServiceId field </li>
+</ul>
+<h2 id="is-the-eventrouter-api-thread-safe">Is the EventRouter API thread safe?</h2>
+<p>EventRouter API is thread-safe. Initialize it once and then you can log events through multiple threads. </p>
+<h2 id="while-trying-to-push-data-via-change-event-router-i-noticed-that-the-call-operationaleventslogasyncnewlistifxchangeevent--changeevent--returns-a-task-i-was-wondering-what-is-the-expectation-that-fcm-has-regarding-how-to-manage-this-task-i-realized-that-to-cancel-a-task-we-would-need-a-cancelation-token-that-should-be-provided-to-it-during-its-creation-i-thus-wanted-to-clarify-what-expectations-fcm-has-regarding-how-we-should-handle-tasks-our-only-concern-is-to-not-be-in-a-state-where-we-overwhelm-the-service-with-multiple-task-requests">While trying to push data via Change Event Router I noticed that the call OperationalEvents.LogAsync(newList&lt;Ifx.ChangeEvent&gt; { changeEvent }); returns a Task. I was wondering what is the expectation that FCM has regarding how to manage this Task. I realized that to cancel a Task we would need a cancelation token that should be provided to it during its creation. I thus wanted to clarify what expectations FCM has regarding how we should handle Tasks. Our only concern is to not be in a state where we overwhelm the service with multiple Task requests.</h2>
+<p>Each batch of events sent from LogAsync can be upto 250KB. If this threshold is breached, then an exception would be thrown, and the caller needs to try again with lesser number of events in the batch. In our testing, we have seen that 10k events of 1KB each translate into a batch size of 160KB, so 10k events per batch could be a good default. To learn more please visit ER documentation:  </p>
+<p><a href="https://microsoft.sharepoint.com/teams/WAG/EngSys/AzureAnalytics/Shared%20Documents/EventRouter/Using%20EventRouter%20library%20to%20log%20operational%20data.docx?web=1">https://microsoft.sharepoint.com/teams/WAG/EngSys/AzureAnalytics/Shared%20Documents/EventRouter/Using%20EventRouter%20library%20to%20log%20operational%20data.docx?web=1</a> </p>
+<h2 id="the-system-that-we-use-for-deploying-needs-all-the-dependent-packages-to-be-uploaded-in-vso-associated-with-our-serviceproduct-thus-i-would-need-the-nupkg-file-of-the-libraries-that-fcm-needs-i-believe-its-microsoftcloudinstrumentationframework-so-that-i-can-upload-it-there">The system that we use for deploying needs all the dependent packages to be uploaded in VSO associated with our service/product. Thus I would need the .nupkg file of the libraries that FCM needs (I believe it’s Microsoft.Cloud.InstrumentationFramework) so that I can upload it there.</h2>
+<p>Platform team publish EventRouter nuget package in wanuget-official repo (Source: <a href="http://wanuget/Official/nuget/">http://wanuget/Official/nuget/</a>) by name ‘Microsoft.Cloud.InstrumentationFramework.EventRouter’.  </p>
+<p>You can download it and its dependency nuget packages from there and upload to VSO. </p>
+<h2 id="can-you-add-external-source-for-us-in-fcm-ppe-so-that-we-can-send-changes-in-fcm-ppe-with-that-external-source">Can you add (External) Source for us in FCM PPE so that we can send changes in FCM PPE with that External Source?</h2>
+<p>Adding a new External Source requires several steps at FCM end and doesn’t add any value in PPE. So, we currently don’t add a new External Source for different services/teams that try sending their changes in FCM PPE. Instead we require you to send changes in FCM PPE with &#39;EventRouterSample&#39; as ChangeSource and your service tree guid in the impactedServiceId field. Your Source will be added only in FCM Prod. </p>
+<h2 id="do-we-get-these-events-in-mds-as-well-when-we-send-the-event-to-fcm-prod">Do we get these events in MDS as well when we send the event to FCM Prod?</h2>
+<p>The current IFX agentless doesn’t send the events to MDS and you won’t be able to see the data in Jarvis. However, we send the changes to Kusto and you might be able to use that if you want to explore your data other than FCM UI. For more information on kusto please visit aka.ms/fcmkusto. </p>
+<h2 id="how-do-i-add-application-to-azure-active-directory">How do I add application to Azure Active Directory?</h2>
+<p>There are plenty of documents online that you can find to guide you how to add your application to Azure Active Directory. One of them is this: </p>
+<p><a href="https://blogs.msdn.microsoft.com/azuredev/2017/03/29/4-ways-of-adding-your-application-to-azure-active-directory/">https://blogs.msdn.microsoft.com/azuredev/2017/03/29/4-ways-of-adding-your-application-to-azure-active-directory/</a> </p>
+<p>But feel free to follow the documentation you like to add your application to Azure Active Directory. </p>
+<h2 id="how-does-fcm-authenticate-our-certificate-used-by-our-application-to-send-changes-to-fcm-prod">How does FCM authenticate our certificate used by our application to send changes to FCM Prod?</h2>
+<p>AAD will do that for FCM. If you are sending using a different certificate that is not associated to the application then AAD will reject the authentication for your application that will fail your changes to come to FCM Prod. </p>
+<!-- ## My deployments/changes are associated with releases.  How can I use release in FCM? 
+
+If you have Deployments/Changes associated with a Release then you should consider sending one ChangeEvent with the 'Release' in the 'Title' field of the ChangeEvent. After that you can send subsequent changes for that as individual ChangeEvent setting their  ExternalParentId field with the SourceRecordId of the ChangeEvent that you sent earlier with the Release (in Title) information. 
+
+Here are all the changes under a specific release '0.7.32.0' in FCM  --></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/FAQ/SendingDataFAQ.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

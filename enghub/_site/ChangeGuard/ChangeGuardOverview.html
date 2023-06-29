@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Change Guard User Guide | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Change Guard User Guide | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="change-guard-user-guide">Change Guard User Guide</h1>
+
+<h2 id="background">Background</h2>
+<p><a href="https://aka.ms/changeguard">Change Guard</a> was developed to provide a standard interface to deployment systems to check if it is safe to proceed with the deployments. The primary focus is to provide a seamless integration with all deployment systems and evaluators, evaluator coordination, and exception management.</p>
+<p>Today Azure does not have a centralized exception management workflow for handling deployment exception requests during Hi-Pri <a href="https://microsoft.sharepoint.com/teams/AzureHighPriorityEventsProgramPortal/SitePages/Azure-Critical-Change-Only-Advisory.aspx">Critical Change Only Advisories</a> (CCOA). To centralize the exception management workflow and deliver a consistent customer experience, Federated Change Management (FCM), Express v2 (Ev2) and Hi-Pri Events teams have partnered to build Change Guard as an automated E2E solution for creating and managing Ev2 exception requests during CCOAs. </p>
+<h3 id="critical-change-only-advisories-ccoa">Critical Change Only Advisories (CCOA)</h3>
+<p><a href="https://microsoft.sharepoint.com/teams/AzureHighPriorityEventsProgramPortal/SitePages/Azure-Critical-Change-Only-Advisory.aspx">Critical Change Only Advisories</a> (CCOA) are a pre-defined period where engineering teams operate under a mandate allowing only critical changes to production. CCOAs applies to ring 0-2 services and production services including Networking, Compute, Storage, SQL Database, etc. No change should occur, except mandatory critical updates, as determined by respective organizations. CCOAs are planned 8 months in advance and are communicated in Fundamentals, PLR, and the weekly Hi-Pri Events Awareness email - join azhipricomms@microsoft.com.</p>
+<p>To find out more about CCOAs, please visit <a href="https://aka.ms/ccoa">https://aka.ms/ccoa</a>. You will also find more information on your organization’s exception info and delegates, safe change guidance, and CCOA dates for this calendar year. Refer to <a href="http://aka.ms/ccoa/exceptions">CCOA exceptions</a> for general guidance on how your organization is restricting change during this period.</p>
+<h2 id="best-practices">Best Practices</h2>
+<p>Service owners and approvers can make use of this end to end solution to plan and manage their exception requests during Hi-Pri CCOA for the following two scenarios:</p>
+<ul>
+<li>Proactive Scenario: Request/Approve exception before Hi-Pri CCOA</li>
+<li>Reactive Scenario: Request/Approve exception request during Hi-Pri CCOA</li>
+</ul>
+<p>Want to make changes to the approvers list? Ask your Chief of Staff to do the following:</p>
+<ol>
+<li><a href="https://aka.ms/serviceTree">https://aka.ms/serviceTree</a> &gt; Organization Tab</li>
+<li>Select your Service Group on Left panel</li>
+<li>Select Metadata</li>
+<li>Review/Edit Critical Change Approvers //Any new changes will use this updated list of approvers.</li>
+</ol>
+<p>Note to Critical Change Approvers: </p>
+<ul>
+<li>While reviewing exceptions during the below CCOAs, please take into consideration if the deployment affects AirGap cloud, as this will require cleared DRIs to travel into the physical environment.  </li>
+<li>Email may not be mobile friendly – so please use your Surface.</li>
+<li>The AzDeployer and APStager exception process remains unchanged.</li>
+</ul>
+<h2 id="feedback-or-questions">Feedback or Questions?</h2>
+<p>For Change Guard questions: <a href="mailto:chgguardsupport@microsoft.com?subject=Change%20Guard%20Help:%20[Team%20Name]">chgguardsupport@microsoft.com</a></p>
+<p>For Ev2-related questions: <a href="mailto:ev2sup@microsoft.com?subject=Ev2%20Assistance:%20[Team%20Name]">Ask Ev2</a> </p>
+<p>For CCOA questions: <a href="mailto:ccoahelp@microsoft.com?subject=CCOA%20Assistance:%20[Team%20Name]">Azure Hi-Pri Event V-Team Core PM</a> </p>
+<!--For technical questions related to Hi-Pri events: [Azure Event Readiness System v-Team](mailto:eventreadiness@microsoft.com?subject=Hi-Pri%20Assistance:%20[Team%20Name]) --></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/ChangeGuard/ChangeGuardOverview.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

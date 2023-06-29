@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Right values in the right fields are crucial | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Right values in the right fields are crucial | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<p>You can validate in <a href="https://fcmppe.msftcloudes.com/main.html#/WhatsChanged">FCM PPE UI</a> if your change is successfully inserted into FCM PPE DB. To see your change in FCM PPE UI your service need to be in ServiceTree.  </p>
+<p>Here is an <a href="https://fcmppe.msftcloudes.com/Home/GoToDeepLinkV3?path=/WhatsChanged?serviceguid=734379f9-2d2c-48d4-a52a-5c509f699de4&amp;servicename=Xstore&amp;startdate=2016-10-06T07:00:00.000Z&amp;enddate=2016-10-10T23:57:00.000Z&amp;parentchildview=false">example</a> of validating in UI for a change that is sent as a ChangeEvent.  <!-- validate link --></p>
+<p>Search by your service name (in the example ‘xstore’ is the service as defined in Service Tree) and it will show all the changes for your service along with the changes you sent using IFX_Agentless as changeEvent <!-- theres a link here but it doesn't work --></p>
+<p><img src="media/ifx_04.png" alt="alt text"></p>
+<p>You can filter to show only your specific changes by Source <!-- theres a link here but it doesn't work --></p>
+<p><img src="media/ifx_05.png" alt="alt text"></p>
+<p>Details about a record created using the Event router sample solution: <!-- theres a link here but it doesn't work --></p>
+<p><img src="media/ifx_06.png" alt="alt text"></p>
+<h2 id="right-values-in-the-right-fields-are-crucial">Right values in the right fields are crucial</h2>
+<p>Please make sure you follow every step mentioned above and chose the right values mentioned for different fields in the Appendices. Wrong values will make your change event either not be parsed correctly or not to be inserted in FCM DB. </p>
+<p>Sample Solution to download <a href="https://microsoft.sharepoint.com/teams/WAG/EngSys/ServiceMgmt/ChangeMgmt/Shared%20Documents/Send%20ChangeEvent%20Using%20IFX%20Agentless/ChangeEvent_Using_IFXAgentless_Sample.zip">https://microsoft.sharepoint.com/teams/WAG/EngSys/ServiceMgmt/ChangeMgmt/Shared%20Documents/Send%20ChangeEvent%20Using%20IFX%20Agentless/ChangeEvent_Using_IFXAgentless_Sample.zip</a> <!-- validate link --></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/Onboard/SendingChangestoPPE/validatechanges.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

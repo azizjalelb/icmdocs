@@ -1,0 +1,1256 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FCM - UI Backend Service API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{environment}.fcm.com/",
+      "description": "URL",
+      "variables": {
+        "environment": {
+          "default": "api.dev",
+          "enum": [
+            "api",
+            "api.dev",
+            "api.stg"
+          ]
+        }
+      }
+    },
+    {
+      "url": "https://{region}.api.azure.com/",
+      "variables": {
+        "region": {
+          "default": "us-west-2",
+          "enum": [
+            "us-west-2",
+            "us-east-2"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/v1/services/search": {
+      "get": {
+        "summary": "Get the List of Services based on keyword",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "Keyword to search service(s)",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Services Search Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Results not found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/locations/search": {
+      "get": {
+        "summary": "Get the List of Locations based on keyword",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "Keyword to search location(s)",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Locations Search Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Results not found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/services/{id}": {
+      "get": {
+        "summary": "Get the Service and its Dependencies based on id (Service ID)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Service ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Service and its dependencies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceDetailsModel"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Results not found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/locations/{id}": {
+      "get": {
+        "summary": "Get the Location details based on id (Location ID))",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Location ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Location Details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationDetailsModel"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Results not found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/change/count": {
+      "post": {
+        "summary": "Count of Changes based on Type, Source, etc",
+        "description": "This endpoint returns the distinct count of changes based on projection type - type, source",
+        "operationId": "getChangeCounts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetChangeCount_ByProjection_RequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The counts of the top-most parent changes by type, source, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChangeCount_ByProjection_ResponseBody"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Results not found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/service/change_count": {
+      "post": {
+        "summary": "Count of Top-Most Parent Changes for a Service",
+        "description": "This endpoint returns the distinct count of the top-most parent changes for a list of services.",
+        "operationId": "getServiceChangeCounts",
+        "deprecated": false,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetChangeCount_RequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The counts of the top-most parent changes for a respective service.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChangeCount_ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/service/{id}/grouped_changes": {
+      "post": {
+        "summary": "Top-Most Parent Changes of a Service",
+        "description": "Returns a list of the ranked top-most parent changes and their details for a given service in a list.",
+        "deprecated": false,
+        "operationId": "getServiceChangesById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Unique identifier for the service.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetChangeCountDetails_RequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of distinct counts of grouped changes for a given serviceId; not ranked or ordered.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChangeCountDetails_ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/changes/{id}": {
+      "post": {
+        "summary": "Details of a Change with Contraints",
+        "description": "Retrieves the details of a given changeId and its children adhering to contraints in the `requestBody`.",
+        "deprecated": false,
+        "operationId": "getChangeByIdWithFilters",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Unique identifier for the change.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetChanges_RequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Details of a given changeId and the details of its children.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChanges_ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Details of a Change",
+        "description": "Retrieves the details of a given changeId and the results of its children.",
+        "deprecated": false,
+        "operationId": "getChangeById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Unique identifier for the change.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Details of a given changeId and the details of its children.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChanges_ResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SearchResponse": {
+        "required": [
+          "searchType",
+          "searchResults"
+        ],
+        "type": "object",
+        "properties": {
+          "searchType": {
+            "type": "string",
+            "example": "service"
+          },
+          "searchResults": {
+            "type": "array",
+            "description": "list of results",
+            "items": {
+              "$ref": "#/components/schemas/searchResult"
+            }
+          }
+        }
+      },
+      "searchResult": {
+        "required": [
+          "groupName",
+          "groupType",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "groupName": {
+            "$ref": "#/components/schemas/SearchResultItemSubtype"
+          },
+          "groupType": {
+            "$ref": "#/components/schemas/SearchResultItemSubtype"
+          },
+          "results": {
+            "type": "array",
+            "description": "list of results",
+            "items": {
+              "$ref": "#/components/schemas/searchResultItem"
+            }
+          }
+        }
+      },
+      "searchResultItem": {
+        "required": [
+          "id",
+          "name",
+          "type",
+          "subType"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "1234-5678-9091"
+          },
+          "name": {
+            "type": "string",
+            "example": "service"
+          },
+          "type": {
+            "$ref": "#/components/schemas/SearchResultItemType"
+          },
+          "subType": {
+            "$ref": "#/components/schemas/SearchResultItemSubtype"
+          },
+          "parentId": {
+            "type": "string",
+            "example": "2341-7568-1202"
+          },
+          "details": {
+            "type": "string",
+            "description": "Org Hierarchy will be populated for Service, For location this field will not be populated",
+            "example": "org/serv/devision"
+          }
+        }
+      },
+      "DetailsModel": {
+        "required": [
+          "id",
+          "name",
+          "type",
+          "subType"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "12345"
+          },
+          "name": {
+            "type": "string",
+            "example": "name"
+          },
+          "type": {
+            "$ref": "#/components/schemas/SearchResultItemType"
+          },
+          "subType": {
+            "$ref": "#/components/schemas/SearchResultItemSubtype"
+          },
+          "numChanges": {
+            "type": "number",
+            "example": 50
+          },
+          "parentId": {
+            "type": "string",
+            "example": "12345"
+          }
+        }
+      },
+      "ServiceDetailsModel": {        
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DetailsModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+            "children": {
+              "type": "array",
+              "description": "Component Details",
+              "items": {
+                "$ref": "#/components/schemas/ServiceDetailsModel"
+              }
+            },
+            "dependencies": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ServiceDetailsModel"
+              }
+            }                           
+          }
+        }
+      ]
+      },
+      "LocationDetailsModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DetailsModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+            "children": {
+              "type": "array",
+              "description": "Component Details",
+              "items": {
+                "$ref": "#/components/schemas/LocationDetailsModel"
+              }
+            },
+            "lensExplorerLink": {
+              "type": "string",
+              "example": "https://lensexplorer.com"
+            }                           
+          }
+        }
+      ]
+      }, 
+      "GetChangeCount_RequestBody": {
+        "type": "object",
+        "properties": {
+          "services": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "serviceName": {
+                  "type": "string"
+                },
+                "serviceId": {
+                  "type": "string"
+                },
+                "componentNames": {
+                  "description": "A list of component names to include when searching for changes. Defaults to all if not specified.",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "includeLocationIds": {
+            "description": "A list of location IDS to include when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeLocationIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeChangeTypes": {
+            "description": "A list of change types to exlucde when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeChangeSources": {
+            "description": "A list of change sources to exlucde when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "services",
+          "startTime",
+          "endTime"
+        ]
+      },
+      "GetChangeCount_ResponseBody": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ChangeCountModel"
+        }
+      },
+      "GetChangeCount_ByProjection_RequestBody": {
+        "type": "object",
+        "properties": {
+          "projectionType": {
+            "type": "array",
+            "description": "A list of project types. Allowed values are type, source",
+            "items": {
+              "type": "string",
+              "enum": [
+                "type",
+                "source"
+              ]
+            }
+          },
+          "changeCountRequest":{
+            "type": "object",
+            "properties": {
+              "services": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/GetServiceChangeCount_RequestBody_services"
+                }
+              },
+              "includeLocationIds": {
+                "type": "array",
+                "description": "A list of location IDS to include when searching for changes.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "excludeLocationIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "excludeChangeTypes": {
+                "type": "array",
+                "description": "A list of change types to exlucde when searching for changes.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "excludeChangeSources": {
+                "type": "array",
+                "description": "A list of change sources to exlucde when searching for changes.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "startTime": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "endTime": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "GetChangeCount_ByProjection_ResponseBody": {
+        "type": "object",
+        "properties": {
+          "changeSourceCount": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangeSourceCountModel"
+            }
+          },
+          "changeTypeCount": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangeTypeCountModel"
+            }
+          }
+        }
+      },
+      "GetChangeCountDetails_RequestBody": {
+        "type": "object",
+        "properties": {
+          "ranking": {
+            "type": "object",
+            "$ref": "#/components/schemas/RankingModel"
+          },
+          "componentNames": {
+            "description": "A list of component names to include when searching for changes. Defaults to all if not specified.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "includeLocationIds": {
+            "description": "A list of location IDS to include when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeLocationIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeChangeTypes": {
+            "description": "A list of change types to exlucde when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeChangeSources": {
+            "description": "A list of change sources to exlucde when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Limit of pagination size."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Set of next items to retrieve from pagination."
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "startTime",
+          "endTime"
+        ]
+      },
+      "GetChangeCountDetails_ResponseBody": {
+        "type": "object",
+        "required": [
+          "serviceId",
+          "serviceName"
+        ],
+        "properties": {
+          "serviceId": {
+            "description": "Unique identifier of the service from ServiceTree.",
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          },
+          "groupedChanges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangeObject"
+            }
+          }
+        }
+      },
+      "GetChanges_RequestBody": {
+        "type": "object",
+        "properties": {
+          "ranking": {
+            "type": "object",
+            "$ref": "#/components/schemas/RankingModel"
+          },
+          "componentNames": {
+            "description": "A list of component names to include when searching for changes. Defaults to all if not specified.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "includeLocationIds": {
+            "description": "A list of location IDS to include when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeLocationIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeChangeTypes": {
+            "description": "A list of change types to exlucde when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeChangeSources": {
+            "description": "A list of change sources to exlucde when searching for changes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "changeSource":
+          {
+            "description": "The `changeSource` type of the change.",
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Limit of pagination size."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Set of next items to retrieve from pagination."
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "startTime",
+          "endTime",
+          "changeSource"
+        ]
+      },
+      "GetChanges_ResponseBody": {
+        "type": "object",
+        "properties": {
+          "parentChange": {
+            "$ref": "#/components/schemas/ChangeObject"
+          },
+          "childChanges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangeObject"
+            }
+          }
+        }
+      },
+      "GetServiceChangeCount_RequestBody_services": {
+        "type": "object",
+        "properties": {
+          "serviceName": {
+            "type": "string"
+          },
+          "serviceId": {
+            "type": "string"
+          },
+          "componentNames": {
+            "type": "array",
+            "description": "A list of component names to include when searching for changes. Defaults to all if not specified.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "example": null
+      },
+      "ChangeCountModel": {
+        "type": "object",
+        "properties": {
+          "serviceId": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          },
+          "changeCount": {
+            "description": "Count of top-most parent changes for a given service.",
+            "type": "integer"
+          }
+        }
+      },
+      "ChangeSourceCountModel": {
+        "type": "object",
+        "properties": {
+          "changeSource": {
+            "type": "string"
+          },
+          "changeCount": {
+            "description": "Count of top-most parent changes by ChangeSource.",
+            "type": "integer"
+          }
+        }
+      },
+      "ChangeTypeCountModel": {
+        "type": "object",
+        "properties": {
+          "changeType": {
+            "type": "string"
+          },
+          "changeCount": {
+            "description": "Count of top-most parent changes by ChangeType.",
+            "type": "integer"
+          }
+        }
+      },
+      "RankingModel": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "completed",
+              "in progress",
+              "failed"
+            ]
+          }
+        },
+        "minProperties": 1,
+        "additionalProperties": false
+      },
+      "ChangeObject": {
+        "description": "Change object; models the Kusto DB entry.",
+        "type": "object",
+        "required": [
+          "eventId",
+          "changeTitle",
+          "changeDescription",
+          "sourceSystem",
+          "changeId",
+          "parentChangeId",
+          "parentSourceSystem",
+          "serviceId",
+          "component",
+          "payloadId",
+          "locationId",
+          "deploymentTarget",
+          "deploymentTargetType",
+          "changeType",
+          "changeState",
+          "startTime",
+          "endTime",
+          "changeOwner",
+          "serviceName",
+          "genevaActionsCount",
+          "externalSourceUri"
+        ],
+        "properties": {
+          "eventId": {
+            "type": "string"
+          },
+          "changeTitle": {
+            "type": "string"
+          },
+          "changeDescription": {
+            "type": "string"
+          },
+          "sourceSystem": {
+            "type": "string"
+          },
+          "changeId": {
+            "type": "string"
+          },
+          "parentChangeId": {
+            "type": "string"
+          },
+          "parentSourceSystem": {
+            "type": "string"
+          },
+          "serviceId": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "payloadId": {
+            "type": "string"
+          },
+          "locationId": {
+            "type": "string"
+          },
+          "deploymentTarget": {
+            "type": "string"
+          },
+          "deploymentTargetType": {
+            "type": "string"
+          },
+          "changeType": {
+            "type": "string"
+          },
+          "changeState": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "changeOwner": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          },
+          "genevaActionsCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "externalSourceUri": {
+            "type": "string"
+          }
+        }
+      },
+      "BadRequestError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "Invalid Request Error"
+          },
+          "message": {
+            "type": "string",
+            "example": "keyword parameter not sent"
+          }
+        }
+      },
+      "InternalServerError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "Internal Server Error"
+          },
+          "message": {
+            "type": "string",
+            "example": "Our API servers took a break"
+          }
+        }
+      },
+      "SearchResultItemSubtype":{
+        "type": "string",
+        "enum":[
+          "availabilityzone",
+          "service",
+          "component",
+          "cluster",
+          "region",
+          "aggrouter",
+          "aggswitch",
+          "backendclusterspine",
+          "backendtorrouter",
+          "borderleaf",
+          "clusterspine",
+          "corerouter",
+          "coret",
+          "corporateaggregaterouter",
+          "datacenter",
+          "dcspine",
+          "farm",
+          "internetbackbonerouter",
+          "internetcorerouter",
+          "internetedgerouter",
+          "internetroutereflector",
+          "loadbalancer",
+          "minit",
+          "regionalaggregator",
+          "regionalhub",
+          "regionalshim",
+          "storagetenant",
+          "swanrouter",
+          "torrouter",
+          "wanrouter",
+          "zone",
+          "changeSystem",
+          "changeType",
+          "timeRange",
+          "unknown"
+        ] 
+      },
+      "SearchResultItemType":{
+        "type" : "string",
+        "enum": [
+          "locationHierarchy",
+          "serviceHierarchy",
+          "dependentServiceHierarchy",
+          "changeType",
+          "changeSystem",
+          "timeRange"
+        ]
+      }
+    }
+  }
+}

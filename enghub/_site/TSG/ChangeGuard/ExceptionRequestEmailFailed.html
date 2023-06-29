@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Exception Request Creation email failed to be sent | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Exception Request Creation email failed to be sent | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="exception-request-creation-email-failed-to-be-sent">Exception Request Creation email failed to be sent</h1>
+
+<h3 id="one-possible-reason-for-this-would-be-invalid-email-addresses-from-approverseg-icm-incident---367211386httpsportalmicrosofticmcomimpv3incidentsdetails367211386home">One possible reason for this would be invalid email addresses from approvers.(e.g.: <a href="https://portal.microsofticm.com/imp/v3/incidents/details/367211386/home">ICM Incident - 367211386</a>)</h3>
+<ol>
+<li>Check the errors inside the logic apps.<ul>
+<li>Resource Group: <strong>chggrd-api-prod-westus2</strong></li>
+<li>Logic App: <strong>chggrd-api-wf-reqexc-prod</strong><ul>
+<li>e.g.:
+<code>{
+&quot;body&quot;: {
+&quot;status&quot;: 400,
+&quot;message&quot;: &quot;One or more recipients are invalid.\r\nclientRequestId: 3f2a2596-3d82-46a4-9afa-22fecf91c485\r\nserviceRequestId: 23759cda-000f-0921-a537-34c32df681fd&quot;,
+&quot;error&quot;: {
+&quot;message&quot;: &quot;One or more recipients are invalid.&quot;,
+&quot;code&quot;: &quot;ErrorInvalidRecipients&quot;,
+&quot;originalMessage&quot;: &quot;At least one recipient is not valid., Recipient &#39;@microsoft.com&#39; is not resolved. All recipients must be resolved before a message can be submitted.&quot;
+},
+&quot;source&quot;: &quot;office365-wus2.azconn-wus2-001.p.azurewebsites.net&quot;
+}</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Check the approvers inside the Change Guard portal, for that specific Exception.<ul>
+<li>e.g.:</li>
+<li><img src="media/change_guard_exception_details.png" alt="Change Guard Exception Details"></li>
+</ul>
+</li>
+<li>If the portal has an invalid email address, go to ServiceTree, search for that service, go to Metadata and check the <strong>&quot;Critical Change Approvers&quot;</strong> email addresses there.<ul>
+<li>e.g.:</li>
+<li><img src="media/service_tree_change_approvers.png" alt="Service Tree Change Approvers Details"></li>
+</ul>
+</li>
+<li>Depending on which data is incorrect, it needs to either be corrected in ServiceTree or during import into our Kusto/SQL DB.</li>
+<li>To fix it on our side, we need to sanitize the data where are importing, using the Lens Orchestrator job: <a href="https://lens.msftcloudes.com/#/jobs/list?_g=(selectedJob:f581a6f8bf7c4b76b2267189f3cdc4ff,ws:cee2f53f-2d2a-40b4-a0c7-a33918652522)">ChangeGuard Update Services Information</a>.<ul>
+<li>Add the logic to sanitize data at import.<ul>
+<li>The data is imported from <code>cluster(&#39;genevareference.westcentralus.kusto.windows.net&#39;).database(&#39;Shared&#39;).DataStudio_ServiceTree_OrganizationMetadata_Snapshot| where Type == &quot;CriticalChangeApprovers&quot;</code></li>
+<li>In our case we added a trim() for invalid characters when parsing the CriticalChangeApprovers string:
+ &gt; CriticalChangeApprovers = split(<strong>trim(@&quot;[^a-z]+&quot;</strong>, replace_string(tolower(tostring(parse_json(Value)[&quot;CriticalChangeApprovers&quot;])),&quot; &quot;,&quot;&quot;)),&quot;;&quot;)</li>
+<li>Rerun the Lens Orchestrator job to update the data in Kusto<ul>
+<li>Check if the data is updated after the run</li>
+<li>e.g.: <img src="media/change_guard_kusto.png" alt="Kusto Details"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Check that the data in SQL is also updated and correct<ul>
+<li>Check <strong>[ServicesInfo].[v_SubscriptionOwners]</strong> for that ServiceId  </li>
+<li>Check which Exceptions have invalid <strong>&#39;Approvers&#39;</strong> inside the <strong>[ExceptionRequest].[ExceptionRequest]</strong> SQL table.<ul>
+<li>You might need to manually fix the data for those exceptions.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Fix the payload inside the logic apps runs that failed and rerun the trigger to send the emails.</li>
+</ul>
+</li>
+</ol>
+<div class="NOTE"><h5>Note</h5><p>For this particular case, the ICM incident mentioned above is a good example on how to fix a similar scenario. </p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/TSG/ChangeGuard/ExceptionRequestEmailFailed.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

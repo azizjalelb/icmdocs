@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>SDK Ingestion Resources Deployment using Region Agnostic Model | Federated Change Management </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="SDK Ingestion Resources Deployment using Region Agnostic Model | Federated Change Management ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="sdk-ingestion-resources-deployment-using-region-agnostic-model">SDK Ingestion Resources Deployment using Region Agnostic Model</h1>
+
+<p>THIS PAGE IS &quot;WORK IN PROGRESS&quot;</p>
+<p>This document guides the developer to deploy sdk ingestion resources in multiple environments. There are several steps in this process,some automated and some are manual.</p>
+<h3 id="step-1">Step 1</h3>
+<p>Stage map should be deployed manually before running the release pipeline, this is the only required manual step.</p>
+<p>Set variables used in the command:</p>
+<h4 id="examples-for-int-environment">Examples for INT environment:</h4>
+<pre><code>$stageMapAbsolutePath = &#39;..\EngSys-ChangeManagement-FCM\src\FCM\RegionAgnosticModelNew\StageMap.json&#39;
+$serviceIdentifier  = &#39;889acfb9-923f-4e3f-9bf2-2a3f9d95fe4f&#39;
+$serviceGroup = &quot;Microsoft.Azure.FederatedChangeManagement&quot;
+$rolloutInfra = &quot;Prod&quot; //this is just temporary until ev2 team fixes the environmnet dropdown in the release pipeline definition
+</code></pre><p>Deploy stagemap using the following command:</p>
+<pre><code>New-AzureServiceStageMap -StageMapFilePath $stageMapAbsolutePath -ServiceIdentifier $serviceIdentifier -ServiceGroup $serviceGroup -RolloutInfra $rolloutInfra
+</code></pre><h3 id="step-2">Step 2</h3>
+<p>Run release pipeline: <a href="https://msazure.visualstudio.com/One/_release?definitionId=51803&amp;view=mine&amp;_a=releases">Link to Release Pipeline</a></p>
+<p>Monitor rollout progress:   <a href="https://ra.ev2portal.azure.net/">https://ra.ev2portal.azure.net/</a></p>
+<h3 id="the-following-resources-are-deployed-during-the-rollout-together-with-their-resource-groups">The following resources are deployed during the rollout together with their resource groups:</h3>
+<pre><code>1. Key Vault, secrets and certificates used by other resources
+2. Event Hub
+3. storage Account
+4. Traffic Manager
+4. Dns Zone
+5. Azure Data Explorer
+6. Sql database
+7. Shard Sql Database
+8. Standard Connector
+9. Custom Connector
+10. Web Api Read
+11. Web Api Write
+</code></pre><h2 id="steps-to-deploy-the-region-agnostic-model-using-powershell">Steps to deploy the region agnostic model using PowerShell</h2>
+<h4 id="set-runtime-variables-accordingly">Set runtime variables accordingly</h4>
+<pre><code>$serviceGroupRoot = &#39;...\EngSys-ChangeManagement-FCM\src\FCM\RegionAgnosticModelNew&#39;
+$rolloutInfra = &#39;&#39;
+$stageMapAbsolutePath = &#39;...\EngSys-ChangeManagement-FCM\src\FCM\RegionAgnosticModelNew\StageMap.json&#39;
+$serviceIdentifier  = &#39;&#39;
+$serviceGroup = &#39;&#39;
+$stageMapName = &#39;&#39;
+$selectRegionsForRollout = &#39;regions(eastus,westus)&#39;
+$generatedVersion = &#39;1.0.0&#39;
+</code></pre><h4 id="register-stagemap">Register StageMap</h4>
+<pre><code>New-AzureServiceStageMap -StageMapFilePath $stageMapAbsolutePath -ServiceIdentifier $serviceIdentifier -ServiceGroup $serviceGroup -RolloutInfra $rolloutInfra
+</code></pre><h4 id="register-serviceartifacts-located-in-servicegrouproot-directory">Register ServiceArtifacts located in $serviceGroupRoot directory</h4>
+<pre><code>Register-AzureServiceArtifacts -ServiceGroupRoot $serviceGroupRoot  -ServiceGroupOverride $serviceGroup -RolloutSpec &quot;RolloutSpec.json&quot; -RolloutInfra $rolloutInfra -Force
+</code></pre><h4 id="start-azure-service-rollout">Start Azure Service Rollout</h4>
+<pre><code>New-AzureServiceRollout -ServiceIdentifier $serviceIdentifier -ServiceGroup $serviceGroup -StageMapname $stageMapName -Select $selectRegionsForRollout -ArtifactsVersion $generatedVersion -RolloutInfra $rolloutInfra
+</code></pre><h4 id="use-this-command-to-unregister-the-serviceartifacts">Use this command to unregister the ServiceArtifacts</h4>
+<pre><code>Unregister-AzureServiceArtifacts -ServiceGroup $serviceGroup -ServiceIdentifier $serviceIdentifier -RolloutInfra Test -ConfirmDelete
+</code></pre><ul>
+<li><p><a href="https://msazure.visualstudio.com/Azure-Express/_git/Samples?path=/RegionAgnostic_Rollout_Preview/src/ServiceGroupRoot/ServiceModel.json&amp;version=GBmaster">Link to demo repository</a></p>
+</li>
+<li><p><a href="https://ev2docs.azure.net/features/buildout/genericServiceModel.html?q=serviceMetadata">Ev2 Docs For Region Agnostic</a> </p>
+</li>
+</ul>
+<h4 id="sample-values-used-for-int-deployment">Sample values used for INT deployment</h4>
+<pre><code>$serviceGroupRoot = &#39;C:\work\projects\EngSys-ChangeManagement-FCM\src\FCM\RegionAgnosticModelNew&#39;
+$rolloutInfra = &#39;Test&#39;
+$stageMapAbsolutePath = &#39;C:\work\projects\EngSys-ChangeManagement-FCM\src\FCM\RegionAgnosticModelNew\StageMap.json&#39;
+$serviceIdentifier  = &#39;889acfb9-923f-4e3f-9bf2-2a3f9d95fe4f&#39;
+$serviceGroup = &quot;Microsoft.Azure.FederatedChangeManagement&quot;
+$stageMapName = &#39;TestName&#39;
+$selectRegionsForRollout = &#39;regions(eastus,westus)&#39;
+$generatedVersion = &#39;1.0.0&#39;
+</code></pre><h3 id="post-deployment-steps">Post Deployment Steps</h3>
+<pre><code>1. Dns Zone configuration should be done manually
+2. Secret values should be updated accordingly
+</code></pre><h3 id="steps-to-test-the-deployment">Steps to test the deployment</h3>
+<pre><code>Section to be filled later...
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend?path=enghub/TeamDocs/DeploymentGuide/ingestionagc.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
