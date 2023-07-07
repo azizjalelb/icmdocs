@@ -1,11 +1,11 @@
-# FCM Data Platform API
+# FCM Data Platform Read APIs
 
 | Owner(s): **Andy (andresro@)** | Status: **WIP**          |
 |----------------------------|--------------------------|
 | Approvers: **TBD**             | Last Updated: **05/12/2023** |
 
 ## Contents
-- [FCM Data Platform API](#fcm-data-platform-api)
+- [FCM Data Platform Read APIs](#fcm-data-platform-read-apis)
   - [Contents](#contents)
   - [Summary](#summary)
   - [Objective](#objective)
@@ -22,6 +22,12 @@
         - [Responses](#responses-1)
         - [Example cURL](#example-curl-1)
         - [SearchEntityChangeEvents 200 Response](#searchentitychangeevents-200-response)
+  - [Risk Score](#risk-score)
+    - [Approach 1: Kusto Table Join](#approach-1-kusto-table-join)
+    - [Approach 2: API](#approach-2-api)
+        - [Parameters](#parameters-2)
+        - [Responses](#responses-2)
+        - [Example cURL](#example-curl-2)
   - [Pagination](#pagination)
     - [Stateless Offset](#stateless-offset)
     - [Kusto Stored Query Results](#kusto-stored-query-results)
@@ -37,7 +43,6 @@
   - [Infrastructure](#infrastructure)
     - [Bicep vs ARM](#bicep-vs-arm)
     - [Uniform Resource Naming Conventions](#uniform-resource-naming-conventions)
-    - [Airgap Support](#airgap-support)
     - [Region Agnostic Deployment](#region-agnostic-deployment)
   - [Deployments](#deployments)
   - [Azure Compliance](#azure-compliance)
@@ -46,6 +51,7 @@
         - [Headers](#headers)
     - [Microsoft URSA Rest API Scans](#microsoft-ursa-rest-api-scans)
     - [OpenTelemetry Audit](#opentelemetry-audit)
+  - [Open Questions](#open-questions)
 
 
 <style>
@@ -58,11 +64,11 @@ g { color: Green }
 
 This document proposes the low-level design to develop FCM’s Data Platform APIs. The purpose is to evaluate different design choices for the API, highlight requirements and outline tasks that must be completed to comply with functional and non-functional requirements. 
 
-For information regarding the high-level design, see [FCM Data Platform](https://microsoft.sharepoint.com/:w:/r/teams/WAG/EngSys/ServiceMgmt/ChangeMgmt/Shared%20Documents/Entity%20Model/Design%20Documents/FCM%20Data%20Platform.docx?d=w07b4c2ca404941f5a4acb334ded64d38&csf=1&web=1&e=5gnhS1). 
+For information regarding the high-level design, see [FCM Data Platform](https://microsoft.sharepoint.com/:w:/r/teams/WAG/EngSys/ServiceMgmt/ChangeMgmt/Shared%20Documents/Entity%20Model/Design%20Documents/FCM%20Data%20Platform.docx?d=w07b4c2ca404941f5a4acb334ded64d38&csf=1&web=1&e=5gnhS1). *Note: HLD architecture subject to adjustments*. 
 
 ## Objective
 
-FCM DataPlatform will create standard APIs that that satisfy the requirements of exposing the [EntityModel](https://microsoft.sharepoint.com/:w:/t/SilverstoneProject/Eeqg50_nDm1ItTXBogvLcq8BybpPWO41X2Yq7FG-UTHlAA?e=Vyla9Q). To support this, we are creating new APIs that adhere to the following: 
+FCM DataPlatform will create standard read APIs that satisfy the requirements of exposing the [EntityModel](https://microsoft.sharepoint.com/:w:/t/SilverstoneProject/Eeqg50_nDm1ItTXBogvLcq8BybpPWO41X2Yq7FG-UTHlAA?e=Vyla9Q). To support this, we are creating new APIs that adhere to the following: 
 
 - Support the concept of an EntityModel 
 - Expose high quality APIs with predefined SLAs. 
@@ -73,7 +79,7 @@ The following are a set of a use cases that these API will address:
 
 1. Client wants to know the risk score for a given deployment; they can use **GetEntityChangeEvents** to find this information.
 2. A team wants to build an experience similar to [ChangeExplorerV2](https://changeexplorer.fcm.azure.microsoft.com/home). They can use this set of APIs to expose the standardized `EntityModel`.
-3. Client wants to search for all `EntityChangeEvent`s given a specific location. They can utilize **SearchEntityChangeEvents** to find this information. Similarly, they can use other search criteria to find `EntityChangeEvent`s.
+3. Client wants to search for all `EntityChangeEvent`s across various dimensions such as location, service, time range, and entity type. They can utilize **SearchEntityChangeEvents** to find return a paginated list of `EntityChangeEvent`s that adhere to the search criteria.
 4. Client has an incident. Given search criteria, they want find all `EntityChangeEvent`s within a given time frame and rank them by risk score. Utilizing **SearchEntityChangeEvents**, they can execute this search. 
 
 ## Requirements
@@ -111,7 +117,7 @@ The technical requirements are:
 > | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                             |
 > | `401`         | `application/json`                | `{"code":"401","message":"Unauthorized"}`                            |
 > | `404`         | `application/json`                | `{"code":"404","message":"Not Found"}`                               |
-> | `429`         | `application/json`                | `{"code":"404","message":"Too Many Requests"}`                              |
+> | `429`         | `application/json`                | `{"code":"429","message":"Too Many Requests"}`                              |
 > | `500`         | `application/json`                | `{"code":"500","message":"Internal Server Error"}`                   |
 > | `503`         | `application/json`                | `{"code":"503","message":"Service Unavailable"}`                     |
 
@@ -140,14 +146,11 @@ The technical requirements are:
 >    "ChangeOwner": "string",
 >    "ChangeOwnerType": "string",
 >    "ParentChangeActivity": "string",
->    "ChangeState": "string",
->    "EntityCorrelationResult": {
->        "LastUpdatedTime": "datetime",
->        "Score": "double",
->        "MeasureCategory": "string"
->    }
+>    "ChangeState": "string"
 >}
 >```
+
+>[!IMPORTANT] The field `EntityCorrelationResult` is subject to change. For now we have commited on utilizing the `LastUpdatedTime` and `Score` (risk score) as required fields but we are unsure of adding in additional fields (such as `MeasureCategory`). We can expand this in the future as needed; the other first class fields in this return value are part of the `EntityChangeEvent` schema.
 
 ### **SearchEntityChangeEvents**
 
@@ -165,6 +168,8 @@ The technical requirements are:
 > | `Offset`        |  optional | int           | Offset to calculate next set page of results. Defaults to `0`.    |
 > | `SortBy`          |  optional | string         | Location Id of the deployment. Defaults to `StartTime`.    |
 
+>[!NOTE] `SearchEntityChangeEvents` requires at least one of `EntityId` and `ServiceTreeId`. In the case a single argument is provided, search scope would be limited to that value (and in the case of location, potentially expanded to include alternate names or child locations). In the case that both arguments are provided, the search will invoke an **AND** union of the arguments (i.e. `EntityChangeEvent`s must satisfy both being in the named service and location). Should this behavior be changed to an **OR**, or should this behavior be set using a flag (such as `UnionKind` that defaults to **AND**)?
+
 Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a maximum of 10 each. Syntax is ...entityChangeEvents?entityId={<g>**EntityId**</g>}&entityId={<g>**EntityId**</g>}entityId={<g>**EntityId**</g>}...&serviceTreeId={<g>**ServiceTreeId**</g>}&serviceTreeId={<g>**ServiceTreeId**<g/>}...
 
 ##### Responses
@@ -176,7 +181,7 @@ Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a
 > | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                             |
 > | `401`         | `application/json`                | `{"code":"401","message":"Unauthorized"}`                            |
 > | `404`         | `application/json`                | `{"code":"404","message":"Not Found"}`                               |
-> | `429`         | `application/json`                | `{"code":"404","message":"Too Many Requests"}`                               |
+> | `429`         | `application/json`                | `{"code":"429","message":"Too Many Requests"}`                               |
 > | `500`         | `application/json`                | `{"code":"500","message":"Internal Server Error"}`                   |
 > | `503`         | `application/json`                | `{"code":"503","message":"Service Unavailable"}`                     |
 
@@ -189,9 +194,10 @@ Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a
 ##### SearchEntityChangeEvents 200 Response
 >```json
 >{
->    "Count": "int",
+>    "TotalResultCount": "int",
 >    "SortBy": "string",
 >    "Offset": "int",
+>    "PageSize": "int",
 >    "EntityChangeEvents": [
 >        {
 >            "SchemaVersion": "string",
@@ -210,16 +216,95 @@ Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a
 >            "ChangeOwner": "string",
 >            "ChangeOwnerType": "string",
 >            "ParentChangeActivity": "string",
->            "ChangeState": "string",
->            "EntityCorrelationResult": {
->                "LastUpdatedTime": "datetime",
->                "Score": "double",
->                "MeasureCategory": "string"
->            }
+>            "ChangeState": "string"
 >        }
 >    ]
 >}
 >```
+
+## Risk Score
+
+We would like to attach a risk score to a given ChangeEvent. How best would we do this?
+
+### Approach 1: Kusto Table Join
+
+From the [EntityModel schmea](https://microsoft.sharepoint.com/:w:/t/SilverstoneProject/Eeqg50_nDm1ItTXBogvLcq8BybpPWO41X2Yq7FG-UTHlAA?e=Vyla9Q), we see that the best way to do this would be as a **join** on the `Payload` as it's the pivot:
+
+```sql
+EntityChangeEvent
+| where ...
+| join EntityCorrelationResult on $left.PayLoad = $right.Payload 
+```
+
+>[!Note] Open questions:
+> - Is the Payload Id the correct key?
+> - Is there a lag time on `EntityCorrelationResult` being present in the table?
+> - What would be some limitations of this approach?
+
+### Approach 2: API
+
+Is it possible to expose an API for consumption to retrieve the risk score? Using the same as above, we might be able to leverage the following:
+
+**`GET`** /v1/entityCorrelationResult?startTime={<g>**StartTime**</g>}&endTime={<g>**EndTime**</g>}&payload={<g>**Payload**</g>}
+
+##### Parameters
+
+> | name              |  type     | data type      | description                         |
+> |-------------------|-----------|----------------|-------------------------------------|
+> | `StartTime`       |  required | datetime       | Start time of `EntityCorrelationResult` search. Max 1 week range with `EndTime`.       |
+> | `EndTime`         |  required | datetime       | End time of `EntityCorrelationResult` search. Max 1 week range with `StartTime`.     |
+> | `Payload`        |  required | string         | Unique identifier of the `EntityCorrelationResult`      |
+
+
+##### Responses
+
+> | http code     | content-type                      | response                                                            |
+> |---------------|-----------------------------------|---------------------------------------------------------------------|
+> | `200`         | `application/json`                | `EntityCorrelationResult`s; [see below](#searchentitychangeevents-200-response)                                     |
+> | `204`         | N/A                               | N/A                                                                 |
+> | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                             |
+> | `401`         | `application/json`                | `{"code":"401","message":"Unauthorized"}`                            |
+> | `404`         | `application/json`                | `{"code":"404","message":"Not Found"}`                               |
+> | `429`         | `application/json`                | `{"code":"429","message":"Too Many Requests"}`                               |
+> | `500`         | `application/json`                | `{"code":"500","message":"Internal Server Error"}`                   |
+> | `503`         | `application/json`                | `{"code":"503","message":"Service Unavailable"}`                     |
+
+##### Example cURL
+
+> ```javascript
+>  curl -X GET https://fcmdp.azurefd.com/v1/EntityCorrelationResult?startTime={StartTime}&endTime={EndTime}&payload={Payload}
+> ```
+
+This would return a join of `EntityCorrelationResult`:
+
+>```json
+>{
+>    "Payload": "string",
+>    "VE": "string",
+>    "ChangeType": "string",
+>    "MeasureName": "string",
+>    "Tag": "string",
+>    "ImpactedDuration": "int",
+>    "PlannedInterruption": "string",
+>    "StartTime": "datetime",
+>    "EndTime": "datetime",
+>    "LastUpdatedTime": "datetime",
+>    "EntityTypeUsedForCalculation": "string",
+>    "Output": "dynamic",
+>    "Score": "double",
+>    "MeasureCategory": "string",
+>    "Algorithm": "string",
+>    "AlgorithmParameters": "dynamic",
+>    "OutputMetadata": "dynamic"
+>}
+>```
+
+> [!NOTE] Open Questions:
+> - Is an API available to expose this data?
+> - What are the limitations on this approach?
+
+
+
 
 ## Pagination
 
@@ -354,10 +439,6 @@ We utilize ARM templates and EV2 deployments as our infrastructure solution for 
 
 One mistake we made with ChangeExplorerV2 is that we deployed resources into production without agreeing on naming conventions. This caused some heartache as we introduced more components into the system, as everyone had their own way of naming resources. Moving forward, we will come to an agreement on what best practices to follow when naming resources so we avoid this issue in the future. Some best pratices for azure can be found in [define your naming convention](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming).
 
-### Airgap Support
-
-TOOD: Vamshi will provide an example to me next day. 
-
 
 ### Region Agnostic Deployment
 
@@ -367,17 +448,17 @@ Given the findings in [Bicep vs Arm](#bicep-vs-arm), we will create region agnos
 
 We will generate four (4) different pipelines:
 
-- FCM-DataPlatform-Backend-PullRequest: A build pipeline that is triggered whenever a new pull request is submmited to the ```develop``` branch. It's purpose it to validate that a pull request meets our team's requirements (such as code coverage, load tests, etc) to be merged. *squash merge* for all successful pull requests.
-- FCM-DataPlatform-Backend-Official: A build pipeline that is triggered whenever a change is merged into ```main```. *Basic merge* so that changes can be moved from ```develop``` into ```main``` easily with a single pullrequest.
-- FCM-DataPlatform-Backend-INT: A release pipeline that deploys our code to Azure using EV2. This solely deploys to our INT subscription and does not require the use of approval. 
-- FCM-DataPlaform-Backend-PPE/PROD: A release pipeline that deploys our code to Azure using EV2. This deploys to our PPE environment first and requires approvals authenticated with JIT for our PPE and PROD subscriptions. 
+- FCM-DataPlatform-PullRequest: A build pipeline that is triggered whenever a new pull request is submmited to the ```develop``` branch. It's purpose it to validate that a pull request meets our team's requirements (such as code coverage, load tests, etc) to be merged. *squash merge* for all successful pull requests.
+- FCM-DataPlatform-Official: A build pipeline that is triggered whenever a change is merged into ```main```. *Basic merge* so that changes can be moved from ```develop``` into ```main``` easily with a single pullrequest.
+- FCM-DataPlatform-INT: A release pipeline that deploys our code to Azure using EV2. This solely deploys to our INT subscription and does not require the use of approval. 
+- FCM-DataPlaform-PPE/PROD: A release pipeline that deploys our code to Azure using EV2. This deploys to our PPE environment first and requires approvals authenticated with JIT for our PPE and PROD subscriptions. 
 
 
 ## Azure Compliance
 
 ### Authentication
 
-FCM DataPlatform APIs will be enrolled via app registration. Authentication will initially be single tenant (Microsoft) via [Azure AD](https://azure.microsoft.com/en-us/products/active-directory) with support for multi-tenant in the future if required. Bearer tokens will be generated and sent with API calls as an `authorization` header; example below:
+FCM DataPlatform APIs will be enrolled via app registration. Authentication will initially be single tenant (Microsoft) via [Azure AD](https://azure.microsoft.com/en-us/products/active-directory) with support for multi-tenant in the future if required (see [acceptance criteria for *ME tenants](https://dev.azure.com/msazure/AzureWiki/_wiki/wikis/AzureWiki.wiki/150848/1P-Acceptance-Criteria-into-ME-Tenants) as a start). Bearer tokens will be generated and sent with API calls as an `authorization` header; example below:
 
 ##### cURL
 > ```javascript
@@ -405,3 +486,12 @@ As part of Microsoft's effort to maintain security audit logs, we will onboard a
 - ChangeExplorerV2 APIs were **read** only; if this pattern continues then our logging should be minimal (i.e. log what are application is accessing). If our APIs allow modification of resources or execute privileged actions as defined in the OpenTel doc, we will need to evaluate our workflow to ensure we audit all related instances.
 - Since Geneva Agents (GAs) are tied to service plans for Antares based apps, we will need to create a separate service plan only for use by our DataPlatform APIs.
 - We will generate a new namespace in our Geneva Logs account for each environment, i.e. ```fcmdataplatformint```.
+
+
+## Open Questions
+
+> 1. Should we utilize the bearer token as part of the authorization header as the `rate-key` or something else?
+> 2. Are there better solutions for integration testing? Ideally, the soultion would be easily integrated with an ADO release pipeline.
+> 3. Is there a better way to run canaries? Native solution preferred.
+> 4. Should we support additional authentication methods, such as certificate based authentication?
+> 5. Should `SearchEntityChangeEvents` be union be an **AND**, **OR**, or set by a flag (such as `UnionKind`)?
