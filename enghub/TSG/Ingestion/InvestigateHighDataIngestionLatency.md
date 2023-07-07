@@ -1,6 +1,7 @@
 1. Find all the [necessary details for the monitor](FindAllDetailsForTheFailingMonitor.md) which will be required for debugging.
 1. Proceed to the Kusto Job using [KO Portal](https://kustoorchestrator.azcompute.com/).
-1. Firstly, check in the source table whether there is delay in their ingestion or not.<br/> 				   - Please refer to this [incident](https://portal.microsofticm.com/imp/v3/incidents/details/403963957/home) for more details.<br/>
+1. Firstly, check in the source table whether there is delay in their ingestion or not.<br/> 				
+   - Please refer to this [incident](https://portal.microsofticm.com/imp/v3/incidents/details/403963957/home) for more details.<br/>
    - If the issue is at the source side, then please reach out to the owning team of the source via email/incident to figure out the root cause.<br/>
    - If not, then proceed to step two.<br/>
 1. Find what's the execution window that the KO Job is using
