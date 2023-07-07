@@ -22,3 +22,5 @@
   href: ConnectionRefused.md
 - name: ChangeGuard - Resource temporarily unavailable
   href: ResourceTemporarilyUnavailable.md
+- name: Log Silent Canaries
+  href: LogSilentCanaries.md
