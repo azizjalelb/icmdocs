@@ -3,7 +3,7 @@
 1. Firstly, check in the source table whether there is delay in their ingestion or not.<br/> 				
    - Please refer to this [incident](https://portal.microsofticm.com/imp/v3/incidents/details/403963957/home) for more details.<br/>
    - If the issue is at the source side, then please reach out to the owning team of the source via email/incident to figure out the root cause.<br/>
-   - If not, then proceed to step two.<br/>
+   - If not, then proceed to the next step.<br/>
 1. Find what's the execution window that the KO Job is using
 	![alt text](media/KOJob.WindowHistory.png)
 	1. If the time range is in the past then and the difference of currentTime - executionWindowStartTime justifies the delay in the latency:
