@@ -33,6 +33,12 @@
     - [Kusto Stored Query Results](#kusto-stored-query-results)
   - [Versioning](#versioning)
   - [Rate Limiting](#rate-limiting)
+  - [Ranking](#ranking)
+    - [Background](#background)
+    - [Use Cases](#use-cases-1)
+    - [Data Entities and Relationships](#data-entities-and-relationships)
+    - [Scoring Algorithm (Naive)](#scoring-algorithm-naive)
+    - [Pivot on Payload](#pivot-on-payload)
   - [Metrics and Alarms](#metrics-and-alarms)
   - [Scalability](#scalability)
   - [Testing](#testing)
@@ -133,7 +139,7 @@ The technical requirements are:
 >    "SchemaVersion": "string",
 >    "Timestamp": "datetime",
 >    "StartTime": "datetime",
->    "EndTime": "datetime",
+>    "EndTime": "datetime", 
 >    "EntityType": "string",
 >    "EntityId": "string",
 >    "ChangeType": "string",
@@ -192,6 +198,7 @@ Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a
 > ```
 
 ##### SearchEntityChangeEvents 200 Response
+
 >```json
 >{
 >    "TotalResultCount": "int",
@@ -216,7 +223,34 @@ Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a
 >            "ChangeOwner": "string",
 >            "ChangeOwnerType": "string",
 >            "ParentChangeActivity": "string",
->            "ChangeState": "string"
+>            "ChangeState": "string",
+>            "Ranking": {
+>                "Rank": "int",
+>                "WeightedScore": "double",
+>                "ScoringAlgorithm": "string",
+>                "ScoringDetails": {
+>                    "RiskScoreDetails": {
+>                        "Payload": "string",
+>                        "VE": "string",
+>                        "StartTime": "datetime",
+>                        "EndTime": "datetime",
+>                        "PayloadRiskScore": "double",
+>                        "P95": "double",
+>                        "avg": "double",
+>                        "max": "double",
+>                        "min": "double"
+>                    },
+>                    "CommonalityScoreDetails": {
+>                        "StartTime": "datetime",
+>                        "EndTime": "datetime",
+>                        "ImpactedEntityIds": "dynamic",
+>                        "ChangeOwner": "string",
+>                        "IsStrictMatch": "boolean",
+>                        "IncludeDependentEntities": "boolean",
+>                        "CommonalityPercentage": "double"
+>                    }
+>                }
+>            }
 >        }
 >    ]
 >}
@@ -380,6 +414,147 @@ Rate limiting will be handled by an [APIM](https://learn.microsoft.com/en-us/azu
 
 >[!NOTE]
 > Should we utilize the bearer token as part of the authorization header as the `rate-key` or something else?
+
+## Ranking
+
+### Background
+
+The purpose of this document is to discuss how we will enable ranked changes in FCM DataPlatform APIs. When a client invokes the API, we return a paginated set of `EntityChangeEvent`s (part of [EntityModel](https://microsoft.sharepoint.com/:w:/t/SilverstoneProject/Eeqg50_nDm1ItTXBogvLcq8BybpPWO41X2Yq7FG-UTHlAA?e=Vyla9Q)) that adhere to the request parameters. We want to implement a new category named `Ranking` to highlight changes that are more important first. We will primarily do this through a combination of two approaches:
+
+- **CommonChanges**: Given a set of `EntityId`s, we can find the [common denominator](https://microsoft.sharepoint.com/:w:/r/teams/WAG/EngSys/ServiceMgmt/ChangeMgmt/Shared%20Documents/Design%20Docs/CommonChangesDesignDocument.docx?d=wded5369339984767808a5a1143d985a6&csf=1&web=1&e=K3sQkE) `EntityChangeEvent`s. Events with greater commonlatity ratios indicate a greater degree of impact across the locations.
+
+- **EntityRiskScore**: We can calculate an [EntityRiskScore](https://microsoft.sharepoint.com/:w:/t/AZCompute/onedeploy/EZ5IJr3D2LxGs5CMsuzKjM4Bj6a0oMueMFbI4aCS2AoCKA?e=OcsVkw) based on `StartTime`, `EndTime` and `Payload` to determine a given risk.
+
+### Use Cases
+
+Suppose a DRI is investigating an issue and needs to perform RCA on changes. Two common areas of interest are:
+
+- Given a set of deployment locations (`EntityId`s), what are the common changes shared between them?
+- Given a build, what is the risk of deploying it?
+
+Currently, we rank changes based on `StartTime` which does not bubble up this information to the DRI. This hinders the experience, as there is a lot of noise that is not relevant to the RCA. Therefore, by implementing `Ranking` we can create a better experience for the DRI by showing them the changes that matter the most first. With `Ranking`, we can *first highlight changes that are common among all deployment locations* and *then order these changes by risk* as a first naive approach; more scenarious below.
+
+### Data Entities and Relationships
+
+```mermaid
+erDiagram
+EntityChangeEvent {
+    string SchemaVersion
+    datetime Timestamp
+    datetime StartTime
+    datetime EndTime
+    string EntityType
+    string EntityId
+    string ChangeType
+    string Payload
+    string ChangeActivity
+    dynamic MetaData
+    string source
+    string PlannedInterruption
+    int ImpactDuration
+    string ChangeOwner
+    string ChangeOwnerType
+    string ParentChangeActivity
+    string ChangeState
+}
+
+PayloadRiskScoreDetails {
+    datetime ReportTime
+    string Payload
+    string VE
+    string Algorithm
+    string PolicyName
+    double Score
+    dynamic Details
+    string DataSchemeVersion
+}
+
+CommonalityScoreDetails {
+    string ChangeTitle
+    string Source
+    string ChangeOwner
+    string ChangeOwnerName
+    string ChangeOwnerType
+    dynamic ChangeDetails
+    int CommnonalityPercentage
+    double CommonalityRatio
+}
+
+Ranking {
+    int Rank
+    double WeightedScore
+    string ScoringAlgorithm
+    dynamic ScoringDetails
+}
+
+EntityChangeEvent ||--||Ranking: contains
+Ranking ||--|{PayloadRiskScoreDetails: "derives from"
+Ranking ||--||CommonalityScoreDetails: "derives from"
+```
+
+***Ranking***
+
+| Name   | Type | Description | Example    |
+|---|---|---|---|
+| Rank | `int` | The rank of the `EntityChangeEvent` relative to other events in the search. This score is derived by sorting the `WeightedScore` | 1 |
+| WeightedScore | double | The score derived using our `ScoringAlgorithm`. Normalized range `0 - 100` | 83.4
+| ScoringAlgorithm| string | The name of the algorithm we use to calculate the `WeightedScore`. For more info, see [scoring algorirthm](#scoring-algorithm) | "NaiveWeighted_CommonalityPayloadRiskScore"
+| ScoringDetails | dynamic | Details related to how the `WeightedScore` was derived from `CommonalityScoreDetails` and the `PayloadRiskScore`. | <pre>{<br>    "ScoringDetails": {<br>        "RiskScoreDetails": {<br>            "PayLoad": "Payload-CoolPayload",<br>            "VE": "VE-someEnvironment",<br>            "StartTime": "2023-06-15T01:39:59.882Z",<br>            "EndTime": "2023-06-16T01:39:59.882Z",<br>            "PayloadRiskScore": 24,<br>            "P95": 34.0,<br>            "avg": 14.3,<br>            "max": 36.9,<br>            "min": 0<br>        },<br>        "CommonalityScoreDetails": {<br>            "StartTime": "2023-06-15T01:39:59.882Z",<br>            "EndTime": "2023-06-16T01:39:59.882Z",<br>            "ImpactedEntityIds": ["node-asdsadasd", "cluster-2312asd", "node-231asdasd"],<br>            "ChangeOwner": "889acfb9-923f-4e3f-9bf2-2a3f9d95fe4f",<br>            "IsStrictMatch": false,<br>            "IncludeDependentEntities": true,<br>            "CommonalityPercentage": 84.03<br>        }<br>    }<br>}<br></pre>|
+
+***CommonalityScoreDetails***
+
+The output of the get c function. The `CommonalityRatioPercentage` will be used to calculate the `WeightedScored` along with our `ScoringAlgorithm`. Note that to finetune results, some inputs to the function can be tweaked (such as setting `IncludeDependentServices` to false or setting `IstStrictMatch` to true).
+
+>[!NOTE]
+> Open question: Should we allow clients to set these fields to fine tune their results?
+
+***PayloadRiskScore***
+
+Given a `Payload`, `VE` and the time range given in the API request, we will calculate the set of payload risk scores which we can use to generate a risk score. Since auto stop decisions are continously generated every hour, we will calculate the risk score using a `P95` value for all the auto stop decisions returned within that range. We will add additional details (such as count of decisions, mean, max, etc.) as part of `ScoringDetails`. Note that `VE` is not a column of an `EntityChangeEvent`; it will be extracted from the `MetaData` field. To improve performance, we will add this as a column as part of a *materialized-view*.
+
+>![NOTE]
+> Open question: Does the scoring above make sense? We can invoke the payload risk score function without time range to retrieve the latest risk score for a given `Payload`, but this might be higher or lower given the continous calculation.
+
+### Scoring Algorithm (Naive)
+
+We want to create a `WeightedScore` that takes into account the commonality and risk score for a given `Payload`. We want to have some flexibility in determining which criteria we want to focus on. Since both the commonality percentage and the risk score can be normalized to a range of `[0..1]`, it is sufficient to add weights to determine the importance of criteria in the score:
+
+$$ WeightedScore = weight_{commonality}*(CommonalityPercentage) + weight_{risk}*(RiskScore/100), \sum_{i=1}^n weight_i = 100 $$
+
+But what should the scores be? One issue from the above is that the weights are static. How do we resolve the case where:
+
+- We have a change event **A** with a high correlation result but a low risk score and a change event **B** with a high risk score but low commonality?
+  - If we place more importantance on commonality (80-20), then we rank **A** first.
+  - Alternatively, if we place more importance on risk score (20-80), then we rank **B** first.
+  - If we assign equal weight (50-50) to the criteria, then the score would be the average of two criteria.
+  - 
+Does the above make sense? I propose dynamic weights based on which criteria is higher that adhere to thresholds.
+
+$$     weight_{commonality}, weight_{risk}=
+\begin{dcases}
+    75,25,& \text{if  CommonalityPercentage >  (RiskScore/100) }\\
+    25,75,& \text{if  (RiskScore/100) >  (RiskScore/100)} \\
+    50,50,& otherwise \\
+\end{dcases}
+$$
+
+For now, we will keep 50-50 weighting as we evaluate the best way to calculate weights; TBD.
+
+### Pivot on Payload
+
+In this section we consider pivoting on payload as a response to the `SearchEntityChangeEvents` API, namely drawing from inspiration in this [kusto dashboard](https://dataexplorer.azure.com/dashboards/1c005357-cba4-45cb-9667-476d9c0e10f4?p-_startTime=2023-06-27T21-38-00Z&p-_endTime=2023-06-27T22-00-00Z&p-_EntityId=v-cacd6d52-54db-2b31-cab5-11838582383f%2C7a7b59ba-3149-aca2-b085-cf2407ba687f%2Cbb98c85d-1002-7be9-17cd-501e5d2194eb%2Cbb3e4a69-2cfc-5025-240f-0ce6a860ed0d%2Cdf86053b-9c8a-7e94-dbc9-ee4b410c681f%2Ce08194e2-b91c-abcb-5857-d7b73ace9563%2C1a4c1f64-47a5-b9f4-300e-5e50424a3805%2Cfac43be4-2e81-648c-6445-ed181797b59c%2C446dd9e6-c261-1552-e320-4b4b34753636%2C5666c306-8f23-9985-2fe6-1e277e84d2b6%2Ccc9fd1ab-f986-6342-f51d-ccf019ff357c%2Cc613a085-63ec-7af2-23c9-7d2b9816e6cf%2C04d4c248-19be-ae5b-485c-7e8298e651f2%2C88986966-4013-d7a7-5dae-505d91aa2f1f%2C0ababc6b-0db3-abef-6d3e-2c88e6ff4206%2Cc08a5632-0db2-e0f7-e163-619b462beb10%2C16ca5857-36c5-9253-deb2-4903ac6f9020%2C36b060c1-a7b8-c844-160d-ac5d45c3b2e6%2C8825859c-6c70-d4d6-b0d6-9da9128e8ba4%2C6be8764f-c65e-dbfd-b708-5c7ba648b5da%2C25ca8837-65db-40a7-057f-bfa42c22bc70%2C8b0a9c96-7bf9-f78a-0cc7-947d1a254e14&p-_entityType=all&p-_feature=all&p-_ExcludeEntity=all&p-_entityFilter=all#d567c635-0f87-4a0a-ab2f-3f1863f37c2f). Consider the following:
+
+- Pros:
+  - The **RiskScore** functions pivot around **Payload**s. Having a grouping around the payload rather than a raw entity change event would make understanding the scoring detail simpler for the DRI.
+  - Would add clarity when comparing `EntityChangeEvent`s within the same **Payload** (i.e. how to rank events within the same payload group)
+  - Aggregating the function on **Payload** would not require pagination since it is unlikely that records will exceed 1000 payloads; however, the individual change events correlated to every payload will likely be in excess.
+- Cons:
+  - The API is currently a search for `EntityChangeEvent`s; changing the schema to pivot on **Payload** would be a different REST model.
+  - We can clarify some of the confusion regarding risk score by using better naming convetions (such as `PayloadRiskScore` in the ranking) and creating documentation for the customer.
+
+To this end, I believe we should maintain the current API as it is outlined in the doc. However, we might consider creating a new API or setting an aggregation flag to the current API that groups by **Payload**. This way we can expose something similar to the aforementioned Kusto dashboard.
+
+
 
 ## Metrics and Alarms
 
