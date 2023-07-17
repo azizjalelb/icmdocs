@@ -59,7 +59,7 @@ For this senario, the Walmart dashboard will yield the results, but you it will 
 
     ![alt text](media/ACE_01_g.png)
 
-        *This dashboard does not have the ability to filter the dates on a more granular level, so you will have to adjust the time range to include the dates you are looking for. You will then have to sort through the results to find the data that fits within the desired time period*
+    *This dashboard does not have the ability to filter the dates on a more granular level, so you will have to adjust the time range to include the dates you are looking for. You will then have to sort through the results to find the data that fits within the desired time period*
 
 3. Paste the Node ID into the *Node ID* filter
 
