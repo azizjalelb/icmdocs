@@ -1,5 +1,5 @@
-- name: About
-  href: about.md
+- name: Team Docs
+  href: team_docs.md
 - name: Change Explorer V2
   items:
     - name: Change Search Service
@@ -13,9 +13,9 @@
     - name: Incident Information Provider
       items:
         - name: Low Level Design
-          href: ChangeExplorerV2/IncidentInformationProvider/information_service_provider_lld.md
+          href: ChangeExplorerV2/IncidentInformationProvider/incident_information_provider_lld.md
 - name: DataPlatform
   items: 
-    - name: DataPlatform APIs
+    - name: DataPlatform APIs Design
       href: DataPlatform/fcm_dataplatform_api.md
       

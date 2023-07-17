@@ -105,7 +105,7 @@ The technical requirements are:
 
 ### **GetEntityChangeEvent**
 
-**`GET`** /v1/entityChangeEvents?changeActivityId={<g>**ChangeActivity**</g>}&entityId={<g>**EntityId**</g>}
+>**`GET`** /v1/entityChangeEvents?changeActivityId={<g>**ChangeActivity**</g>}&entityId={<g>**EntityId**</g>}
 
 ##### Parameters
 
@@ -160,19 +160,24 @@ The technical requirements are:
 
 ### **SearchEntityChangeEvents**
 
-**`GET`** /v1/entityChangeEvents?startTime={<g>**StartTime**</g>}&endTime={<g>**EndTime**</g>}&entityId={<g>**EntityId**</g>}&serviceTreeId={<g>**ServiceTreeId**</g>}&pageSize={<g>**PageSize**</g>}&offset={<g>**Offset**</g>}&sortBy={<g>**SortBy**</g>}
+>**`GET`** /v1/entityChangeEvents?startTime={<g>**StartTime**</g>}&endTime={<g>**EndTime**</g>}&entityId={<g>**EntityId**</g>}&serviceTreeId={<g>**ServiceTreeId**</g>}&pageSize={<g>**PageSize**</g>}&offset={<g>**Offset**</g>}&&sortBy={<g>**SortBy**</g>}&excludeSource={<g>**Source**</g>}&excludeChangeType={<g>**ChangeType**</g>}&payload={<g>**Payload**</g>}&title={<g>**Title**</g>}&changeActivity={<g>**ChangeActivity**</g>}
 
 ##### Parameters
 
-> | name              |  type     | data type      | description                         |
-> |-------------------|-----------|----------------|-------------------------------------|
-> | `StartTime`       |  required | datetime       | Start time of `EntityChangeEvent` search. Max 1 week range with `EndTime`.       |
-> | `EndTime`         |  required | datetime       | End time of `EntityChangeEvent` search. Max 1 week range with `StartTime`.     |
-> | `EntityId`        |  At least one of `EntityId` or `ServiceTreeId` must be used. | string         | Location Id of the deployment.       |
-> | `ServiceTreeId`   |  At least of `EntityId` or `ServiceTreeId` must be used.  | string         | [ServiceTreeId](https://microsoftservicetree.com/home) to utilize for search.     |
-> | `PageSize`        |  optional | int         | Page size of results to return. Defaults to `50`; max `1000`.     |
-> | `Offset`        |  optional | int           | Offset to calculate next set page of results. Defaults to `0`.    |
-> | `SortBy`          |  optional | string         | Location Id of the deployment. Defaults to `StartTime`.    |
+> | name              |  type     | data type | description                         |
+> |-------------------|-----------|-----------|-------------------------------------|
+> | `StartTime`        |  required | datetime | Start time of `EntityChangeEvent` search. Max 1 week range with `EndTime`.       |
+> | `EndTime`          |  required | datetime | End time of `EntityChangeEvent` search. Max 1 week range with `StartTime`.     |
+> | `EntityId`         |  At least one of `EntityId` or `ServiceTreeId` must be used. | string         | Location Id of the deployment.       |
+> | `ServiceTreeId`    |  At least of `EntityId` or `ServiceTreeId` must be used.  | string         | [ServiceTreeId](https://microsoftservicetree.com/home) to utilize for search.     |
+> | `PageSize`         |  optional | int      | Page size of results to return. Defaults to `50`; max `1000`.     |
+> | `Offset`           |  optional | int      | Offset to calculate next set page of results. Defaults to `0`.    |
+> | `SortBy`           |  optional | string   | Optional sorting param after ranking has been applied. Defaults to `StartTime`    |
+> | `ExcludeSource`    |  optional | string   | Optional exclude filter for `Source` column. |
+> | `ExcludeChangeType`|  optional | string   | Optional exclude filter for `ChangeType` column.|
+> | `Payload`          |  optional | string   | Optional filter for `Payload` column. |
+> | `Title`            |  optional | string   | Optional filter for `Title` column. | 
+> | `ChangeActivity`   |  optional | string   | Optional filter for `ChangeActivity` column. |
 
 >[!NOTE] `SearchEntityChangeEvents` requires at least one of `EntityId` and `ServiceTreeId`. In the case a single argument is provided, search scope would be limited to that value (and in the case of location, potentially expanded to include alternate names or child locations). In the case that both arguments are provided, the search will invoke an **AND** union of the arguments (i.e. `EntityChangeEvent`s must satisfy both being in the named service and location). Should this behavior be changed to an **OR**, or should this behavior be set using a flag (such as `UnionKind` that defaults to **AND**)?
 
@@ -194,8 +199,8 @@ Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a
 ##### Example cURL
 
 > ```javascript
->  curl -X GET https://fcmdp.azurefd.com/v1/entityChangeEvents?startTime={StartTime}&endTime={EndTime}&entityId={EntityId}&serviceTreeId={ServiceTreeId}&pageSize={PageSize}&offset={Offset}&sortBy={SortBy}
-> ```
+>  curl -X GET /v1/entityChangeEvents?startTime={StartTime}&endTime={EndTime}&entityId={EntityId>}&serviceTreeId={ServiceTreeId}&pageSize={PageSize}&offset={Ofset}&&sortBy={SortBy}&excludeSource={Source}&excludeChangeType={ChangeType}&payload={Payload}&title={Title}&changeActivity={ChangeActivity}
+ > ```
 
 ##### SearchEntityChangeEvents 200 Response
 
