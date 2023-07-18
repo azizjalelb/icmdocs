@@ -9,7 +9,7 @@ Time Range: 05/06/23 at 11:45am to 05/06/23 at 11:45pm
 ## Step One: Tooling
 Since this is a Walmart customer, the [OneDeploy Walmart Dashboard](https://dataexplorer.azure.com/dashboards/95963854-b111-4680-a16f-9f3383d49f9b?p-_startTime=2days&p-_endTime=now&p-_measure=all&p-_payload=all&p-_tag=all&p-_impact=v-All&p-_region=all&p-_ve=all&p-_noflyzone=all&p-_RoleInstanceName=all&p-_nodeid=all#c676ca09-727b-4124-ab01-8e3782e191f9) will show the changes that fall within the these specifications.
 
-    ![alt text](media/ACE_02.png)
+![alt text](media/ACE_02.png)
 
 ## Step One: Filtering
 
