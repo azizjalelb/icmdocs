@@ -20,9 +20,13 @@ Second step to take is noting when this incident occurred as this date will be t
 
 For this step you can use use either the [OneDeploy Walmart Dashboard](https://dataexplorer.azure.com/dashboards/95963854-b111-4680-a16f-9f3383d49f9b?p-_startTime=2days&p-_endTime=now&p-_measure=all&p-_payload=all&p-_tag=all&p-_impact=v-All&p-_region=all&p-_ve=all&p-_noflyzone=all&p-_RoleInstanceName=all&p-_nodeid=all#c676ca09-727b-4124-ab01-8e3782e191f9) or [FCM Change Explorer](https://aka.ms/FCM). In this scenario, the user that is affected is a Walmart customer, but that does not mean that you have to use the OneDeploy Walmart Dashboard since FCM is not limited to the customer type. However, if the incident was not a Walmart customer, you would only be able to use FCM. 
 
-With this particular scenario, the incident occurred quite awhile ago and because of that, FCM Change Explorer will be the tool that will produce the quickest results. This is because FCM lets you filter down the time range to a 48 hour period which effectively weeds out data that you do not need. 
+<!-- With this particular scenario, the incident occurred quite awhile ago and because of that, FCM Change Explorer or the Walmart Dashboard will be the tools that will produce the quickest results. This is because FCM lets you filter down the time range to a 48 hour period which effectively weeds out data that you do not need.-->  
 
-Using the Walmart dashboard will yield the expected results, but it will take much longer to load due to the limitations it has in adjusting the filtering dates - which we will expand on in the *Finding Node-Related Changes in OneDeploy Walmart Dashboard* section below. Best practice is to use the Walmart dashboard for customer incidents that have occurred in the last 60 days to avoid the long loading times.
+<!-- NEED TO FIX --> 
+
+<!-- Using the Walmart dashboard will yield the expected results, but it will take much longer to load due to the limitations it has in adjusting the filtering dates - which we will expand on in the *Finding Node-Related Changes in OneDeploy Walmart Dashboard* section below. Best practice is to use the Walmart dashboard for customer incidents that have occurred in the last 60 days to avoid the long loading times.--> 
+
+<!-- NEED TO FIX --> 
 
 ### Finding Node-Related Changes in FCM
 
@@ -58,8 +62,7 @@ For this senario, the Walmart dashboard will yield the results, but you it will 
 2. Update the *Time Range* filter to last 365 days.
 
     ![alt text](media/ACE_01_g.png)
-
-    *This dashboard does not have the ability to filter the dates on a more granular level, so you will have to adjust the time range to include the dates you are looking for. You will then have to sort through the results to find the data that fits within the desired time period*
+<!-- NEED TO FIX --> 
 
 3. Paste the Node ID into the *Node ID* filter
 
