@@ -1,5 +1,7 @@
 ﻿- name: Environment Setup TSGs
   href: EnvironmentSetupTSGs.md
+- name: Recreate INT AKS cluster 
+  href: RecreateAKSClusterInINT.md  
 - name: Exception Request email failed
   href: ExceptionRequestEmailFailed.md
 - name: Lens Orchestrator job failed
