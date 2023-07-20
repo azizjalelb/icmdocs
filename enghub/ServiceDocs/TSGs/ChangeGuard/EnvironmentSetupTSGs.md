@@ -94,7 +94,7 @@ Uri: ' https://fcm-changemanager-kv.vault.azure.net/secrets/aksclusterkubeconfig
 		  Set-AzKeyVaultSecret -VaultName $global:KeyVault_Name -Name "aks-sp-pwd" -SecretValue $sp.PasswordCredentials.SecretText  
           ```
   - The Service Principal has access to 'get' and 'list': certificates, secrets, keys and storage from the KeyVault 
-    - It can be added throught the Portal OR 
+    - It can be added through the Portal OR 
     - Added using Az CLI:
       - ```
         az keyvault set-policy -n $global:KeyVault_Name --spn $global:AKS_SP_AppId --secret-permissions get list --certificate-permissions get list --key-permissions get list --storage-permissions get list 
@@ -155,7 +155,7 @@ Uri: ' https://fcm-changemanager-kv.vault.azure.net/secrets/aksclusterkubeconfig
           # Attach using acr-name 
           az aks update -n myAKSCluster -g myResourceGroup --attach-acr <acr-name> 
           ``` 
-      - **OR** Run the coresponding AzAks Powershell command : 
+      - **OR** Run the corresponding AzAks Powershell command : 
         - ```
           Set-AzAksCluster -Name myAKSCluster -ResourceGroupName myResourceGroup -AcrNameToAttach <acr-name> 
           ```
@@ -185,5 +185,5 @@ Uri: ' https://fcm-changemanager-kv.vault.azure.net/secrets/aksclusterkubeconfig
 
 
 ### After an AKS version upgrade, the cluster is not reachable from Postman 
-- As per previous point (AKS cluster is not reachable through the network/internet) , the VNET needs the abovementioned Tags to be accessible.
+- As per previous point (AKS cluster is not reachable through the network/internet) , the VNET needs the above-mentioned Tags to be accessible.
 - When an upgrade is performed, at the cluster level, the tags will be deleted (will no longer be found at the VNET level) and will need to be re-added.
