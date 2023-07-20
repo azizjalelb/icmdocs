@@ -12,9 +12,5 @@
   href: ACE_DRI/
 - name: FAQ
   href: FAQ/
-- name: TSG
-  href: TSG/
-- name: Team Docs
-  href: TeamDocs/
-- name: API Docs
-  href: APIDocs/
+- name: Service Docs
+  href: ServiceDocs/

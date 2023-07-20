@@ -1,10 +1,10 @@
-- name: Home
-  href: index.md
-- name: Onboard
-  href: Onboard/
-- name: TSG
-  href: TSG/
+- name: Service Docs
+  href: service_docs.md
+- name: Troubleshooting Guides (TSGs)
+  href: TSGs/
 - name: Team Docs
   href: TeamDocs/
+- name: Team Onboarding
+  href: Onboarding/
 - name: API Docs
   href: APIDocs/
