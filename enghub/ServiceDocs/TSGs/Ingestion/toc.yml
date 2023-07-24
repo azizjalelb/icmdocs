@@ -4,3 +4,7 @@
   href: FindAllDetailsForTheFailingMonitor.md
 - name: Debug data latency
   href: InvestigateHighDataIngestionLatency.md
+- name: Debug Zero Change Count  
+  href: ZeroChangeCount.md
+- name: Synthetics and Monitors Issues
+  href: SyntheticsAndMonitorIssues.md
