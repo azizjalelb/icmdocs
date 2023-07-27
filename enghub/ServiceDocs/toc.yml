@@ -159,6 +159,12 @@ items:
     items:
       - name: Team Docs
         href: TeamDocs/team_docs.md
+      - name: Developer Docs
+        items: 
+          - name: New Hire Onboarding
+            href: TeamDocs/DeveloperDocs/NewHireOnboarding.md
+          - name: DRI Responsibilities
+            href: TeamDocs/DeveloperDocs/DRIResponsibilities.md
       - name: Change Explorer V2
         items:
           - name: Change Search Service
