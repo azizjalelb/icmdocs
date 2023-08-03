@@ -34,6 +34,7 @@
   - [Versioning](#versioning)
   - [Rate Limiting](#rate-limiting)
   - [Ranking](#ranking)
+    - [08/02/2023 Update](#08022023-update)
     - [Background](#background)
     - [Use Cases](#use-cases-1)
     - [Data Entities and Relationships](#data-entities-and-relationships)
@@ -160,34 +161,37 @@ The technical requirements are:
 
 ### **SearchEntityChangeEvents**
 
->**`GET`** /v1/entityChangeEvents?startTime={<g>**StartTime**</g>}&endTime={<g>**EndTime**</g>}&entityId={<g>**EntityId**</g>}&serviceTreeId={<g>**ServiceTreeId**</g>}&pageSize={<g>**PageSize**</g>}&offset={<g>**Offset**</g>}&&sortBy={<g>**SortBy**</g>}&excludeSource={<g>**Source**</g>}&excludeChangeType={<g>**ChangeType**</g>}&payload={<g>**Payload**</g>}&title={<g>**Title**</g>}&changeActivity={<g>**ChangeActivity**</g>}
+>**`GET`** /v1/entityChangeEvents?startTime={<g>**StartTime**</g>}&endTime={<g>**EndTime**</g>}&entity={<g>**{id:"",type:""}**</g>}&serviceTreeId={<g>**ServiceTreeId**</g>}&source={<g>**Source**</g>}&changeType={<g>**ChangeType**</g>}&payload={<g>**Payload**</g>}&changeActivity={<g>**ChangeActivity**</g>}&pageSize={<g>**PageSize**</g>}&offset={<g>**Offset**</g>}
 
 ##### Parameters
 
-> | name              |  type     | data type | description                         |
+> | name              |  optional?     | data type | description                         |
 > |-------------------|-----------|-----------|-------------------------------------|
 > | `StartTime`        |  required | datetime | Start time of `EntityChangeEvent` search. Max 1 week range with `EndTime`.       |
 > | `EndTime`          |  required | datetime | End time of `EntityChangeEvent` search. Max 1 week range with `StartTime`.     |
-> | `EntityId`         |  At least one of `EntityId` or `ServiceTreeId` must be used. | string         | Location Id of the deployment.       |
-> | `ServiceTreeId`    |  At least of `EntityId` or `ServiceTreeId` must be used.  | string         | [ServiceTreeId](https://microsoftservicetree.com/home) to utilize for search.     |
+> | `Entity`         |  At least one of `EntityId` or `ServiceTreeId` must be used; see granularity note. | <pre>{<br>    "Id": "string",<br>    "Type": "string"<br>}<br>     | Location Id and type of the deployment.</pre>       |
+> | `ServiceTreeId`    |  At least of `EntityId` or `ServiceTreeId` must be used; see granularity note. | string         | [ServiceTreeId](https://microsoftservicetree.com/home) to utilize for search.     |
+> | `Source`    |  optional | string   | Optional exclude filter for `Source` column. |
+> | `ChangeType`|  optional | string   | Optional exclude filter for `ChangeType` column.|
+> | `Payload`          |  optional | string   | Optional filter for `Payload` column. |
+> | ~~`Title`~~ *Not Supported*           |  ~~optional~~ | ~~string~~   | ~~Optional filter for `Title` column.~~ |
+> | `ChangeActivity`   |  optional | string   | Optional filter for `ChangeActivity` column. |
 > | `PageSize`         |  optional | int      | Page size of results to return. Defaults to `50`; max `1000`.     |
 > | `Offset`           |  optional | int      | Offset to calculate next set page of results. Defaults to `0`.    |
-> | `SortBy`           |  optional | string   | Optional sorting param after ranking has been applied. Defaults to `StartTime`    |
-> | `ExcludeSource`    |  optional | string   | Optional exclude filter for `Source` column. |
-> | `ExcludeChangeType`|  optional | string   | Optional exclude filter for `ChangeType` column.|
-> | `Payload`          |  optional | string   | Optional filter for `Payload` column. |
-> | `Title`            |  optional | string   | Optional filter for `Title` column. | 
-> | `ChangeActivity`   |  optional | string   | Optional filter for `ChangeActivity` column. |
 
->[!NOTE] `SearchEntityChangeEvents` requires at least one of `EntityId` and `ServiceTreeId`. In the case a single argument is provided, search scope would be limited to that value (and in the case of location, potentially expanded to include alternate names or child locations). In the case that both arguments are provided, the search will invoke an **AND** union of the arguments (i.e. `EntityChangeEvent`s must satisfy both being in the named service and location). Should this behavior be changed to an **OR**, or should this behavior be set using a flag (such as `UnionKind` that defaults to **AND**)?
+>[!NOTE] ~~`SearchEntityChangeEvents` requires at least one of `EntityId` and `ServiceTreeId`. In the case a single argument is provided, search scope would be limited to that value (and in the case of location, potentially expanded to include alternate names or child locations). In the case that both arguments are provided, the search will invoke an **AND** union of the arguments (i.e. `EntityChangeEvent`s must satisfy both being in the named service and location). Should this behavior be changed to an **OR**, or should this behavior be set using a flag (such as `UnionKind` that defaults to **AND**)?~~
 
-Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a maximum of 10 each. Syntax is ...entityChangeEvents?entityId={<g>**EntityId**</g>}&entityId={<g>**EntityId**</g>}entityId={<g>**EntityId**</g>}...&serviceTreeId={<g>**ServiceTreeId**</g>}&serviceTreeId={<g>**ServiceTreeId**<g/>}...
+>[!NOTE] **Granularity**: `SearchEntityChangeEvents` will include the concept of **granularity**, meaning that if the following entity types are provided they ***must include a `serviceId` as part of the request*** to be executed. This is because otherwise the amount of data returned to the client will not be useful as there would be far too many records:
+> - Region
+> - DataCenter
+> - Availability Zone
+
 
 ##### Responses
 
 > | http code     | content-type                      | response                                                            |
 > |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `application/json`                | List of `EntityChangeEvent`s; [see below](#searchentitychangeevents-200-response)                                     |
+> | `200`         | `application/json`                | Ranked `EntityChangeEvents` by `BuildVersion` [see below](#searchentitychangeevents-200-response)                                     |
 > | `204`         | N/A                               | N/A                                                                 |
 > | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                             |
 > | `401`         | `application/json`                | `{"code":"401","message":"Unauthorized"}`                            |
@@ -199,67 +203,74 @@ Multiple **```EntityId```** and **```ServiceTreeId```** can be searched, up to a
 ##### Example cURL
 
 > ```javascript
->  curl -X GET /v1/entityChangeEvents?startTime={StartTime}&endTime={EndTime}&entityId={EntityId>}&serviceTreeId={ServiceTreeId}&pageSize={PageSize}&offset={Ofset}&&sortBy={SortBy}&excludeSource={Source}&excludeChangeType={ChangeType}&payload={Payload}&title={Title}&changeActivity={ChangeActivity}
+>  curl -X GET /v1/entityChangeEvents?startTime="2020-07-01"&endTime="2020-07-02"&entity={id:"node123",type:"node"}&entity={id:"node456",type:"node"}&serviceTreeId="889acfb9-923f-4e3f-9bf2-2a3f9d95fe4f"&source="OMRollout"&changeType="Deployment"&payload=null&changeActivity=null&pageSize=100&offset=0
  > ```
+
+ >[!NOTE] Multiple **```Entities```** and **```ServiceTreeIds```** can be searched; the query parameters are overloaded (see `Entities` in the previous example curl)
 
 ##### SearchEntityChangeEvents 200 Response
 
 >```json
 >{
 >    "TotalResultCount": "int",
->    "SortBy": "string",
 >    "Offset": "int",
 >    "PageSize": "int",
->    "EntityChangeEvents": [
+>    "EntityRiskScores": [
 >        {
->            "SchemaVersion": "string",
->            "Timestamp": "datetime",
->            "StartTime": "datetime",
->            "EndTime": "datetime",
->            "EntityType": "string",
->            "EntityId": "string",
->            "ChangeType": "string",
->            "Payload": "string",
->            "ChangeActivity": "string",
->            "MetaData": "dynamic",
->            "Source": "string",
->            "PlannedInterruption": "string",
->            "ImpactDuration": "int",
->            "ChangeOwner": "string",
->            "ChangeOwnerType": "string",
->            "ParentChangeActivity": "string",
->            "ChangeState": "string",
->            "Ranking": {
->                "Rank": "int",
->                "WeightedScore": "double",
->                "ScoringAlgorithm": "string",
->                "ScoringDetails": {
->                    "RiskScoreDetails": {
->                        "Payload": "string",
->                        "VE": "string",
->                        "StartTime": "datetime",
->                        "EndTime": "datetime",
->                        "PayloadRiskScore": "double",
->                        "P95": "double",
->                        "avg": "double",
->                        "max": "double",
->                        "min": "double"
->                    },
->                    "CommonalityScoreDetails": {
->                        "StartTime": "datetime",
->                        "EndTime": "datetime",
->                        "ImpactedEntityIds": "dynamic",
->                        "ChangeOwner": "string",
->                        "IsStrictMatch": "boolean",
->                        "IncludeDependentEntities": "boolean",
->                        "CommonalityPercentage": "double"
+>            "BuildVersion": "string",
+>            "IcmTeamPath": "string",
+>            "ServiceTreeId": "string",
+>            "Rank": "int",
+>            "WeightedScore": "double",
+>            "ScoringAlgorithm": "string",
+>            "ScoringDetails": {
+>                "RiskScoreDetails": [
+>                    {
+>                        "Model": "string",
+>                        "Score": "double"
 >                    }
+>                ],
+>                "CommonalityScoreDetails": {
+>                    "CommonalityPercentage": "double"
 >                }
->            }
+>            },
+>            "EntityChangeEvents": [
+>                {
+>                    "SchemaVersion": "string",
+>                    "Timestamp": "datetime",
+>                    "StartTime": "datetime",
+>                    "EndTime": "datetime",
+>                    "EntityType": "string",
+>                    "EntityId": "string",
+>                    "ChangeType": "string",
+>                    "Payload": "string",
+>                    "ChangeActivity": "string",
+>                    "MetaData": "dynamic",
+>                    "Source": "string",
+>                    "ParentChangeActivity": "string",
+>                    "ChangeState": "string",
+>                    "PlannedInterruption": "string",
+>                    "ImpactDuration": "int",
+>                    "ChangeOwner": "string",
+>                    "ChangeOwnerType": "string"
+>                }
+>            ]
 >        }
 >    ]
 >}
 >```
+
+
+> | name              |  optional?     | data type | description |
+> | ---- | ---- | ---- | ----                         |
+> | `BuildVersion` | required | string | This is the `BuildVersion` (sometimes referred to as `Build`, `BuildLabel` or `Payload`) that is used to calculate the `Commonality` and `EntityRiskScore`. A `BuildVersion` exists in a `Payload` and what we want to do is rank the `Payload`s based on which contain the riskiest `BuildVersion`s. This is a better implementation then before where we used a `Payload`'s individual `BuildVersion`s to calculate the risk and then aggregate it, thereby losing detail and misguiding DRIs in their analysis. For further reading, see [the ranking update](#08022023-update).
+> | `IcmTeamPath` | required | string | Icm team path for a given `BuildVersion`.
+> | `ServiceTree` | required | string | Service tree id for the given `BuidlVersion`.
+> | `Rank` | required | int | Rank of the `BuildVersion` given its risk.
+> | `WeightedScore` | required | double | The weighted score from the two risk analysis.
+> | `ScoringAlgorithm` | required | string | Scoring algorithm used to produce the `WeightedScore`.
+> | `ScoringDetails` | required | dynamic | Object containing scoring details per analysis.
+> | `EntityChangeEvents` | required | dynamic | A list of `EntityChangeEvent`s that contain the given build version in their `Payload`.
 
 ## Risk Score
 
@@ -422,7 +433,21 @@ Rate limiting will be handled by an [APIM](https://learn.microsoft.com/en-us/azu
 
 ## Ranking
 
+### 08/02/2023 Update
+
+We are moving to a `BuildVersion` pivot to rank changes rather than `Payload` aggregate approach. The use case scenarios are outlined below:
+
+>| Scenerio | Requires | Outcome | 
+>| ------ | ------- | ------- |
+>| Client wants to look for **Below ARM** changes | A set of supported `EntityTypes` (for now, the supported types are **node**, **storagetenant** and **cluster**). Note that ***the entities passed along must be of the same `EntityType` to execute the analysis***. If the EntityTypes are not of the same type, we will send back a 400 with the reason. | <table><tbody><tr style="height: 23px;"><td style="height: 23px;">&nbsp;BuildVersion</td><td style="height: 23px;">Rank</td><td style="height: 23px;">RiskScore</td><td style="height: 23px;">CommonalityRatio</td><td style="height: 23px;">EntityChangeEvents</td></tr><tr style="height: 23px;"><td style="height: 23px;">x</td><td style="height: 23px;">1</td><td style="height: 23px;">90</td><td style="height: 23px;">2/2</td><td style="height: 23px;">[Payload <strong>x</strong>yz, Payload ab<strong>x</strong>, payload ijklm<strong>x</strong>a]</td></tr><tr style="height: 23px;"><td style="height: 23px;">y&nbsp;</td><td style="height: 23px;">2</td><td style="height: 23px;">85&nbsp;</td><td style="height: 23px;">1/2</td><td style="height: 23px;">[Payload x<strong>y</strong>z, Payload q<strong>y</strong></td></tr><tr style="height: 23px;"><td style="height: 23px;">z</td><td style="height: 23px;">3</td><td style="height: 23px;">0</td><td style="height: 23px;">1/2</td><td style="height: 23px;">[Payload xy<strong>z</strong>]</td></tr></tbody></table>
+>|Client wants to look for **Above ARM** changes | For changes above ARM, we will not support ranking in the initial launch, so ranking will be determined by the default sort `StartTime`. | <table>    <tbody>    <tr style="height: 23px;">    <td style="height: 23px;">&nbsp;BuildVersion</td>    <td style="height: 23px;">Rank</td>    <td style="height: 23px;">RiskScore</td>    <td style="height: 23px;">CommonalityRatio</td>    <td style="height: 23px;">EntityChangeEvents</td>    </tr>    <tr style="height: 23px;">    <td style="height: 23px;">XYZ</td>    <td style="height: 23px;">1</td>    <td style="height: 23px;">N/A</td>    <td style="height: 23px;">N/A</td>    <td style="height: 23px;">Payload XYZ</td>    </tr>    <tr style="height: 23px;">    <td style="height: 23px;">QY</td>    <td style="height: 23px;">2</td>    <td style="height: 23px;">N/A</td>    <td style="height: 23px;">N/A</td>    <td style="height: 23px;">Payload QY</td>    </tr>    <tr style="height: 23px;">    <td style="height: 23px;">ABX</td>    <td style="height: 23px;">3</td>    <td style="height: 23px;">N/A</td>    <td style="height: 23px;">N/A</td>    <td style="height: 23px;">Payload ABX</td>    </tr>    </tbody>    </table>
+
+
+>[!WARNING] The section below will be updated at a later time; please see the above update for the latest implementation.
+
 ### Background
+
+
 
 The purpose of this document is to discuss how we will enable ranked changes in FCM DataPlatform APIs. When a client invokes the API, we return a paginated set of `EntityChangeEvent`s (part of [EntityModel](https://microsoft.sharepoint.com/:w:/t/SilverstoneProject/Eeqg50_nDm1ItTXBogvLcq8BybpPWO41X2Yq7FG-UTHlAA?e=Vyla9Q)) that adhere to the request parameters. We want to implement a new category named `Ranking` to highlight changes that are more important first. We will primarily do this through a combination of two approaches:
 
