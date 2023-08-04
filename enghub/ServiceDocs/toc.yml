@@ -157,6 +157,10 @@ items:
             href: TSGs/Ingestion/ZeroChangeCount.md
           - name: Synthetics and Monitors Issues
             href: TSGs/Ingestion/SyntheticsAndMonitorIssues.md
+      - name: Expiring Certs
+        items:
+          - name: ExpiringInUseCerts
+            href: TSGs/ExpiringCerts/ExpiringInUseCerts.md
   - name: Team Docs
     items:
       - name: Team Docs
