@@ -13,7 +13,7 @@ Since this is a Walmart customer, the [OneDeploy Walmart Dashboard](https://data
 
 ## Step One: Filtering
 
-1. Adjust the time range to fit the criteria by selecting *Custom Time Range*.
+1. Adjust the time range to fit the criteria by selecting *Custom Time Range*
 
     ![alt text](media/ACE_02_a.png)
 

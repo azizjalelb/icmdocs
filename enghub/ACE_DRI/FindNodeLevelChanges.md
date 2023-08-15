@@ -68,7 +68,7 @@ For this senario, the Walmart dashboard will yield the results, but you it will 
 
     ![alt text](media/ACE_01_h.png)
 
-4. The dashboard will automatically start filtering once you input your data. Once the data loads, navigate to the *Changes on Walmart Nodes* table and find the changes that occurred around the incident start time. When you find the change, expand it to reveal additional details
+4. The dashboard will automatically start filtering once you input your data. Once the data loads, navigate to the *Changes on Walmart Nodes* table and find the changes that occurred around the incident start time. When you find the change, expand it to reveal additional details.
 
     ![alt text](media/ACE_01_i.png)
 
