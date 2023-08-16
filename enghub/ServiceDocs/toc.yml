@@ -1,10 +1,207 @@
-- name: Home
-  href: index.md
-- name: Onboard
-  href: Onboard/
-- name: TSG
-  href: TSG/
-- name: Team Docs
-  href: TeamDocs/
-- name: API Docs
-  href: APIDocs/
+items:
+  - name: Service Docs
+    href: service_docs.md
+  - name: Troubleshooting Guides (TSGs)
+    items:
+      - name: Why TSGs?
+        href: TSGs/tsgs.md
+      - name: ChangeExplorerV2
+        items:
+          - name: ChangeExplorerV2
+            href: TSGs/ChangeExplorerV2/about.md
+          - name: Change Search Service API
+            items:
+              - name: Change Search Service API - Availability Dip
+                href: TSGs/ChangeExplorerV2/ChangeSearchService/change_search_service_api_availability.md
+              - name: Change Search Service API - Latency Increase
+                href: TSGs/ChangeExplorerV2/ChangeSearchService/change_search_service_api_latency.md
+          - name: Incident Information Provider API
+            items:
+              - name: Incident Information Provider API - Availability Dip
+                href: TSGs/ChangeExplorerV2/IncidentInformationProvider/incident_information_provider_api_availability.md
+              - name: Incident Information Provider API - Latency Increase
+                href: TSGs/ChangeExplorerV2/IncidentInformationProvider/incident_information_provider_api_latency.md
+          - name: Location Information Provider API
+            items:
+              - name: Location Information Provider API - Availability Dip
+                href: TSGs/ChangeExplorerV2/LocationInformationProvider/location_information_provider_api_availability.md
+              - name: Location Information Provider API - Latency Increase
+                href: TSGs/ChangeExplorerV2/LocationInformationProvider/location_information_provider_api_latency.md
+          - name: UI Backend Service API
+            items:
+              - name: UI Backend Service API - Availability Dip
+                href: TSGs/ChangeExplorerV2/UIBackendService/ui_backend_service_api_availability.md
+              - name: UI Backend Service API - Latency Increase
+                href: TSGs/ChangeExplorerV2/UIBackendService/ui_backend_service_api_latency.md
+      - name: ChangeGuard
+        items:
+          - name: Environment Setup TSGs
+            href: TSGs/ChangeGuard/EnvironmentSetupTSGs.md
+          - name: Recreate INT AKS cluster 
+            href: TSGs/ChangeGuard/RecreateAKSClusterInINT.md  
+          - name: Exception Request email failed
+            href: TSGs/ChangeGuard/ExceptionRequestEmailFailed.md
+          - name: Lens Orchestrator job failed
+            href: TSGs/ChangeGuard/LensOrchestratorJobFailed.md
+          - name: Archive an Exception Request
+            href: TSGs/ChangeGuard/ArchiveExceptionRequest.md
+          - name: Whitelist a Subscription
+            href: TSGs/ChangeGuard/WhitelistSubscription.md
+          - name: Database Deadlocks causing Exceptions
+            href: TSGs/ChangeGuard/DatabaseDeadlocksCausingExceptions.md
+          - name: Pause CXP Retrieval
+            href: TSGs/ChangeGuard/PauseCXPRetrieval.md
+          - name: EV2 blocking Non-Production/Test deployments during CCOA events
+            href: TSGs/ChangeGuard/Ev2BlockingTestDeployments.md
+          - name: Changes in ServiceTree don't reflect in ChangeGuard
+            href: TSGs/ChangeGuard/ChangesServiceTreeDontReflectInChangeGuard.md
+          - name: Sev2:Fired Application Insights, ChangeGuard Critical Event requires attention
+            href: TSGs/ChangeGuard/CriticalEventRequiresAttention.md
+          - name: ChangeGuard - The SSL connection could not be established
+            href: TSGs/ChangeGuard/SSLConnectionNotEstablished.md
+          - name: ChangeGuard - Connection refused
+            href: TSGs/ChangeGuard/ConnectionRefused.md
+          - name: ChangeGuard - Resource temporarily unavailable
+            href: TSGs/ChangeGuard/ResourceTemporarilyUnavailable.md
+          - name: Log Silent Canaries
+            href: TSGs/ChangeGuard/LogSilentCanaries.md
+          - name: CXP Retrieval Error
+            href: TSGs/ChangeGuard/CXPRetrievalError.md
+      - name: ChangeCard
+        items:
+          - name: P90 Latency increase in changecard
+            href: TSGs/ChangeCard/LatencyIncrease.md
+      - name: EventProcessing Latency
+        items:
+          - name: Access
+            href: TSGs/Event Processing Latency/Access.md
+          - name: MitigationSteps
+            href: TSGs/Event Processing Latency/Mitigate.md
+      - name: Change Explorer
+        items:
+          - name: Access
+            href: TSGs/Change Explorer/Access.md
+          - name: MitigationSteps
+            href: TSGs/Change Explorer/Mitigate.md        
+      - name: VirtualMonitor [MdmQos] is unhealthy
+        items:
+          - name: Access
+            href: TSGs/MStoreTimeSeriesThrottled/Access.md
+          - name: MitigationSteps
+            href: TSGs/MStoreTimeSeriesThrottled/Mitigate.md
+      - name: New Group Created on node (4731)
+        items:
+          - name: MitigationSteps
+            href: TSGs/NewGroupCreatedOnNode/Mitigate.md
+      - name: User Account Enabled on node (4722)
+        items:
+          - name: MitigationSteps
+            href: TSGs/UserAccountEnabledOnNode/Mitigate.md
+      - name: ChangeManagerUI
+        items: 
+          - name: Access
+            href: TSGs/ChangeManagerUI/Access.md
+          - name: MitigationSteps
+            href: TSGs/ChangeManagerUI/Mitigate.md
+      - name: Failure while processing from XStore Events
+        items:
+          - name: Access
+            href: TSGs/FailureWhileProcessingFromXStoreEvents/Access.md
+          - name: MitigationSteps
+            href: TSGs/FailureWhileProcessingFromXStoreEvents/Mitigate.md
+      - name: MDS EventProcessor Failures
+        items: 
+          - name: Access
+            href: TSGs/MDSEventProcessorFailures/Access.md
+          - name: MitigationSteps
+            href: TSGs/MDSEventProcessorFailures/Mitigate.md
+      - name: Network Isolation--Internet Exposed Endpoint
+        items: 
+          - name: Access
+            href: TSGs/NetworkIsolationInternetExposedEndpoint/Access.md
+          - name: MitigationSteps
+            href: TSGs/NetworkIsolationInternetExposedEndpoint/Mitigate.md
+      - name: No [SourceName] items Modified in the last X mins
+        items: 
+          - name: Access
+            href: TSGs/NoItemsModified/Access.md
+          - name: MitigationSteps
+            href: TSGs/NoItemsModified/Mitigate.md
+      - name: No Data being processed from Xstore Events
+        items: 
+          - name: Access
+            href: TSGs/NoDataProcessedXstoreEvents/Access.md
+          - name: MitigationSteps
+            href: TSGs/NoDataProcessedXstoreEvents/Mitigate.md
+      - name: Lens Orchestrator Job Failures
+        items: 
+          - name: Access
+            href: TSGs/LensOrchestratorJobFailures/Access.md
+          - name: MitigationSteps
+            href: TSGs/LensOrchestratorJobFailures/Mitigate.md
+      - name: ADOReleaseEvents
+        items: 
+          - name: Access
+            href: TSGs/ADOReleaseEvents/Access.md
+          - name: MitigationSteps
+            href: TSGs/ADOReleaseEvents/ADOReleaseEvents.md
+      - name: Ingestion
+        items:
+          - name: Overview
+            href: TSGs/Ingestion/changeIngestionUsingKOJobs.md
+          - name: Find all details for the triggered monitor
+            href: TSGs/Ingestion/FindAllDetailsForTheFailingMonitor.md
+          - name: Debug data latency
+            href: TSGs/Ingestion/InvestigateHighDataIngestionLatency.md
+          - name: Debug Zero Change Count  
+            href: TSGs/Ingestion/ZeroChangeCount.md
+          - name: Synthetics and Monitors Issues
+            href: TSGs/Ingestion/SyntheticsAndMonitorIssues.md
+      - name: Expiring Certs
+        items:
+          - name: ExpiringInUseCerts
+            href: TSGs/ExpiringCerts/ExpiringInUseCerts.md
+  - name: Team Docs
+    items:
+      - name: Team Docs
+        href: TeamDocs/team_docs.md
+      - name: Developer Docs
+        items: 
+          - name: New Hire Onboarding
+            href: TeamDocs/DeveloperDocs/NewHireOnboarding.md
+          - name: DRI Responsibilities
+            href: TeamDocs/DeveloperDocs/DRIResponsibilities.md
+      - name: Change Explorer V2
+        items:
+          - name: Change Search Service
+            items:
+              - name: Low Level Design
+                href: TeamDocs/ChangeExplorerV2/ChangeSearchService/change_search_service_lld.md
+              - name: GetChanges W/ Location Hierarchy Brainstorm Session
+                href: TeamDocs/ChangeExplorerV2/ChangeSearchService/get_changes_by_location.md
+              - name: Implementing Geneva Actions for ChangeSearchService
+                href: TeamDocs/ChangeExplorerV2/ChangeSearchService/geneva_actions.md
+          - name: Incident Information Provider
+            items:
+              - name: Low Level Design
+                href: TeamDocs/ChangeExplorerV2/IncidentInformationProvider/incident_information_provider_lld.md
+      - name: DataPlatform
+        items: 
+          - name: DataPlatform APIs Design
+            href: TeamDocs/DataPlatform/fcm_dataplatform_api.md
+  - name: Team Onboarding
+    items:
+      - name: Onboarding New Customer
+        href: Onboarding/onboarding.md
+  - name: API Docs
+    items:
+      - name: About
+        href: APIDocs/about.md
+      - name: Change Explorer V2
+        items:
+          - name: Change Search Service API
+            href: APIDocs/ChangeExplorerV2/ChangeSearchService/change_search_service_api.json
+          - name: Service Information Provider API
+            href: APIDocs/ChangeExplorerV2/ServiceInformationProvider/service_information_provider_api.json
+          - name: UI Backend Service
+            href: APIDocs/ChangeExplorerV2/UIBackendService/uibackendservice_api.json    
