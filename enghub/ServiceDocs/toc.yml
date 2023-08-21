@@ -161,6 +161,10 @@ items:
         items:
           - name: ExpiringInUseCerts
             href: TSGs/ExpiringCerts/ExpiringInUseCerts.md
+      - name: SQL Server
+        items:
+          - name: ShardRemapping
+            href: TSGs/SqlServer/ShardRemap.md
   - name: Team Docs
     items:
       - name: Team Docs
