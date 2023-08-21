@@ -171,6 +171,8 @@ items:
             href: TeamDocs/DeveloperDocs/NewHireOnboarding.md
           - name: DRI Responsibilities
             href: TeamDocs/DeveloperDocs/DRIResponsibilities.md
+          - name: Monitor Guidelines
+            href: TeamDocs/DeveloperDocs/MonitorGuidelines.md
       - name: Change Explorer V2
         items:
           - name: Change Search Service
@@ -189,6 +191,20 @@ items:
         items: 
           - name: DataPlatform APIs Design
             href: TeamDocs/DataPlatform/fcm_dataplatform_api.md
+      - name: DeploymentGuide
+        items: 
+          - name: ChangeExplorerV2 AGC
+            href: TeamDocs/DeploymentGuide/changeexploreragc.md
+          - name: IngestionV1 AGC
+            href: TeamDocs/DeploymentGuide/ingestionagc.md
+      - name: Deployments
+        items: 
+          - name: CompletedDeployments
+            href: TeamDocs/Deployments/CompletedDeployments/SearchByIncidentIdDeployment.md
+      - name: Onboarding
+        items: 
+          - name: Onboarding New Customer
+            href: TeamDocs/Onboarding/onboarding.md
   - name: Team Onboarding
     items:
       - name: Onboarding New Customer
