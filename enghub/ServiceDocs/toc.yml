@@ -209,6 +209,8 @@ items:
         items: 
           - name: Onboarding New Customer
             href: TeamDocs/Onboarding/onboarding.md
+          - name: EntityModel ChangeEvents SDK
+            href: TeamDocs/Onboarding/EntityModelChangeEventsSdk.md
   - name: Team Onboarding
     items:
       - name: Onboarding New Customer
