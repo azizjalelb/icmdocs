@@ -5,6 +5,10 @@ items:
     items:
       - name: Why TSGs?
         href: TSGs/tsgs.md
+      - name: DataPlatform
+        items:
+          - name: ChangeSearchService Canaries
+            href: TSGs/DataPlatform/ChangeSearchService/canaries.md
       - name: ChangeExplorerV2
         items:
           - name: ChangeExplorerV2
