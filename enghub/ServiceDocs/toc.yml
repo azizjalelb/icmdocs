@@ -181,6 +181,8 @@ items:
             href: TeamDocs/DeveloperDocs/DRIResponsibilities.md
           - name: Monitor Guidelines
             href: TeamDocs/DeveloperDocs/MonitorGuidelines.md
+          - name: CoPilot Guide
+            href: TeamDocs/DeveloperDocs/copilot_guide.md
       - name: Change Explorer V2
         items:
           - name: Change Search Service
