@@ -71,6 +71,10 @@ items:
             href: TSGs/ChangeGuard/LogSilentCanaries.md
           - name: CXP Retrieval Error
             href: TSGs/ChangeGuard/CXPRetrievalError.md
+          - name: ChangeGuard - Arcus SDK Unauthorized
+            href: TSGs/ChangeGuard/ArcusSdkUnauthorized.md
+          - name: ChangeGuard - Arcus Sdk Latency Check
+            href: TSGs/ChangeGuard/ArcusSdkLatency.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
