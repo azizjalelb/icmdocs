@@ -169,6 +169,8 @@ items:
         items:
           - name: ShardRemapping
             href: TSGs/SqlServer/ShardRemap.md
+          - name: ShardCleanup
+            href: TSGs/SqlServer/ShardCleanup.md
   - name: Team Docs
     items:
       - name: Team Docs
