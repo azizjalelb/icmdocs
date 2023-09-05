@@ -12,7 +12,13 @@ One of the reasons the Change Assessment might fail is due to latency issues.
 #### 1. Search for the alert that was fired.
 In this case, we search for the ApplicationInsights named `chggrd-api-appinsights-prod`, go to Alerts and check the alert that was fired.
 
-#### 2. Check that Aks Cluster resources are not overloaded
+#### 2. Go to query results and investigate the logs.
+In this case the logs mentioned that Change Guard can not call the Arcus Sdk service due to a time out error:
+```
+"PLACEHOLDER_LATENCY_MESSAGE".
+```
+
+#### 3. Check that Aks Cluster resources are not overloaded
 Go to 'chggrd-api-aks-prod' Kubernetes service and navigate to 'monitoring' tab.
 Check the metrics graphs and notice if any resource is over 90%.
 If this is the case, restart the pods in the cluster.
@@ -28,4 +34,4 @@ Steps:
 - Test using the portal.
 - Test using Postman calls to the cluster/services.
 
-#### 3. Get in contact with Arcus Sdk team to see if there is any deployment/update/fix going on at their end(mamegh@microsoft.com)
+#### 4. Get in contact with Arcus Sdk team to see if there is any deployment/update/fix going on at their end(mamegh@microsoft.com)
