@@ -1,4 +1,4 @@
-# ChangeGuard - Arcus Sdk Latency Check
+# ChangeGuard - Arcus SDK High Latency
 
 ## Overview
 
@@ -21,8 +21,8 @@ In this case the logs mentioned that Change Guard can not call the Arcus Sdk ser
 #### 3. Check that Aks Cluster resources are not overloaded
 Go to 'chggrd-api-aks-prod' Kubernetes service and navigate to 'monitoring' tab.
 Check the metrics graphs and notice if any resource is over 90%.
-If this is the case, restart the pods in the cluster.
-This can be done *either* by:
+If this is the case,  further investigation is needed to see which services/pods occupy the most resources, and dig down to see which calls take the longest.
+In case restart of the pods in the cluster is needed, this can be done *either* by:
 - Stopping and starting the AKS cluster (*THIS WILL TRIGGER DOWNTIME* of the whole cluster)
 - *OR*
 - Restarting each service deployment using the command `kubectl rollout restart deployment my-deployment`. This command needs to be repeated for each impacted deployment/service.
