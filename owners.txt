@@ -6,7 +6,6 @@
 ; about Ownership Enforcer can be found at https://aka.ms/ownershipenforcer.
 naveend
 abhinavmisra
-ericve
 mmihaila
 vkorivi
 andresro
