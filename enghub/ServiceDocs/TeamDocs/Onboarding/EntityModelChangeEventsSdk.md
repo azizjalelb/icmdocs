@@ -18,20 +18,20 @@ which is available in the [FCM-Consumption](https://msazure.visualstudio.com/Def
     ```csharp
     private EntityChange BuildEntityChangeEvent()
     {
-        EntityChangeEvent entityChangeEvent = new ();
-        entityChangeEvent.Timestamp = DateTime.Now;
-        entityChangeEvent.StartTime = DateTime.Now;
-        entityChangeEvent.EndTime = DateTime.Now;
-        ...
-        ...
-        /* Please refer to the EntityModel.ChangeEvent.Schema.V1.EntityChangeEvent.cs
-         * for the official documentation of the properties.
-         * This file is available in the EntityModelChangeEventSchema project of the SDK.
-         */
-        ...
-        ...
-        entityChangeEvent.ChangeType = EnumExtension
-            .GetStringFromValue(ChangeType.AppDeployment);
+        EntityChangeEvent entityChangeEvent = new (
+            timstamp: DateTime.Now,
+            startTime: DateTime.Now,
+            endTime: DateTime.Now,
+            ...
+            ...
+            /* Please refer to the EntityModel.ChangeEvent.Schema.V1.EntityChangeEvent.cs
+             * for the official documentation of the properties.
+             * This file is available in the EntityModelChangeEventSchema project of the SDK.
+             */
+            ...
+            ...
+            changeType = ChangeType.AppDeployment
+        );
             
         return entityChangeEvent;
     }
