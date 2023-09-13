@@ -75,6 +75,8 @@ items:
             href: TSGs/ChangeGuard/ArcusSdkUnauthorized.md
           - name: ChangeGuard - Arcus SDK High Latency
             href: TSGs/ChangeGuard/ArcusSdkLatency.md
+          - name: ChangeGuard - Arcus SDK Error Retrieving BoQ Value
+            href: TSGs/ChangeGuard/ArcusSdkErrorRetrievingBoqData.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard

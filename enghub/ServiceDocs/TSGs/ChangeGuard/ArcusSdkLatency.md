@@ -7,7 +7,7 @@ One of the services is Change Assessment, which is used to load BoQ data from Sa
 
 One of the reasons the Change Assessment might fail is due to latency issues.
 
-### Steps taken to investigate the issue:s
+### Steps taken to investigate the issue:
 
 #### 1. Search for the alert that was fired.
 In this case, we search for the ApplicationInsights named `chggrd-api-appinsights-prod`, go to Alerts and check the alert that was fired.
@@ -15,7 +15,7 @@ In this case, we search for the ApplicationInsights named `chggrd-api-appinsight
 #### 2. Go to query results and investigate the logs.
 In this case the logs mentioned that Change Guard can not call the Arcus Sdk service due to a time out error:
 ```
-"PLACEHOLDER_LATENCY_MESSAGE".
+"Arcus SDK High Latency".
 ```
 
 #### 3. Check that Aks Cluster resources are not overloaded

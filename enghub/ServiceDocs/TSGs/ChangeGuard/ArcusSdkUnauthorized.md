@@ -18,7 +18,7 @@ In this case, we search for the ApplicationInsights named `chggrd-api-appinsight
 #### 2. Go to query results and investigate the logs.
 In this case the logs mentioned that Change Guard can not call the Arcus Sdk service due to an unauthorized error:
 ```
-"PLACEHOLDER_EXCEPTION_MESSAGE".
+"Arcus SDK Authentication Error".
 ```
 Additional information:
 ```
