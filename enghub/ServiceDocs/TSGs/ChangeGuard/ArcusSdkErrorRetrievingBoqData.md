@@ -25,14 +25,14 @@ In this case the logs mentioned that Change Guard can not call the Arcus Sdk ser
 
 #### 2. Check the error logs from the Change Assessment system inside the AKS cluster
 
-If you don't have access to the cluster from your local workstation (don't have the kube config locally) you can follow the Step2 from the [README.md](https://msazure.visualstudio.com/One/_git/FCM-ChangeManager?path=/src/README.md).
+If you don't have access to the cluster from your local workstation (don't have the kube config locally) you can follow the Step2 from the [README.md](https://msazure.visualstudio.com/One/_git/FCM-ChangeManager?path=/src/README.md). The logs should be checked inside each pods since the pods will not have the same logs. It depends on which pod will handle the problem that fails and will log it to its own logs.
+There can be a pods that throws and logs the error and one pods where it worked fine.
 
 Search for the pods inside the cluster
 ```
 kubectl get pods -n changeguard-ns
  ```
-The command will list all the pods inside the cluster. Search for the pods that start with `changeassessment-` and copy the name of one of the pods (it doesn't matter which one 
-since they all are identical replicas and will have the same errors).
+The command will list all the pods inside the cluster. Search for the pods that start with `changeassessment-` and copy the name of each of the pods.
 
 ![Kusto Details](media/ChangeAssessment/change_assessmentpods.png)
 

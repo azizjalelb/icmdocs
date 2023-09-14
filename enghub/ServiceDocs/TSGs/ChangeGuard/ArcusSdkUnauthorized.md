@@ -75,64 +75,27 @@ $secret = ConvertTo-SecureString -String $text -AsPlainText -Force
 Set-AzKeyVaultSecret -VaultName $VaultName -Name $SecretName -SecretValue $secret
 ```
 
-#### 6. Next check if the `API` certificate used by the ingress service (nginx web server), `chggrd-api-cer-prod`, is valid and has not expired.
-The certificate can be found inside the KeyVault: `chggrd-api-cer-prod`.
-In this case the latest version of the certificate was not expired.
-#### 7. Next thing to check if the ingress service is using the latest version of the `API` certificate.
-Download the certificate locally using the PFX format.
-Create the .pem and .key.pem files using the following commands:
-> [!NOTE] Make sure you have openssl installed locally. It can be installed using chocolatey: `choco install openssl`.
-
-```
-  $pfxfile = "<pfx-file>"  
-  openssl pkcs12 -in $pfxfile -nocerts -nodes -out changemanager.fcm.azure.microsoft.com.key        
-  openssl pkey -in changemanager.fcm.azure.microsoft.com.key -outform PEM -out
-  changemanager.fcm.azure.microsoft.com.key.pem       
-  openssl pkcs12 -in $pfxfile -clcerts -nokeys -out changemanager.fcm.azure.microsoft.com.crt     
-  openssl x509 -in changemanager.fcm.azure.microsoft.com.crt -out changemanager.fcm.azure.microsoft.com.pem
- ```
-This will generate the .key and .pem files.
-#### 8. Update the secrets `changemanagerfcmazuremicrosoftcomkeypem` and `changemanagerfcmazuremicrosoftcompem` inside KeyVault with the value of the generated files.
-```
-#region PROD Environment
-
- $VaultName = 'chggrd-api-kv-prod'
- $Subscription_Id = "8830ba56-a476-4d01-b6ac-d3ee790383dc" ## FCMProduction (AME)
-
-#endregion PROD Environment
-
-$SecretName = 'changemanagerfcmazuremicrosoftcomkeypem'
-$text = Get-Content "changemanager.fcm.azure.microsoft.com.key.pem" -Raw -encoding "utf8"
-$secret = ConvertTo-SecureString -String $text -AsPlainText -Force
-Set-AzKeyVaultSecret -VaultName $VaultName -Name $SecretName -SecretValue $secret
-
-$SecretName = 'changemanagerfcmazuremicrosoftcompem'
-$text = Get-Content "changemanager.fcm.azure.microsoft.com.pem" -Raw -encoding "utf8"
-$secret = ConvertTo-SecureString -String $text -AsPlainText -Force
-Set-AzKeyVaultSecret -VaultName $VaultName -Name $SecretName -SecretValue $secret
-```
-
-#### 9. Next thing to check if the App Registration is using the latest version of the `Client` certificate.
+#### 6. Next thing to check if the App Registration is using the latest version of the `Client` certificate.
 Go to 'chggrd-api-aks-user-prod' App Registration and then to 'Certificates & secrets' -> 'Certificates' tab and make sure the certificate is added and it is has the latest version by checking the Thumbprint.
 
 If the certificate doesn't appear or it has a different Thumbprint, it has to be downloaded from the Key Vault and reuploaded inside the App Registration.
 
 
-#### 10. Next thing is to check if the dSTS Configuration is still in place.
+#### 7. Next thing is to check if the dSTS Configuration is still in place.
 
 Go to [Azure Security Configuration Management | fcm-changeguard-test (windows.net)](https://ui.dscm.core.windows.net/dscm/dsts/identity/889acfb9-923f-4e3f-9bf2-2a3f9d95fe4f/uswest2-dsts__dsts__core__windows__net,fcm-changeguard-test?tab=identity) using SAW machine and login with the @ame account.
 Check if the subject name is the same as the one in the 'chggrd-client-cer-prod' certificate.
 
-#### 11. Check if the Az Deployer Api is reachable from the tenant and the AKS ip is whitelisted in order to access it.(https://azdeployerapi.trafficmanager.net/AuthenticationMetadata)
+#### 8. Check if the Az Deployer Api is reachable from the tenant and the AKS ip is whitelisted in order to access it.(https://azdeployerapi.trafficmanager.net/AuthenticationMetadata)
 Please contact mamegh@microsoft.com or AzDeployerDev@microsoft.com for further details on the az deployer side.
 
-#### 12 Restart the pods in the cluster to retrieve the latest version of the certificate strings.
+#### 9 Restart the pods in the cluster to retrieve the latest version of the certificate strings.
 This can be done *either* by:
 - Stopping and starting the AKS cluster (*THIS WILL TRIGGER DOWNTIME* of the whole cluster)
 - *OR*
 - Restarting each service deployment using the command `kubectl rollout restart deployment my-deployment`. This command needs to be repeated for each impacted deployment/service.
 
-#### 13. Test everything to see if the problem is resolved.
+#### 10. Test everything to see if the problem is resolved.
 Steps:
 - Check if the alert is still firing.
 - Check the app insights logs to see if failures are still appearing.
