@@ -13,6 +13,12 @@ One of the reasons the Change Assessment might fail is due to exceptions thrown 
 In this case, we search for the ApplicationInsights named `chggrd-api-appinsights-prod`, go to Alerts and check the alert that was fired.
 
 #### 2. Go to query results and investigate the logs.
+Query: 
+```
+traces
+| where severityLevel >= 4
+| where message has "Arcus SDK Error Retrieving BoQ Value" 
+```
 In this case the logs mentioned that Change Guard can not call the Arcus Sdk service because of an issue in request data:
 ```
 "Arcus SDK Error Retrieving BoQ Value".

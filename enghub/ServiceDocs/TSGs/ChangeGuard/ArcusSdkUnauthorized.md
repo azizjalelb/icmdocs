@@ -16,13 +16,15 @@ One of the reasons the Change Assessment might fail is due to invalid or expired
 #### 1. Search for the alert that was fired.
 In this case, we search for the ApplicationInsights named `chggrd-api-appinsights-prod`, go to Alerts and check the alert that was fired.
 #### 2. Go to query results and investigate the logs.
+Query: 
+```
+traces
+| where severityLevel >= 4
+| where message has "Arcus SDK Authentication Error" 
+```
 In this case the logs mentioned that Change Guard can not call the Arcus Sdk service due to an unauthorized error:
 ```
 "Arcus SDK Authentication Error".
-```
-Additional information:
-```
-
 ```
 #### 3. This led to check if the `Client` certificate used by the Change Assessment service, `chggrd-client-cer-prod`, is valid and has not expired.
 The certificate can be found inside the KeyVault: `chggrd-client-cer-prod`.
