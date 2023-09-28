@@ -1,4 +1,4 @@
-# EntityModel ChangeEvents SDK: Onboarding Client Services
+﻿# EntityModel ChangeEvents SDK: Onboarding Client Services
 ##### (Work In Progress)
 </br>
 
@@ -149,3 +149,43 @@ So, the client should configure the batch size accordingly such that their inter
 This way there will be no unexpected publishes.
 </br>
 </br>
+Q . How can I map the existing ChangeEvent schema to EntityModel change schema?
+</br>
+A . This is just a guideline and not a hard rule. The client can choose to send more information than what is mentioned below. Please refer to 
+[EntityChangeEvent](https://msazure.visualstudio.com/One/_git/EntityModel-ChangeEvents-SDK?path=/EntityModel.ChangeEvent.Schema/src/V1/EntityChangeEvent.cs)
+for the official documentation of the attributes. The aim is to provide as much relevant information as possible to the platform so that it can be used for health correlation.
+We suggest to first go through the EM schema documentation and then try to populate all the relevant information (mandatory + optional) by yourself and use the below table as a reference guide.
+
+:zap:We request clients to please get some sample events reviewed by the FCM team before enabling the SDK in production.
+Clients can construct EntityChangeEvents in their Staging/Canary environments and use the SDK to publish them either in Entity Model's INT/PPE environments. 
+This way we can help review the structure of the events and suggest any standardization practices if applicable.
+
+| Change Event Attribute | EntityModelChangeEvent Attribute | Remarks |
+|:-----------------------|:---------------------------------|:--------|
+| Source              | Source               | The source system from which the entity changes are being emitted to EM. |
+| Title               | MetaData             | This can be part of metadata. Metadata is a string with representation as `{"key1":"value1","value2":"value2"}`. |
+| Description         | MetaData             | This can be part of metadata. Metadata is a string with representation as `{"key1":"value1","value2":"value2"}`. |
+| StartTime           | StartTime            | When the change rollout started or will be started. |
+| StartTimeType       | -                    | This attribute is no longer needed. This property is now managed using [ChangeType](https://msazure.visualstudio.com/One/_git/EntityModel-ChangeEvents-SDK?path=/EntityModel.ChangeEvent.Schema/src/Enums/ChangeType.cs). |
+| Priority            | -                    | This attribute is no longer needed but if the client has valid values it can always be added to the MetaData to further enrich the entity change event. |
+| ImpactedLocation    | EntityId             | The physical or virtual location where the change is intended to be deployed. |
+| LocationType        | EntityType           | The type of the location where the change is intended to be deployed. Please use the [format provided by Azure](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers) when defining entity type string. |
+| ImpactedServiceId   | ChangeOwner          | The ServiceTreeId of the service making the change. |
+| ImpactedComponentId | MetaData             | This can be part of metadata. Metadata is a string with representation as `{"key1":"value1","value2":"value2"}`. |
+| Status              | ChangeState          | What is the status of this entity change when the event is being emitted? Please use the enumeration defined at [ChangeState](https://msazure.visualstudio.com/One/_git/EntityModel-ChangeEvents-SDK?path=/EntityModel.ChangeEvent.Schema/src/Enums/ChangeType.cs)|
+| SourceRecordId      | ChangeActivity       | This is an unique id representing the change within the source, i.e., when the source is queried with the `ChangeActivity` it should return a single change. |
+| ChangeType          | ChangeType           | The type of change. Please use the enumeration defined at [ChangeType](https://msazure.visualstudio.com/One/_git/EntityModel-ChangeEvents-SDK?path=/EntityModel.ChangeEvent.Schema/src/Enums/ChangeType.cs). |
+| EndTime             | EndTime              | When the change rollout ended or will end. |
+| EndTimeType         | -                    | This attribute is no longer needed. |
+| ChangeOwner         | MetaData/ChangeOwner | In EM we support only two types of ChangeOwner currently - `ServiceId` and `ICMTeam` (please refer to the [enumeration](https://msazure.visualstudio.com/One/_git/EntityModel-ChangeEvents-SDK?path=/EntityModel.ChangeEvent.Schema/src/Enums/ChangeOwnerType.cs). If the owner is a personnel alias then it can be part of the MetaData. |
+| BuildPath           | Payload              | Intention is to create a payload that can be used to track a deployment end to end from the authority Change Orchestrator. The format of the payload will depend on the Orchestrator that your team is using to manage deployments. |
+| BuildNumber         | Payload              | Intention is to create a payload that can be used to track a deployment end to end from the authority Change Orchestrator. The format of the payload will depend on the Orchestrator that your team is using to manage deployments. |
+| ChangeInitiator     | MetaData             | This can be part of metadata. Metadata is a string with representation as `{"key1":"value1","value2":"value2"}`. |
+| Created             | MetaData             | In ChangeEvent schema this represents the time of change creation in the source system. EM cares about the `StartTime` & `EndTime` of the change and `Timestamp` which denotes the time of change emission by the source system to EM. All other times can be appended to MetaData if the client wishes. |
+| EnvironmentName     | MetaData             | In ChangeEvent schema this represent the name of the environment/stage where the change is being rolled out, i.e., INT, PPE, PROD, etc. This information is not needed by EM but clients can append this in MetaData if they want. |
+| Modified            | MetaData             | In ChangeEvent schema this represents the time of change modification in the source system. EM cares about the `StartTime` & `EndTime` of the change and `Timestamp` which denotes the time of change emission by the source system to EM. All other times can be appended to MetaData if the client wishes. |
+| SubscriptionID      | MetaData             | This can be part of metadata. Metadata is a string with representation as `{"key1":"value1","value2":"value2"}`. |
+| AppendDescription   | -                    | This attribute is no longer needed. |
+| Risk                | PlannedInterruption  | In ChangeEvent schema this represents the risk associated with the change. It is no longer a numerical value but a `string` representing the impact that could be caused. So please be succinct and precise. |
+| ExternalSourceType  | -                    | This attribute is no longer needed but can be appended in MetaData if the client finds value in it. |
+| ExternalParentId    | ParentChangeActivity | This is the parent change activity id which spawned this entity change event. Not every entity change event will have relevant and informative parent change activity.  |
