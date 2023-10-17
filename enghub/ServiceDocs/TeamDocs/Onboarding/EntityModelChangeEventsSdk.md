@@ -3,14 +3,22 @@
 </br>
 
 In order for the customers to send `EntityChangeEvents` to the <b>Entity Model Platform</b>,
-they need to utilize the [`EntityModel.ChangeEvents.SDK` nuget package](https://msazure.visualstudio.com/DefaultCollection/One/_artifacts/feed/FCM-Consumption/NuGet/EntityModel.ChangeEvents.SDK/versions)
+they need to utilize either [`EntityModel.ChangeEvent.Sdk.Azure`](https://msazure.visualstudio.com/One/_artifacts/feed/FCM-Consumption/NuGet/EntityModel.ChangeEvent.Sdk.Azure) 
+or [`EntityModel.ChangeEvent.Sdk.AutoPilot`](https://msazure.visualstudio.com/One/_artifacts/feed/FCM-Consumption/NuGet/EntityModel.ChangeEvent.Sdk.Autopilot) nuget package
 which is available in the [FCM-Consumption](https://msazure.visualstudio.com/DefaultCollection/One/_artifacts/feed/FCM-Consumption) nuget feed.
+</br>
+
+| Nuget Package | Auth Mechanism | Publisher Pipeline |
+|---------------|----------------|--------------------|
+| `EntityModel.ChangeEvent.Sdk.Azure`       | AAD App Id + AAD Tenant Id + Valid Cert   | EventHub  |
+| `EntityModel.ChangeEvent.Sdk.AutoPilot`   | ApPKI                                     | AzPubSub  |
+
 ## Prerequisites
-1. Reach out to [`fcmsupport@microsoft.com`](mailto:fcmsupport@microsoft.com) providing the below information to retrieve the `app config endpoint` that is needed to initialize the SDK. 
+1. Reach out to [`fcmsupport@microsoft.com`](mailto:fcmsupport@microsoft.com) providing the below information to retrieve the `app config endpoint` or `AzPubSub` topic name that is needed to initialize the SDK. 
     1. the use-case
     1. throughput requirements
     1. data-size of each event that the client service will generate based on the schema mentioned below.
-    1. Client's service AAD Application Id.
+    1. Client's service AAD Application Id or AutoPilot/PilotFish environment name regex depending on what Sdk nuget you are using.
 
 ## Schema
 1. Below is the example of how to create `EntityChangeEvents`.
@@ -37,64 +45,63 @@ which is available in the [FCM-Consumption](https://msazure.visualstudio.com/Def
     }
     ```
 
-## Usage
-1. Install [`EntityModel.ChangeEvents.SDK` nuget package](https://msazure.visualstudio.com/DefaultCollection/One/_artifacts/feed/FCM-Consumption/NuGet/EntityModel.ChangeEvents.SDK/versions)
+## Usage of `EntityModel.ChangeEvent.Sdk.Azure`
+1. Install [`EntityModel.ChangeEvent.Sdk.Azure`](https://msazure.visualstudio.com/DefaultCollection/One/_artifacts/feed/FCM-Consumption/NuGet/EntityModel.ChangeEvent.Sdk.Azure)
    from the [FCM-Consumption](https://msazure.visualstudio.com/DefaultCollection/One/_artifacts/feed/FCM-Consumption) nuget feed.
 
 1. Add this nuget package to your project.
     ```xml
     <ItemGroup>
-	  <PackageReference Include="EntityModel.ChangeEvents.SDK" Version= <!--latest--> />
+        <PackageReference Include="EntityModel.ChangeEvent.Sdk.Azure" Version="1.0.2480.32" />
     </ItemGroup>
     ```
 
 1. Add the following code to your project to initialize the SDK:
 	```csharp
-	EntityModelChangeEventSdk.Initialize<EntityChangeEvent>(services, new InitOptions()
-    {
+    EntityModelChangeEventSdk.Initialize<EntityChangeEvent>(services, new InitOptions(
+    
         /* Provide the correct host network value from the ClientServiceHostNetwork enum
          * There are only accepted values: Azure and PF. 
          */
-        HostNetwork = ClientServiceHostNetwork.Azure,
+        hostNetwork: InitOptionsBase.HostEnvironment.Azure,
             
         /* Provide the correct stage value from the enum corresponding to the stage
          * where the client service is being run.
          */
-        Stage = EnvironmentStage.DEV,
-
+        envStage: InitOptionsBase.EnvironmentStage.INT,
+    
         /* Reach out to fcmsupport@microsoft.com to ask for the 
          * correct app config endpoint depending on your stages.
          */
-        AppConfigEndpoint = "https://ac-em-appcs-sdk-int-eastus-001.azconfig.io",
-
+        appConfigEndpoint: "https://ac-em-appcs-sdk-int-eastus-001.azconfig.io",
+    
+        /* This is the client's application id in AAD.
+         * This is required by the SDK for various resource authentication & telemetry purposes.
+         */
+        clientId: "aad-app-registration-client-id",
+    
+        /* The azure tenant id where the above app registration is created.
+         */
+        tenantId: "azure-tenant-id-where-app-registration-is-created",
+    
+        /* X509 cert that can be used to authenticate the client id using AAD.
+         * Client is responsible for providing a valid certificate which is bound to the AAD App Registration.
+         */
+         clientCertificate: <cert>,
+    
+        /* Client's can provide their own value for the batch size in bytes.
+         * If no value is provided, then SDK configured default value will be used.
+         * The batch value should be greater than 24B.
+         */
+        publishEntityChangeBatchSizeInBytes: 0,
+    
         /* Provide this value if the you would want the batches to be published 
          * to the platform automatically after a certain interval.
          * Leave this value to zero if you would want to publish the batches 
          * as they are created. 
          * This value is in seconds. The default value is 0.
          */
-        AutoPublishEntityChangesIntervalInSeconds = 5,
-
-        /* Client's can provide their own value for the batch size in bytes.
-         * If no value is provided, then SDK configured default value will be used.
-         * The batch value should be greater than 24B.
-         */
-        PublishEntityChangeBatchSizeInBytes = 0,
-
-        /* This is the client's application id in AAD.
-         * This is required by the SDK for various resource authentication & telemetry purposes.
-         */
-        ClientId = "aad-app-registration-client-id",
-
-        /* The azure tenant id where the above app registration is created.
-         */
-        TenantId = "azure-tenant-id-where-app-registration-is-created",
-
-        /* X509 cert that can be used to authenticate the client id using AAD.
-         * Client is responsible for providing a valid certificate which is bound to the AAD App Registration.
-         */
-         ClientCertificate = <cert>,
-    });
+        autoPublishEntityChangesIntervalInSeconds: 5));
 	```
     The above step will initialize the SDK and create and weave all the necessary instances using Dependency Injection.
 1. Once the initialization is successful, clients can use the singleton bean of type `IPublishEntityChange<EntityChangeEvent>` in their code to publish Entity Changes:
@@ -116,18 +123,18 @@ which is available in the [FCM-Consumption](https://msazure.visualstudio.com/Def
     The above method will create the batches as per the configured batch size and 
     either periodically publish or instantaneously publish the batches depending on the client provided configuration for auto-publishing.
 
-## Error Handling & Retry
+### Error Handling & Retry
  1. Clients need not implement any retry mechanism for this integration. The SDK will handle all the retry logic internally.
     1. When <b>auto-publishing is enabled</b>: 
         1. The SDK will keep trying to publish the batches until the batch is successfully published or the number of failed batches have reached the max limit of 25.
         1. In which case, SDK will throw the underlying exception to the client which can be used to debug. 
-        1. Also, the SDK will keep publishing the metrics to FCM team's telemetry for monitoring & alarming purposes.
+        1. Also, the SDK will keep publishing the warning & error metrics to FCM team's telemetry for monitoring & alarming purposes.
     1. When <b>auto-publishing is disabled</b>:
         1. The SDK will retry on all common exceptions at most thrice before it fails.
         1. After 3 retries, SDK will throw the underlying exception to the client which can then be used for debugging and engaging [`fcmsupport@microsoft.com`](mailto:fcmsupport@microsoft.com) if needed.
         1. As above, the error metrics will be published to FCM telemetry for monitoring & alarming purposes.
 
-## Troubleshooting
+### Troubleshooting
 <todo/>
 
 ## FAQ
