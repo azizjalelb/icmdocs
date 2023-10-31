@@ -1,4 +1,4 @@
-﻿# Whitelist a Build
+﻿# Change the approval process for a service
 
 ## Overview
 
