@@ -207,6 +207,8 @@ items:
         items: 
           - name: DataPlatform APIs Design
             href: TeamDocs/DataPlatform/fcm_dataplatform_api.md
+          - name: FCM ITS Bug Bash Test Cases
+            href: TeamDocs/DataPlatform/bug_bash_test_cases.md
       - name: DeploymentGuide
         items: 
           - name: ChangeExplorerV2 AGC
