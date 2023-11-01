@@ -71,6 +71,10 @@ items:
             href: TSGs/ChangeGuard/LogSilentCanaries.md
           - name: CXP Retrieval Error
             href: TSGs/ChangeGuard/CXPRetrievalError.md
+          - name: Whitelist a Build
+            href: TSGs/ChangeGuard/WhitelistBuild.md
+          - name: Add or remove service from SafeFly approval process
+            href: TSGs/ChangeGuard/ChangeApprovalProcessForService.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
