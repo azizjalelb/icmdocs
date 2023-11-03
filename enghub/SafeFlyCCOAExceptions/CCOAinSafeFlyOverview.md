@@ -28,10 +28,14 @@ For a full list of pilot services who will submit CCOA exception requests in Saf
 
 #### All-Up User E2E experience
 
-![alt text](media/E2E_All.png)
+![alt text](media/E2E_1.png)
 
 
 #### Further Guidence on Exception Process
 | User Experience | Link |
 |:-----|:-----|
 | Pilot Service| [Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests)|
+| R2D Ev2 Services (Non-Pilot)| [R2D Ev2 Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/R2DnonPilotEv2)|
+
+
+<!--| R2D AzDeployer/PilotFish/AP Stager Services (Non-Pilot)| [R2D AzD Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/R2DnonPilotAzD)| -->

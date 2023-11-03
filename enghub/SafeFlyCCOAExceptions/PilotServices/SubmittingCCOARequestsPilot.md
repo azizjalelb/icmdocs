@@ -1,10 +1,6 @@
-# Ev2 Pilot Services
+# Submitting CCOA Requests for Pilot Services
 
-If you are a service that is QC, uses Ev2 as a deployment system and is onboarded to R2D, this page will provide the information you need to submit CCOA exception requests in SafeFly. Below is an image of the decision path for this user experience
-
-![alt text](media/E2E_Ev2.png)
-
-## User Experience for Submitting CCOA Exception Requests
+![alt text](media/E2E_Pilot.png)
 
 When submitting a CCOA exception, pilot services will navigate to the SafeFly home page and create a new request. During a CCOA period, a banner will be displayed at the top of the page indicating that there is a CCOA in effect along with a link to the CCOA documentation.  
 
@@ -34,11 +30,10 @@ Once the form is submitted, the user will be routed to their request where it wi
         - Engineering Managers (Principal +) are required to be part of the R2D review discussions for the service deployment request.
         - Expect R2D council to be actively engaged and learn more about payload risks and quality validation completed to ensure change is safe and avoid shipping bad code to production regions.
         - Ensure the team has information on pending and ongoing repairs corresponding to improving deployment stature for the service (Test/Release, Detection etc.)
+    - For CCOA events, users will have the option to bypass R2D reviews for critical changes. By selected “Livesite Mitigation” for question 8 in the SafeFly form, the service will bypass R2D reviews and skip to CVP reviews. See [Bypassing R2D](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/BypassingR2D) for more information.
 6. CVP Reviews
     - If R2D review rejects the request, the CVP still has the ability to overrule the decision and user will be able to proceed with deployment
     - If R2D approves, CVP can reject request
 7.	Once all approvals have been met, the deployment will be unblocked and the user will be able to proceed with rolling out their deployment
 
 ![alt text](media/SF_4.png)
-
-## If an Error Occurs: Fallback Plan
