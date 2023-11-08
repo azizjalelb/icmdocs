@@ -5,6 +5,10 @@ items:
     items:
       - name: Why TSGs?
         href: TSGs/tsgs.md
+      - name: DataPlatform
+        items:
+          - name: ChangeSearchService Canaries
+            href: TSGs/DataPlatform/ChangeSearchService/canaries.md
       - name: ChangeExplorerV2
         items:
           - name: ChangeExplorerV2
@@ -67,6 +71,10 @@ items:
             href: TSGs/ChangeGuard/LogSilentCanaries.md
           - name: CXP Retrieval Error
             href: TSGs/ChangeGuard/CXPRetrievalError.md
+          - name: Whitelist a Build
+            href: TSGs/ChangeGuard/WhitelistBuild.md
+          - name: Add or remove service from SafeFly approval process
+            href: TSGs/ChangeGuard/ChangeApprovalProcessForService.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
@@ -161,6 +169,15 @@ items:
         items:
           - name: ExpiringInUseCerts
             href: TSGs/ExpiringCerts/ExpiringInUseCerts.md
+<<<<<<< HEAD
+=======
+      - name: SQL Server
+        items:
+          - name: ShardRemapping
+            href: TSGs/SqlServer/ShardRemap.md
+          - name: ShardCleanup
+            href: TSGs/SqlServer/ShardCleanup.md
+>>>>>>> 1c8ff4e06b78e314c22d1e2bdc1758993d69017e
   - name: Team Docs
     items:
       - name: Team Docs
@@ -171,6 +188,10 @@ items:
             href: TeamDocs/DeveloperDocs/NewHireOnboarding.md
           - name: DRI Responsibilities
             href: TeamDocs/DeveloperDocs/DRIResponsibilities.md
+          - name: Monitor Guidelines
+            href: TeamDocs/DeveloperDocs/MonitorGuidelines.md
+          - name: CoPilot Guide
+            href: TeamDocs/DeveloperDocs/copilot_guide.md
       - name: Change Explorer V2
         items:
           - name: Change Search Service
@@ -189,6 +210,24 @@ items:
         items: 
           - name: DataPlatform APIs Design
             href: TeamDocs/DataPlatform/fcm_dataplatform_api.md
+          - name: FCM ITS Bug Bash Test Cases
+            href: TeamDocs/DataPlatform/bug_bash_test_cases.md
+      - name: DeploymentGuide
+        items: 
+          - name: ChangeExplorerV2 AGC
+            href: TeamDocs/DeploymentGuide/changeexploreragc.md
+          - name: IngestionV1 AGC
+            href: TeamDocs/DeploymentGuide/ingestionagc.md
+      - name: Deployments
+        items: 
+          - name: CompletedDeployments
+            href: TeamDocs/Deployments/CompletedDeployments/SearchByIncidentIdDeployment.md
+      - name: Onboarding
+        items: 
+          - name: Onboarding New Customer
+            href: TeamDocs/Onboarding/onboarding.md
+          - name: EntityModel ChangeEvents SDK
+            href: TeamDocs/Onboarding/EntityModelChangeEventsSdk.md
   - name: Team Onboarding
     items:
       - name: Onboarding New Customer

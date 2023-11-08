@@ -10,7 +10,11 @@ Applicable services for this scenario will meet the following criteria:
 4. Appears on the [Pilot Service](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/PilotServices) list
 
 
+<<<<<<< HEAD
 If your service meets the above criteria, refer to our guidence here: [Submitting CCOA Requests for Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequestsPilot)
+=======
+If your service meets the above criteria, refer to our guidence here: [Submitting CCOA Requests for Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/Ev2PilotServices)
+>>>>>>> 1c8ff4e06b78e314c22d1e2bdc1758993d69017e
 
 
 If you do not meet the above criteria, refer to the table [here](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/CCOAinSafeFlyOverview#which-exception-process-to-use) for additional guidence on which process applies to you
@@ -27,4 +31,8 @@ Below is a flow chart of the entire user experience for Pilot Services. This wik
 
 If you are an Ev2 Service who appears on the [Pilot Service](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/PilotServices) list, refer to our guidence here: [Ev2 Pilot Services Issues](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/Errors/Ev2PilotServicesErrors) 
 
+<<<<<<< HEAD
 If you are a Host Service (Below Arm) who appears on the [Pilot Service](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/Errors/PilotServices/PilotServices) list, refer to our guidence here: [Host Pilot Services Issues](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/Errors/HostPilotServicesErrors) 
+=======
+If you are a Host Service (Below Arm) who appears on the [Pilot Service](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/Errors/PilotServices/PilotServices) list, refer to our guidence here: [Host Pilot Services Issues](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/HostPilotServicesErrors) 
+>>>>>>> 1c8ff4e06b78e314c22d1e2bdc1758993d69017e

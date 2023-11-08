@@ -9,7 +9,11 @@
     - Name: Submitting CCOA Requests for Pilot Services
       href: PilotServices/SubmittingCCOARequestsPilot.md
     - Name: Bypassing R2D approval
+<<<<<<< HEAD
       href: PilotServices/BypassingR2D.md
+=======
+      href: PilotServices/BypassingR2Dapproval.md
+>>>>>>> 1c8ff4e06b78e314c22d1e2bdc1758993d69017e
     - Name:  Issues/Errors
       items:
       - Name: Ev2 Pilot Services Errors
