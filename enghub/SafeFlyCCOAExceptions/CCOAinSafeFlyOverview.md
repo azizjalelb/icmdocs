@@ -1,7 +1,7 @@
 # Submitting CCOA Exception Requests Overview
 
 ## Critical Change Only Advisories (CCOA)
-[Critical Change Only Advisories](https://microsoft.sharepoint.com/teams/AzureHighPriorityEventsProgramPortal/SitePages/Azure-Critical-Change-Only-Advisory.aspx) (CCOA) are a pre-defined period where engineering teams operate under a mandate allowing only critical changes to production. CCOAs applies to ring 0-2 services and production services including Networking, Compute, Storage, SQL Database, etc. No change should occur, except mandatory critical updates, as determined by respective organizations. CCOAs are planned 8 months in advance and are communicated in Fundamentals, PLR, and the weekly Hi-Pri Events Awareness email - join azhipricomms@microsoft.com.
+[Critical Change Only Advisories](https://aka.ms/ccoa) (CCOA) are a pre-defined period where engineering teams operate under a mandate allowing only critical changes to production. CCOAs applies to ring 0-2 services and production services including Networking, Compute, Storage, SQL Database, etc. No change should occur, except mandatory critical updates, as determined by respective organizations. CCOAs are planned 8 months in advance and are communicated in Fundamentals, PLR, and the weekly Hi-Pri Events Awareness email - join azhipricomms@microsoft.com.
 
 To find out more about CCOAs, please visit https://aka.ms/ccoa. You will also find more information on your organization’s exception info and delegates, safe change guidance, and CCOA dates for this calendar year. Refer to [CCOA exceptions](http://aka.ms/ccoa/exceptions) for general guidance on how your organization is restricting change during this period.
 
@@ -23,8 +23,8 @@ For a full list of pilot services who will submit CCOA exception requests in Saf
 
 | SDP TOOL | Quality Critical Service (QCS)? | Onboarded to R2D | Appear in Pilot Services List | Exception Process |
 |:-----|:-----|:-----|:-----|:-----|
-| EV2 | Yes<br><br>Yes<br><br>Yes<br><br>No | Yes<br><br>Yes<br><br>No<br><br>No | Yes<br><br>No<br><br>No<br><br>No   | Submit CCOA requests in SafeFly<br><br>Submit SafeFly request, proceed with approvals and R2D review in SafeFly, submit CCOA exception request in Change Guard<br><br>Submit CCOA exception request in Change Guard<br><br>Submit CCOA exception request in Change Guard |
-|AZDeployer<br>ApStager<br>PilotFish|Yes<br><br>Yes<br><br>Yes<br><br>No | Yes<br><br>Yes<br><br>No<br><br>No | Yes<br><br>No<br><br>No<br><br>No   | Submit CCOA requests in SafeFly<br><br>Submit SafeFly request, proceed with approvals and R2D review in SafeFly, submit CCOA exception request following [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling) guidence<br><br>Submit CCOA exception request following [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling) guidence<br><br>Submit CCOA exception request following [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling) guidence |
+| EV2 | Yes<br><br><br>Yes<br><br><br>Yes<br><br><br>No | Yes<br><br><br>Yes<br><br><br>No<br><br><br>No | Yes<br><br><br>No<br><br><br>No<br><br><br>No   | Submit CCOA requests in SafeFly<br><br>Submit SafeFly request, proceed with approvals and R2D review in SafeFly, submit CCOA exception request in Change Guard<br><br>Submit CCOA exception request in Change Guard<br><br>Submit CCOA exception request in Change Guard |
+|AZDeployer<br>ApStager<br>PilotFish|Yes<br><br><br>Yes<br><br><br>Yes<br><br><br>No | Yes<br><br><br>Yes<br><br><br>No<br><br><br>No | Yes<br><br><br>No<br><br><br>No<br><br><br>No   | Submit CCOA requests in SafeFly<br><br>Submit SafeFly request, proceed with approvals and R2D review in SafeFly, submit CCOA exception request following [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling) guidence<br><br>Submit CCOA exception request following [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling) guidence<br><br>Submit CCOA exception request following [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling) guidence |
 
 #### All-Up User E2E experience
 
@@ -34,8 +34,23 @@ For a full list of pilot services who will submit CCOA exception requests in Saf
 #### Further Guidence on Exception Process
 | User Experience | Link |
 |:-----|:-----|
-| Pilot Service| [Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests)|
-| R2D Ev2 Services (Non-Pilot)| [R2D Ev2 Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/R2DnonPilotEv2)|
+| Pilot Services Overview| [Pilot Services Overview](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/PilotServicesOverview) |
+|Submitting CCOA Exception Requests for Pilot Services|[CCOA Requests for Pilot](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequestsPilot)|
+| Bypassing R2D Approval| [Bypassing R2D Approval](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/BypassingR2D)
+| Submitting CCOA Requests for R2D Ev2 Services (Non-Pilot)| [CCOA Requests for R2D Ev2](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/R2DnonPilotEv2)|
+
+#### Quick Links
+|Links|
+|:-----|
+|[SafeFly Requests Page](https://safeflywebapp.azurewebsites.net/safe-fly-request/r2d)|
+|[New R2D form](https://safeflywebapp.azurewebsites.net/safe-fly-request/r2d/new)|
+|[Change Guard](https://aka.ms/changeguard)|
+|[CCOA Wiki](https://aka.ms/ccoa)|
+|[R2D Wiki](https://eng.ms/docs/more/sre/engagements/r2d/readme)|
+|[NoFlyZone Schedule](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling?anchor=1.-how-to-bypass-noflyzone-schedule-for-critical-or-security-fixes)|
+|[API_Set_SchedulesException](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/52501/API_Set_SchedulesException)|
+
+
 
 
 <!--| R2D AzDeployer/PilotFish/AP Stager Services (Non-Pilot)| [R2D AzD Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/R2DnonPilotAzD)| -->

@@ -14,6 +14,10 @@ The form will be automatically populated with the CCOA event that the exception 
 
 ![alt text](media/SF_3.png)
 
+If the deployment is a Livesite Mitigation, the user will be asked to input an ICM ID for Question 8. *Note: this will bypass R2D Review. See more details [here](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/BypassingR2D)
+
+![alt text](media/SF_8.png)
+
 Once the form is submitted, the user will be routed to their request where it will show the reviews they need to complete along with the progress of the reviews. The review process is as follows:
 
 1.	Automatic reviews: occurs immediately and provides a calculated risk, deployment impact, etc.
