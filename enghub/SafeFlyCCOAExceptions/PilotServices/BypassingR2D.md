@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Bypassing R2D
 
 For critical LiveSite deployments during a CCOA period, services will have the ability to bypass R2D review in order to quickly roll out the necessary changes. Utilizing this feature should only be used for critical changes that need to be deployed immediately. When services bypass R2D review, they will still need to obtain CVP approval. If a CVP is unable to be reached, there are ways to bypass CVP approval in order to unblock these break/fix deployments. The decision chart below shows how to approach bypassing these approvals and the next section provides in-depth steps for bypassing these approvals. 
@@ -50,6 +49,3 @@ Detailed information can be found here: [NoFlyZone Schedule](https://msazure.vis
 API for the Set_SchedulesException can be found here: [API_Set_SchedulesException](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/52501/API_Set_SchedulesException)
 
 ![alt text](media/SF_14.png)
-=======
-# Bypassing R2D
->>>>>>> 1c8ff4e06b78e314c22d1e2bdc1758993d69017e
