@@ -18,5 +18,5 @@
         href: PilotServices/Errors/HostPilotServicesErrors.md
 - Name: R2D Non-Pilot Ev2 services
   href: R2DnonPilotEv2.md
-#- Name: R2D Non-Pilot AzD services
-  #href: R2DnonPilotAzD.md
+- Name: R2D Non-Pilot AzD services
+  href: R2DnonPilotAzD.md
