@@ -10,6 +10,5 @@ To see if your service qualifies, refer to the table below of the Service Tree I
 |      bf4b5611-9f5e-4185-8701-6d0a4418d472  |     VnetAgent                                        |     Host Service (Below ARM)  |
 |      2b06ab6e-6c04-4655-ad59-0d774334a973  |     LSG Overlake                                     |     Host Service (Below ARM)  |
 |      7ecdbd40-fe6a-4d66-bb95-dab4ee9c8fce  |     Network Resource Provider                        |     Host Service (Below ARM)  |
-|      c2c299e4-1a8f-4e90-9c0a-934e5ea8fc66  |     Azure Database for PostgreSQL - Flexible Server  |     Ev2                       |
 |      c0edbb80-092f-4922-bf40-329b47c827db  |     ExpressRoute                                     |     Ev2                       |
 |      59fe8ab9-6707-4b3c-afb0-f5ed4214b531  |     Redis Cache                                      |     Ev2                       |

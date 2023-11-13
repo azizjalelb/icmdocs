@@ -1,6 +1,6 @@
 # Submitting CCOA Requests for Pilot Services
 
-![alt text](media/E2E_Pilot.png)
+<!--![alt text](media/E2E_Pilot.png)-->
 
 When submitting a CCOA exception, pilot services will navigate to the SafeFly home page and create a new request. During a CCOA period, a banner will be displayed at the top of the page indicating that there is a CCOA in effect along with a link to the CCOA documentation.  
 
@@ -14,7 +14,7 @@ The form will be automatically populated with the CCOA event that the exception 
 
 ![alt text](media/SF_3.png)
 
-If the deployment is a Livesite Mitigation, the user will be asked to input an ICM ID for Question 8. *Note: this will bypass R2D Review. See more details [here](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/BypassingR2D)
+If the deployment is a Livesite Mitigation, the user will be asked to input an ICM ID for Question 8. *Note: this will bypass R2D Review. See more details* [here](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/BypassingR2D)
 
 ![alt text](media/SF_8.png)
 

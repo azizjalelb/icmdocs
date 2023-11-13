@@ -1,12 +1,12 @@
 # Services who use Ev2 as a deployment system, are onboarded to R2D (Non-Pilot)
 
-If your services uses Ev2 as a deployment system, is onboarded to R2D and does not appear in the [Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests) list, this page will provide guidence for submitting CCOA Exception requests.
+If your service uses Ev2 as a deployment system, is onboarded to R2D and does not appear in the [Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests) list, this page will provide guidence for submitting CCOA Exception requests.
 
 ## Step 1: Complete R2D review
 
 The first step is for the service to submit an R2D request in SafeFly. They will have to navigate to SafeFly and complete the questionnaire. 
 
-![alt text](media/NP_1.png)
+![alt text](media/SF_1.png)
 
 Once the form is submitted, the user will be routed to their request where it will show the reviews they need to complete along with the progress of the reviews. The review process is as follows: 
 
@@ -29,7 +29,7 @@ Once the form is submitted, the user will be routed to their request where it wi
     - If R2D approves, CVP can reject request
 7.	Once all approvals have been met, the deployment will be unblocked and the user will be able to proceed with rolling out their deployment
 
-![alt text](media/NP_2.png)
+![alt text](media/SF_4.png)
 
 After the request is approved by R2D, the user will then have to navigate back to Change Guard to submit their CCOA exception request. Ensure you have copied the link with the R2D review result in SafeFly. In the next section is a description of how to submit an Ev2 exception request in Change Guard. 
 
