@@ -9,24 +9,24 @@ If you need access please add your-self to the idweb group: [fcmusers](https://i
 
 1.	What changes are happening in an impacted region?
     - Navigate to the [Top Level Changes](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=12hours&p-_endTime=now&p-_region=all&p-_cluster=all&p-_serviceName=v-Host+Networking&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#a2b4dbc9-e958-4054-bc3e-6677c4321dd9) tab to view all the changes made in a region or all the changes made by a service
-    - Follow the steps [here](#Navigating-the-“Top-Level”-View) to find the changes that have been made
+    - Follow the steps [here](#navigating-the-top-level-view) to find the changes that have been made
 2. Are there any control plane changes?
     - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab to view details of changes made
-    - Follow the steps [here](#Navigating-Incidents-that-involve-Control-Plane-Changes) to find control plane changes
+    - Follow the steps [here](#navigating-incidents-that-involve-control-plane-changes) to find control plane changes
 3.	Are there any host networking changes? 
     - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab to view details of changes made
-    - Follow the steps [here](#Find-changes-made-by-service:) to find changes made by “Host Networking” Service
+    - Follow the steps [here](#find-changes-made-by-service) to find changes made by “Host Networking” Service
 4.	Are there any Azure networking changes? 
     - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab to view details of changes made
-    - Follow the steps and example [here](#Navigating-Incidents-that-involve-Networking-Changes) to find out SDN changes
+    - Follow the steps and example [here](#navigating-incidents-that-involve-networking-changes) to find out SDN changes
 5.	What changes are happening to SQL clusters? 
     - Follow the steps and examples [here](#SQL-reports-that-a-tenant-is-unhealthy-and-needs-to-investigate-potential-host-related-culprits:)  
 6.	Are there any changes to the node the SQL cluster is hosted on? 
     - Navigate to the [Node View](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_nodeid=all&p-_dynamicMeasure=all&p-_entityTypeNode=all#08c31477-dfa3-43d3-9427-a6a57b228c43)
-    - Follow the steps [here](#changes-for-nodes:) to find changes at the node
+    - Follow the steps [here](#changes-for-nodes) to find changes at the node
 7.	Are there any TOR changes associated with the node? 
     - Navigate to the [Node View](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_nodeid=all&p-_dynamicMeasure=all&p-_entityTypeNode=all#08c31477-dfa3-43d3-9427-a6a57b228c43)
-    - Follow the steps [here](#Identifying-TOR,-T1,-T2-Changes-for-the-Node:) to find changes at the node
+    - Follow the steps [here](#identifying-tor-t1-t2-changes-for-the-node) to find changes at the node
 8.	What changes are happening to storage tenants? 
     - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab to view details of changes made
     - Follow the steps and examples here
@@ -35,7 +35,7 @@ If you need access please add your-self to the idweb group: [fcmusers](https://i
 
 During incident mitigation, DRIs are looking for changes made by either their service or by a dependent service.  There are various tabs and views within the dashboard that can help the DRI look for changes.
 
-### Navigating the “Top-Level” View
+### Navigating the Top-Level View
 
 1.	Clear any pre-populated filter values
 2.	Select a time-range: preferably last 24 hrs or more 
