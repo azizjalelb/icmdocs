@@ -32,7 +32,7 @@ There are times when a change is critical and needs to be deployed ASAP but the 
 
 ### Ev2 Deployments - Bypassing CVP Approval
 
-If a CVP is unavailable to approve a CCOA exception request, Change Guard will be utilized to bypass the CCOA deployment block. The person submitting the request should create an ICM, assign it to the Change Guard team and provide the SafeFly ID in the ICM. Here is a link to the [ICM Template](https://portal.microsofticm.com/imp/v3/incidents/create?tmpl=Q3x1H3)
+If a CVP is unavailable to approve a CCOA exception request, SafeFly On-Call will be utilized to bypass the CCOA deployment block. The person submitting the request should create an ICM, assign it to the SafeFly team and provide the SafeFly ID in the ICM. Here is a link to the [ICM Template](https://portal.microsofticm.com/imp/v3/incidents/create?tmpl=Q3x1H3)
 
 ![alt text](media/SF_12.png)
 
@@ -42,10 +42,14 @@ Our on call engineers will conduct an investigation and will add your service to
 
 ### AzDeployer/PilotFish Deployments - Bypassing CVP Approval
 
-Bypassing CVP approvals for AzDeployer or PilotFish deployments does not require reaching out to the on-call team directly to unblock deployments. Instead, the user will create a NoFlyZone Set-SchedulesException on their SAW machine. 
+Bypassing CVP approvals for AzDeployer or PilotFish deployments does not require reaching out to the on-call team directly to unblock deployments. Instead, the user will create a NoFlyZone Set-SchedulesException on their SAW machine if they are part of the AME\TM-Scheduler SG or they can JIT and run a the BypassSDP cmdlet (only for PF deployments).
 
 Detailed information can be found here: [NoFlyZone Schedule](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling?anchor=1.-how-to-bypass-noflyzone-schedule-for-critical-or-security-fixes). 
 
 API for the Set_SchedulesException can be found here: [API_Set_SchedulesException](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/52501/API_Set_SchedulesException)
 
 ![alt text](media/SF_14.png)
+
+1. For PF, get JIT approval and then run the BypassSdp command [NoFlyZone Schedule](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling?anchor=1.-how-to-bypass-noflyzone-schedule-for-critical-or-security-fixes). They can also run the Set-SchedulesException if they have permissions.
+
+2. For AzDeployer rollouts (non PF), they must run the Set-SchedulesException. (JIT is not an option)

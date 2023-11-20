@@ -33,10 +33,14 @@ Once the form is submitted, the user will be routed to their request where it wi
 
 ## Bypass NoFlyZone Schedule
 
-After the request is approved by R2D, the user will then create a NoFlyZone Set-SchedulesException on their SAW machine. 
+After the request is approved by R2D, the user will then create a NoFlyZone Set-SchedulesException on their SAW machine if they are part of the AME\TM-Scheduler SG or they can JIT and run a the BypassSDP cmdlet (only for PF deployments). 
 
 Detailed information can be found here: [NoFlyZone Schedule](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling?anchor=1.-how-to-bypass-noflyzone-schedule-for-critical-or-security-fixes). 
 
 API for the Set_SchedulesException can be found here: [API_Set_SchedulesException](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/52501/API_Set_SchedulesException)
 
 ![alt text](media/SF_14.png)
+
+1. For PF, get JIT approval and then run the BypassSdp command [NoFlyZone Schedule](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling?anchor=1.-how-to-bypass-noflyzone-schedule-for-critical-or-security-fixes). They can also run the Set-SchedulesException if they have permissions.
+
+2. For AzDeployer rollouts (non PF), they must run the Set-SchedulesException. (JIT is not an option)

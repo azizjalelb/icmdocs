@@ -6,6 +6,46 @@ When submitting a CCOA exception, pilot services will navigate to the SafeFly ho
 
 ![alt text](media/SF_1.png)
 
+## Deployment Details
+
+The *Deployment Details* Section will ask for details that are relevant to the deployment system you are using. 
+
+### If your Deployment System is Ev2 
+
+In the *Deployment Details* Section, question 4-e will ask you to enter the build number. It is critical to ensure this information is correct in order for SafeFly to be able to unblock your deployment. This question will show up if you select Ev2 as your deployment system in question 4-b
+
+![alt text](media/SF_16.png)
+
+There are a few ways you can obtain this information. 
+
+1. Navigate to Ev2 and under *Release Details* you will see the Build Number
+
+    ![alt text](media/SF_17.png)
+
+2. In ADO, click on *Artifacts*. In the pop-up, the build version will be available in the navigation at the top. See the images below where the build version is highlighted in yellow.
+
+    ![alt text](media/SF_15.png)
+    
+    ![alt text](media/SF_18.png)
+
+Once you have the build number, you can either select is from the drop down list or enter the number into the question.
+
+![alt text](media/SF_19.png)
+
+### If your Deployment System is AzDeployer
+
+In the *Deployment Details* Section, you will have to provide the following information:
+
+![alt text](media/SF_20.png)
+
+### If your Deployment System is PilotFish 
+
+In the *Deployment Details* Section, you will have to provide the following information:
+
+![alt text](media/SF_21.png)
+
+## Continuing the R2D Questionnaire
+
 When the user enters a start and end range that falls within a CCOA period along with the qualifying deployment tool, and service selected, a CCOA exception form will appear after the Deployment Details section of the page. 
 
 ![alt text](media/SF_2.png)
