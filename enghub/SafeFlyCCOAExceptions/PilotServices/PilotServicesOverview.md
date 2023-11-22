@@ -1,7 +1,7 @@
 # Pilot Services Overview
 Applicable services for this scenario will meet the following criteria: 
 
-1. Services who use Ev2 as a deployment system
+1. Services who use Ev2, AzDeployer, or PilotFish as a deployment system
 
 2. Onboarded to R2D
 
