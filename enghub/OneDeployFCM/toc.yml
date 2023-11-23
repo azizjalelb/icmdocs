@@ -1,6 +1,12 @@
 - name: Overview and FAQ
   href: Overview_FAQ.md
 - name: Interface How-To's
-  href: Interface_howto.md
+  items:
+    - name: Top-Level View
+      href: InterfaceHowTo/TopLevelView.md
+    - name: Change Details View
+      href: InterfaceHowTo/ChangeDetails.md
+    - name: Node View
+      href: InterfaceHowTo/NodeView.md
 - name: Examples and Scenarios
   href: Scenarios.md

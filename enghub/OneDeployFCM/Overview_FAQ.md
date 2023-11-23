@@ -1,4 +1,5 @@
 <h1>OneDeployFCM Dashboard (aka.ms/onedeployfcm)</h1>
+
 <h2>Dashboard Overview: </h2>
 The One deploy fcm dashboard has been built on top of the Entity Model data. The dashboard provides several views that allows the DRIs to find changes that were made at a given time duration, and/or, at a given location, and/or, by a given service. It allows the DRIs to zoom out for changes at a region level, or zoom in for changes at a given entity level, and everything in between.  DRIs can also see the SDP progression for a given payload.
 
@@ -10,11 +11,11 @@ If you need access please add your-self to the idweb group: [fcmusers](https://i
 1. What changes are happening in an impacted region?  
     - Navigate to the [Top Level Changes](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=12hours&p-_endTime=now&p-_region=all&p-_cluster=all&p-_serviceName=v-Host+Networking&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#a2b4dbc9-e958-4054-bc3e-6677c4321dd9) tab to view all the changes made in a region or all the changes made by a service 
 
-    - Follow the steps [here](Interface_howto.md#toplevelView) to find the changes that have been made in a region. 
+    - Follow the steps [here](InterfaceHowTo/TopLevelView.md#toplevelView) to find the changes that have been made in a region. 
 
 2. Are there any payloads of high risk being deployed? 
 
-    - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab and follow the steps [here](Interface_howto.md#payloadRisk). 
+    - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab and follow the steps [here](InterfaceHowTo/ChangeDetails.md#payloadRisk). 
 
     - Knowing the payloads with highest risk will help to engage the right service team DRI 
 
@@ -22,7 +23,7 @@ If you need access please add your-self to the idweb group: [fcmusers](https://i
 
     - This is often asked during incident investigation. 
 
-    - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab and follow the steps [here](Interface_howto.md#hostUpdate). 
+    - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab and follow the steps [here](InterfaceHowTo/ChangeDetails.md#hostUpdate). 
 
 4. Are there any control plane changes?  
 
@@ -34,7 +35,7 @@ If you need access please add your-self to the idweb group: [fcmusers](https://i
 
     - Navigate to the [Change Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=6hours&p-_endTime=now&p-_entityIds=v-uswestcentral-prod-a&p-_region=all&p-_availabilityZone=all&p-_datacenter=all&p-_cluster=all&p-_serviceName=v-Azure+Cosmos+DB&p-_icmTeamName=all&p-_source=all&p-_entityType=all&p-_veName=all&p-_payload=all&p-_payloadOwner=all#66cc3653-ecde-4c2c-9d24-1838d351d4d4) tab to view details of changes made 
 
-    - Follow the steps [here](Interface_howto.md#hostUpdateNetworking) to find changes made by “Host Networking” Service 
+    - Follow the steps [here](InterfaceHowTo/ChangeDetails.md#hostUpdateNetworking) to find changes made by “Host Networking” Service 
 
 6. Is there an example for navigating control plane changes? 
 
