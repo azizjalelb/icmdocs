@@ -17,6 +17,10 @@ If you need access please add your-self to the idweb group: [fcmusers](https://i
 
 [Node View](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=24hours&p-_endTime=now&p-_nodeid=v-b2931fbe-fa10-ac0e-405b-661dd86838f6%2Cdd7577c4-aa26-bc96-a722-9b3853823d2d%2C2c1020f8-8b86-eb66-37b7-73246329ed14%2C9f4eadd2-0ec0-f8cb-25da-5e698058d0de&p-_dynamicMeasure=all&p-_entityTypeNode=all#08c31477-dfa3-43d3-9427-a6a57b228c43) – Use this view to see the progress for the entire deployment phase for the selected payload. The SDP details, bypasses, and risk scores for all the deployments are available here. 
 
+[Subscription View](https://dataexplorer.azure.com/dashboards/40fa7846-b756-40a6-a0e4-a77e5bc09767?p-_startTime=1hours&p-_endTime=now&p-_dynamicMeasure=all&p-_entityTypeNode=all&p-_subscriptionId=all#25eab919-a8e8-4c35-abdc-4d572d872d1f) – Shows the hierarchical VM view in context of all VMs from specified subscription(s). This is extremely useful for finding impacting changes for CRIs. 
+
+[Customer View](https://dataexplorer.azure.com/dashboards/40fa7846-b756-40a6-a0e4-a77e5bc09767?p-_customer=v-Walmart+Inc.&p-_startTime=1hours&p-_endTime=now&p-_nodeid=all&p-_region=all&p-_veName=all&p-_payload=all&p-_impactful=v-All&p-_noflyzone=all#f4aa9e20-a815-486c-a1c3-1a5a279e64eb) – Shows inventory of nodes for a customer, Impactful OM updates, Scheduled Events by category (OM, LM, Heal etc), all changes including impact less, and Batched updates
+
 [(Retention) Payload Details](https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_startTime=1hours&p-_endTime=now&p-_source=all&p-_entityType=all&p-_payload=all#6636e445-a18d-4c6d-addb-5d2483701de5) – Use this view for any payload details prior to 9/1/2023. 
 
 <h2>FAQs</h2>
