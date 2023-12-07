@@ -7,8 +7,8 @@ items:
         href: TSGs/tsgs.md
       - name: DataPlatform
         items:
-          - name: ChangeSearchService Canaries
-            href: TSGs/DataPlatform/ChangeSearchService/canaries.md
+          - name: FCM DP API TSG
+            href: TSGs/DataPlatform/ChangeSearchService/fcm_dp_api_tsg.md
       - name: ChangeExplorerV2
         items:
           - name: ChangeExplorerV2
