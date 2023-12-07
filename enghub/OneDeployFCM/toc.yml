@@ -8,5 +8,7 @@
       href: InterfaceHowTo/ChangeDetails.md
     - name: Node View
       href: InterfaceHowTo/NodeView.md
+    - name: Payload View
+      href: InterfaceHowTo/PayloadView.md
 - name: Examples and Scenarios
   href: Scenarios.md
