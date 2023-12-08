@@ -4,9 +4,9 @@
   items:
     - name: Top-Level View
       href: InterfaceHowTo/TopLevelView.md
-    - name: Change Details View
+    - name: All Changes View
       href: InterfaceHowTo/ChangeDetails.md
-    - name: Node View
+    - name: Host Drill Down View
       href: InterfaceHowTo/NodeView.md
     - name: Payload View
       href: InterfaceHowTo/PayloadView.md

@@ -22,4 +22,4 @@ Alternatively, select a service or source to view all the changes made by the se
 <img src="../media/globalViewTCPO.png" alt="alt text" width="1000"/>
 
 
-To understand the details of the changes, navigate to the [“Change Details” View](ChangeDetails.md#changeDetails) 
+To understand the details of the changes, navigate to the [“All Changes” View](ChangeDetails.md#changeDetails) 
