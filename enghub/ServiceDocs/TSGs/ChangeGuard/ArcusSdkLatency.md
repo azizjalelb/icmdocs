@@ -31,7 +31,7 @@ If this is the case,  further investigation is needed to see which services/pods
 In case restart of the pods in the cluster is needed, this can be done *either* by:
 - Stopping and starting the AKS cluster (*THIS WILL TRIGGER DOWNTIME* of the whole cluster)
 - *OR*
-- Restarting each service deployment using the command `kubectl rollout restart deployment my-deployment`. This command needs to be repeated for each impacted deployment/service.
+- Restarting each service deployment using the command `kubectl rollout restart deployment deployments/[DEPLOYMENT_NAME] -n [NAMESPACE]`. This command needs to be repeated for each impacted deployment/service. For PROD: kubectl rollout restart deployment deployments/changeassessment-deployment -n changeguard-ns
 
 Test everything to see if the problem is resolved.
 Steps:

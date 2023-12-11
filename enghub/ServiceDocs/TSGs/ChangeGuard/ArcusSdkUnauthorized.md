@@ -37,7 +37,7 @@ Use the following query for this, inside the `Application Insights -> Logs`:
 ```
 customEvents
 | where timestamp > ago(1d)
-| where name matches regex "TO_BE_UPDATED"
+| where name matches regex "HttpPostWithClientCertAsync.Certificate.Thumbprint"
 | order by timestamp desc
 | take 10
 | extend ThumbprintInfo = tostring(customDimensions.Message)
@@ -95,7 +95,7 @@ Please contact mamegh@microsoft.com or AzDeployerDev@microsoft.com for further d
 This can be done *either* by:
 - Stopping and starting the AKS cluster (*THIS WILL TRIGGER DOWNTIME* of the whole cluster)
 - *OR*
-- Restarting each service deployment using the command `kubectl rollout restart deployment my-deployment`. This command needs to be repeated for each impacted deployment/service.
+- Restarting each service deployment using the command `kubectl rollout restart deployment deployments/[DEPLOYMENT_NAME] -n [NAMESPACE]`. This command needs to be repeated for each impacted deployment/service. For PROD: kubectl rollout restart deployment deployments/changeassessment-deployment -n changeguard-ns
 
 #### 10. Test everything to see if the problem is resolved.
 Steps:
