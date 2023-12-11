@@ -23,6 +23,33 @@ Understanding the below monitor configuration - we have two expressions, one for
 When an incident is triggered, it means that the metric has been reading **"Zero" Value** continuously for the given look back period. This can happen because of two reasons -
 
 - There has been no data ingested from the source for the given look back period. This can be analyzed as below -
+     1. If this issue is happening with two or more of standard deployment systems, such as EV2, ADORelease, xstore-wadi etc... first check whether the changes are getting ingested into. 
+         ```
+         cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ChangeEvent
+         | where TIMESTAMP >= ago(30min)
+         | where ExternalSourceName in ('expressv2', 'adorelease', 'xstore-wadi')
+         | summarize count() by ExternalSourceName
+         ```
+         If you see changes in these systems, proceed to next steps. If not, check whether there are any errors happening in the connectors in [Jarvis](https://jarvis-west.dc.ad.msft.net/7A9B9B20). If you see that, the connectors are failing due to 401 Unauthorized errors, it means that the certificates that the connectors are using a thumbprint from an expired cert we need to updated them to use the thumbprint from the new version. 
+         
+         Here is the list of our CloudServices:
+         ![alt text](media/CloudServices.png)
+
+         In order to rotate the certificates, 
+         1. You need to get JIT Access to MSG Starburst - CHM PROD subscription (fbc17084-a3a3-42bf-a9dc-8bc7f996a679).
+         1. Check if the certs have expired for each one of the running cloud services.
+         ![alt text](media/Certs.png)
+            - If the certs have expired, 
+               1. Go to the keyvault that those certs are in (you can find that in the image above.)
+               1. Rotate the certificates if they haven't been auto-rotated already and copy the thumbprint of the latest version of the certificate.
+                  ```
+                  IMPORTANT! Even if the certs are auto-rotated, connectors won't pick the thumbprint from the new version of the cert automatically unless there was a deployment recently. 
+                  ```
+               1. Stop the connector that you're going to update the certificates of.
+               1. Update the configuration file of the connector and set the thumbprints of the certificates to be the thumbprints of the new version of the certificate that you copied above and save your changes.
+               ![alt text](media/ConfigCerts.png)
+               1. Restart the connectors.
+         
      1. Try running the below query on the corresponding database to see if there has actually been no data for the given look back period.
          ```
             EntityChangeEvents

@@ -35,8 +35,8 @@ and ChangeDescription contains "Release"|limit 100|project EV2RolloutId=ChangeId
 This incident occurs in cases the account "FCMADOReadAccess" doesnt have permissions to access ADO API's. The Access token is stored in the keyvault
 
 if the access token is expired, we need to generate a new access token. Use SAW and login to https://msazure.visualstudio.com
-(Note: change the org to msdata or o365 exchange based on the token that needs to be renewed), use FCMADOReadAccess as the user 
-and password for the same is stored in keyvault.
+(Note: change the org to msdata or o365 exchange based on the token that needs to be renewed), use `FCMADOReadAccess@microsoft.com` as the user 
+and password for the same is stored in [keyvault](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/asset/Microsoft_Azure_KeyVault/Secret/https://fcmintkv.vault.azure.net/secrets/fcmadoreadaccess-password).
 You can also reset the password for FCMADOReadAccess using https://coreidentity.microsoft.com/manage/service under "Non-People Account". 
 Make sure you update the password in keyvault, if you reset
 

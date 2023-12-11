@@ -7,8 +7,8 @@ items:
         href: TSGs/tsgs.md
       - name: DataPlatform
         items:
-          - name: ChangeSearchService Canaries
-            href: TSGs/DataPlatform/ChangeSearchService/canaries.md
+          - name: FCM DP API TSG
+            href: TSGs/DataPlatform/ChangeSearchService/fcm_dp_api_tsg.md
       - name: ChangeExplorerV2
         items:
           - name: ChangeExplorerV2
@@ -77,6 +77,10 @@ items:
             href: TSGs/ChangeGuard/ArcusSdkLatency.md
           - name: ChangeGuard - Arcus SDK Error Retrieving BoQ Value
             href: TSGs/ChangeGuard/ArcusSdkErrorRetrievingBoqData.md
+          - name: Whitelist a Build
+            href: TSGs/ChangeGuard/WhitelistBuild.md
+          - name: Add or remove service from SafeFly approval process
+            href: TSGs/ChangeGuard/ChangeApprovalProcessForService.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
@@ -171,10 +175,6 @@ items:
         items:
           - name: ExpiringInUseCerts
             href: TSGs/ExpiringCerts/ExpiringInUseCerts.md
-      - name: SQL Server
-        items:
-          - name: ShardRemapping
-            href: TSGs/SqlServer/ShardRemap.md
   - name: Team Docs
     items:
       - name: Team Docs
@@ -207,6 +207,10 @@ items:
         items: 
           - name: DataPlatform APIs Design
             href: TeamDocs/DataPlatform/fcm_dataplatform_api.md
+          - name: FCM ITS Bug Bash Test Cases
+            href: TeamDocs/DataPlatform/bug_bash_test_cases.md
+          - name: Analysis of DataPlatform APIs on Azure Declared Outages
+            href: TeamDocs/DataPlatform/dp_on_azure_declared_outages.md
       - name: DeploymentGuide
         items: 
           - name: ChangeExplorerV2 AGC
