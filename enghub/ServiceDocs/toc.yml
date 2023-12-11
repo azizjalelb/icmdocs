@@ -71,6 +71,12 @@ items:
             href: TSGs/ChangeGuard/LogSilentCanaries.md
           - name: CXP Retrieval Error
             href: TSGs/ChangeGuard/CXPRetrievalError.md
+          - name: ChangeGuard - Arcus SDK Authentication Error
+            href: TSGs/ChangeGuard/ArcusSdkUnauthorized.md
+          - name: ChangeGuard - Arcus SDK High Latency
+            href: TSGs/ChangeGuard/ArcusSdkLatency.md
+          - name: ChangeGuard - Arcus SDK Error Retrieving BoQ Value
+            href: TSGs/ChangeGuard/ArcusSdkErrorRetrievingBoqData.md
           - name: Whitelist a Build
             href: TSGs/ChangeGuard/WhitelistBuild.md
           - name: Add or remove service from SafeFly approval process
