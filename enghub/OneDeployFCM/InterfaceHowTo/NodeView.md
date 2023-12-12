@@ -1,4 +1,4 @@
-<h1> Navigating the Host Drill Down View </h1> 
+<h1> Navigating the Host Drill Down </h1> 
 
 For a given time range and list of comma separated node ids, the Host Drill Down View page provides a lot of detail. The node information table provides details such as if the node is batched, total number of changes on the node, the associated rack, cluster, ToR Router, Cluster Spine and changes on each of them. 
 
