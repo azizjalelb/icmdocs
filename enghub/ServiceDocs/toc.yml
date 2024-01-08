@@ -213,6 +213,10 @@ items:
             href: TeamDocs/DataPlatform/bug_bash_test_cases.md
           - name: Analysis of DataPlatform APIs on Azure Declared Outages
             href: TeamDocs/DataPlatform/dp_on_azure_declared_outages.md
+      - name: Build2Deployment
+        items: 
+          - name: Build2Deployment
+            href: TeamDocs/DataPlatform/Build2Deployment/build2deployment_technical_design_doc.md
       - name: DeploymentGuide
         items: 
           - name: ChangeExplorerV2 AGC
