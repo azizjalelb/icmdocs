@@ -10,6 +10,7 @@
 *.sln.docstates
 target/
 enghub/_site/
+_site
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
