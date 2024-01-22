@@ -1,3 +1,18 @@
+# Build2Deployment & Deployment2Build 
+
+
+## Postman
+
+[Postman](https://www.postman.com/) is a great tool to test out endpoints. Please use the following to get started:
+
+### Download the Postman Collection and Environment Variable Files
+
+Download the files from sharepoint here: [b2d_d2b_postman_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EcnCB4wUDkhHt9BffRIIm2IBujyE8ObUo6pwsZkpg0Tt9g?e=Uf9spD). If you're having trouble download, you can copy and paste the files below into your local development environment:
+
+**DataPlatform.postman_collection.json**
+<details>
+
+```json
 {
 	"info": {
 		"_postman_id": "f3990ab0-9326-4d43-b458-ca0d04b8ca8a",
@@ -298,3 +313,95 @@
 		}
 	]
 }
+```
+</details>
+
+**dp-int.postman_environment.json**
+<details>
+
+```json
+{
+	"id": "8b24a332-ad22-4c7f-b196-68faa115e021",
+	"name": "dp-int",
+	"values": [
+		{
+			"key": "client_id",
+			"value": "c1d07c27-2bf7-4da7-9946-278a86014ae2",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "scope",
+			"value": "api://b565c703-fa73-48d1-92cf-a002721abe2e/user_impersonation",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "base_url",
+			"value": "afd-dataplatform-int-apegeggveef0apbq.z01.azurefd.net",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "b2dcomponent",
+			"value": "b2d",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "d2bcomponent",
+			"value": "d2b",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-01-19T16:00:09.561Z",
+	"_postman_exported_using": "Postman/9.31.30"
+}
+```
+</details>
+
+For detailed instructions on importing data, see [import data on postman](https://learning.postman.com/docs/getting-started/importing-and-exporting/importing-data/). To execute a request, first retrieve a token using postman's authorization via browser:
+
+![Alt text](media/authorize_postman.png)
+
+You will utilize the browser to authenticate to `@microsoft.com`; it should trigger a callback automatically to postman. Once that is finished, select the example for `expressv2` or construct your own request with the template function and provided values.
+
+![Alt text](media/sample_d2b_request.png)
+
+## S2S with AAD
+
+To integrate with a S2S call, use the following example as a guide (note that some fields were ommited for security reasons)
+
+```python
+from adal import AuthenticationContext
+import requests
+
+authority = 'https://login.microsoftonline.com/'
+tenant = '72f988bf-86f1-41af-91ab-2d7cd011db47' # msft tenant
+client_id = '' # app id of your service
+client_secret = '' # secret; can use other auth methods (like cert) as  well
+resource = 'api://b565c703-fa73-48d1-92cf-a002721abe2e' # scope 
+
+d2b_api_endpoint = 'http://afd-dataplatform-int-apegeggveef0apbq.z01.azurefd.net/d2b/builds'
+deploymentId = 'ContainerService/b03fe328-9f11-42c4-8eed-73a0f0d1c944'
+deploymentSource = 'expressv2'
+
+auth_context = AuthenticationContext(authority + tenant)
+
+token = auth_context.acquire_token_with_client_credentials(resource=resource, client_id=client_id, client_secret=client_secret)
+
+params = {
+    'deploymentId': deploymentId,
+    'deploymentSource': deploymentSource,
+}
+
+headers = {
+    'Authorization': 'Bearer ' + token['accessToken']
+}
+
+request = requests.get(d2b_api_endpoint, params=params, headers=headers)
+
+print(request.text)
+```

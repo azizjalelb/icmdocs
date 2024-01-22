@@ -7,7 +7,7 @@
 
 ### Download the Postman Collection and Environment Variable Files
 
-Download the files from sharepoint here: [b2d_postman_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EYGovvB2GDtKvH7aPODNe4kBhBKSoPIII0fsdCQcsOsV-w?e=4tuKxm). If you're having trouble download, you can copy and paste the files below into your local development environment:
+Download the files from sharepoint here: [b2d_d2b_postman_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EcnCB4wUDkhHt9BffRIIm2IBujyE8ObUo6pwsZkpg0Tt9g?e=Uf9spD). If you're having trouble download, you can copy and paste the files below into your local development environment:
 
 **DataPlatform.postman_collection.json**
 <details>
@@ -15,7 +15,7 @@ Download the files from sharepoint here: [b2d_postman_files.zip](https://microso
 ```json
 {
 	"info": {
-		"_postman_id": "7e591a03-16bd-4473-8909-4d852b6bdfe8",
+		"_postman_id": "f3990ab0-9326-4d43-b458-ca0d04b8ca8a",
 		"name": "DataPlatform",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -177,6 +177,67 @@ Download the files from sharepoint here: [b2d_postman_files.zip](https://microso
 								{
 									"key": "adoBuildId",
 									"value": "1531543"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Deployment2Build",
+			"item": [
+				{
+					"name": "Template",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=&deploymentId=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{d2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": ""
+								},
+								{
+									"key": "deploymentId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expressv2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=expressv2&deploymentId=ContainerService/b03fe328-9f11-42c4-8eed-73a0f0d1c944",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{d2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "expressv2"
+								},
+								{
+									"key": "deploymentId",
+									"value": "ContainerService/b03fe328-9f11-42c4-8eed-73a0f0d1c944"
 								}
 							]
 						}
