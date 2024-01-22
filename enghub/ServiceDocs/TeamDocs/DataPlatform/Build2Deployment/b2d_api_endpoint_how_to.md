@@ -7,7 +7,7 @@
 
 ### Download the Postman Collection and Environment Variable Files
 
-Download the files from sharepoint here: [b2d_d2b_postman_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EcnCB4wUDkhHt9BffRIIm2IBujyE8ObUo6pwsZkpg0Tt9g?e=Uf9spD). If you're having trouble download, you can copy and paste the files below into your local development environment:
+Download the files from sharepoint here: [b2d_d2b_postman_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EeKQuYNbgA1Hh_nCelI2CKgBXk5ROZtBqbBUXa1oDU0FrQ?e=6rntXY). If you're having trouble download, you can copy and paste the files below into your local development environment:
 
 **DataPlatform.postman_collection.json**
 <details>
