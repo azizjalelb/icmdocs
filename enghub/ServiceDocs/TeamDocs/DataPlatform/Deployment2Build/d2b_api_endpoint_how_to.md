@@ -7,7 +7,7 @@
 
 ### Download the Postman Collection and Environment Variable Files
 
-Download the files from sharepoint here: [b2d_d2b_postman_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EeKQuYNbgA1Hh_nCelI2CKgBXk5ROZtBqbBUXa1oDU0FrQ?e=oxwH1e). If you're having trouble download, you can copy and paste the files below into your local development environment:
+Download the files from sharepoint here: [b2d_d2b_postman_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EeKQuYNbgA1Hh_nCelI2CKgBXk5ROZtBqbBUXa1oDU0FrQ?e=6rntXY). If you're having trouble download, you can copy and paste the files below into your local development environment:
 
 **DataPlatform.postman_collection.json**
 <details>
@@ -366,9 +366,9 @@ For detailed instructions on importing data, see [import data on postman](https:
 
 ![Alt text](media/authorize_postman.png)
 
-You will utilize the browser to authenticate to `@microsoft.com`; it should trigger a callback automatically to postman. Once that is finished, select any of the 4 examples provided or construct your own request with the template function and provided values.
+You will utilize the browser to authenticate to `@microsoft.com`; it should trigger a callback automatically to postman. Once that is finished, select the example for `expressv2` or construct your own request with the template function and provided values.
 
-![Alt text](media/sample_b2d_request.png)
+![Alt text](media/sample_d2b_request.png)
 
 ## S2S with AAD
 
@@ -384,57 +384,24 @@ client_id = '' # app id of your service
 client_secret = '' # secret; can use other auth methods (like cert) as  well
 resource = 'api://b565c703-fa73-48d1-92cf-a002721abe2e' # scope 
 
-b2d_api_endpoint = 'http://afd-dataplatform-int-apegeggveef0apbq.z01.azurefd.net/b2d/deployments'
-adoOrganizationName = 'dev'
-adoProjectId = '505e0832-097c-4d90-947b-777124cc8911'
-adoBuildId = '1531543'
+d2b_api_endpoint = 'http://afd-dataplatform-int-apegeggveef0apbq.z01.azurefd.net/d2b/builds'
+deploymentId = 'ContainerService/b03fe328-9f11-42c4-8eed-73a0f0d1c944'
+deploymentSource = 'expressv2'
 
 auth_context = AuthenticationContext(authority + tenant)
 
 token = auth_context.acquire_token_with_client_credentials(resource=resource, client_id=client_id, client_secret=client_secret)
 
 params = {
-    'adoOrganizationName': adoOrganizationName,
-    'adoProjectId': adoProjectId,
-    'adoBuildId': adoBuildId
+    'deploymentId': deploymentId,
+    'deploymentSource': deploymentSource,
 }
 
 headers = {
     'Authorization': 'Bearer ' + token['accessToken']
 }
 
-request = requests.get(b2d_api_endpoint, params=params, headers=headers)
+request = requests.get(d2b_api_endpoint, params=params, headers=headers)
 
 print(request.text)
-```
-
-The above (when adding the missing values) uses a sample app (`andresroTestRegistrationDp`) to acquire a token and then make a request to the endpoint with it; the output below:
-
-```shell
-➜ python3 b2d_s2s_auth.py
-{
-  "adoOrganizationName": "dev",
-  "adoProjectId": "505e0832-097c-4d90-947b-777124cc8911",
-  "adoBuildId": "1531543",
-  "deployments": [
-    {
-      "deploymentId": "cd07a706-27b6-44ee-ba5d-1dfe23632b53",
-      "deploymentUrl": "https://ev2portal.azure.net/#/Rollout/BrainOutageDeployment-Genevahealthsloprod/cd07a706-27b6-44ee-ba5d-1dfe23632b53?RolloutInfra=Prod",
-      "startTime": "2024-01-12T16:51:31",
-      "endTime": "2024-01-12T16:51:31",
-      "lastUpdatedTime": "2024-01-12T17:04:36.7205851",
-      "changeState": "Completed",
-      "source": "expressv2",
-      "changeOwner": "4e0b7fc3-3c5c-4f9a-95ea-e1e76af5061b",
-      "changeOwnerType": "ServiceId",
-      "metaData": "",
-      "payloads": [
-        {
-          "payloadId": "20240111.3",
-          "fcmProgressionLink": "https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_entityType=all&p-_payload=20240111.3#84c6c83e-687d-44a3-a599-110f700efce7"
-        }
-      ]
-    }
-  ]
-}
 ```
