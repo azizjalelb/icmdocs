@@ -217,6 +217,8 @@ items:
         items: 
           - name: Build2Deployment
             href: TeamDocs/DataPlatform/Build2Deployment/build2deployment_technical_design_doc.md
+          - name: Build2Deployment - Endpoint Guide
+            href: TeamDocs/DataPlatform/Build2Deployment/b2d_api_endpoint_how_to.md
       - name: DeploymentGuide
         items: 
           - name: ChangeExplorerV2 AGC
