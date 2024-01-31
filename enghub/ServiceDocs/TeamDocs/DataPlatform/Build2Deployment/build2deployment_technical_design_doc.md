@@ -321,10 +321,10 @@ Response Body:
 | Http Code | content-type   | Response |
 |-----------|----------------|----------|
 | **200**       | application/json | ```Deployment2Build``` response; see above |
-| **204**       | N/A            | N/A      |
+| **204**       | application/json | ```{"code":"204","message":"No builds are found for DeploymentId {deploymentId} from DeploymentSource {deploymentSource}"}```      |
 | **400**       | application/json | ```{"code":"400","message":"Bad Request"}``` |
 | **401**       | application/json | ```{"code":"401","message":"Unauthorized"}``` |
-| **404**       | application/json | ```{"code":"404","message":"Not Found"}``` |
+| **404**       | application/json | ```{"code":"404","message":"DeploymentId {deploymentId} from DeploymentSource {deploymentSource} is not found"}``` |
 | **429**       | application/json | ```{"code":"429","message":"Too Many Requests"}``` |
 | **500**       | application/json | ```{"code":"500","message":"Internal Server Error"}``` |
 | **503**       | application/json | ```{"code":"503","message":"Service Unavailable"}``` |
@@ -332,43 +332,97 @@ Response Body:
 
 ## Data Layer  
 
-Currently, we do not have any Kusto tables that have deployment to build mappings. Thus, we can create these during the read time or use materialized views to generate these mappings during the ingestion time. In order to have better performance, we will go with the second option and use materialized views. We will create the materialized view with the following query (The version below only support getting deployment to build mappings for ExpressV2. We will update the query for other deployment systems once we finalize the right way to create those mappings.): 
+Currently, we do not have any Kusto tables that have deployment to build mappings or build to deployment mappings. However, we have Payload to Deployment mapping in EntityChangeEventsMaterializedView. In order to create these Build2Deployment mapping, we will initially populate a new table called Build2Payload. This table will include ADOBuild to Payload mappings. Then we will use this table to join with EntityChangeEventsMaterializedView to find deployments for given builds or vice versa. (The version below only support getting deployment to build mappings for ExpressV2. We will update the query for other deployment systems once we finalize the right way to create those mappings.):
+
+**MapBuild2Payload:** 
+
+```sql 
+.create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Mapping Builds to payload", skipvalidation = "true") MapBuild2Payload(startTime:datetime, endTime:datetime)
+{
+cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ChangeEvent
+| where (ingestion_time() >= startTime and ingestion_time() < endTime)
+| where ExternalSourceName == "expressv2" and Locations == "<null>"
+| extend ChangeDescription = parse_json(Description)
+| extend AzureDevOps = parse_json(parse_json(ChangeDescription).AzureDevOps)
+| extend OrganizationName = tostring(split(split(tostring(AzureDevOps.TeamFoundationCollectionUri), "https://")[1], ".")[0]), ProjectId = tostring(AzureDevOps.TeamProjectId), Id = tostring(AzureDevOps.BuildId), ReleaseWebUrl = tostring(AzureDevOps.ReleaseWebUrl), 
+BuildNumber = coalesce(tostring(AzureDevOps.BuildNumber), BuildNumber),
+DeploymentServiceName = tostring(split(ExternalId, "/")[0])
+| where isnotnull(toint(Id))
+| extend BuildUrl = strcat(tostring(AzureDevOps.TeamFoundationCollectionUri), ProjectId, "/_build/results?buildId=",Id)
+| project 
+          Timestamp = TIMESTAMP,
+          OrganizationName,
+          ProjectId,
+          Id,
+          BuildUrl,
+          Payload=tolower(strcat(ServiceTreeGuid, "/", DeploymentServiceName, "=", BuildNumber)),
+          BuildSource = 'ado'
+}
+```
+
+**GetDeployment2Build_v1:**
+```sql 
+.create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Getting list of builds for the given deployments", skipvalidation = "true") GetDeployment2Build_v1(DeploymentSource:string, DeploymentId:string) {
+materialized_view('EntityChangeEventsMaterializedView', 10m) 
+| where Source == DeploymentSource and ChangeActivity == DeploymentId
+| project Payload, Source, ChangeActivity
+| join kind=leftouter Build2Payload on Payload
+| distinct OrganizationName,
+          ProjectId,
+          Id,
+          Url = BuildUrl,
+          Source = BuildSource,
+          DeploymentId= ChangeActivity,
+          DeploymentSource = Source
+}
+```
+
+**GetBuild2Deployment_v1**
 
 ```sql
-.create async materialized-view with (docString="Deployment to Build MaterializedView", folder='MaterializedViews') Deployment2BuildMaterializedView on table ChangeEvent { 
-    ChangeEvent 
-    | where ExternalSourceName =~ "ExpressV2" and (ExternalParentId contains "msazure" or ExternalParentId contains "msdata") 
-    | extend AzureDevOps = parse_json(parse_json(Description).AzureDevOps) 
-    | extend
-        ADOOrganizationName = tostring(split(split(tostring(AzureDevOps.TeamFoundationCollectionUri), "https://")[1], ".")[0]),
-        ADOProjectId = tostring(AzureDevOps.TeamProjectId),
-        ADOBuildId = toint(AzureDevOps.BuildId),
-        ReleaseWebUrl = tostring(AzureDevOps.ReleaseWebUrl),  
-        BuildNumber = tostring(AzureDevOps.BuildNumber), 
-        DeploymentServiceName = tostring(split(ExternalId, "/")[0]) 
-    | where isnotnull(ADOBuildId)   
-    | extend BuildUrl = strcat(tostring(AzureDevOps.TeamFoundationCollectionUri), ADOProjectId, "/_build/results?buildId=", ADOBuildId) 
-    | project  
-        DeploymentId = ExternalId,  
-        DeploymentSource = ExternalSourceName,  
-        DeploymentUrl= strcat("https://ev2portal.azure.net/#/Rollout/", ExternalId, "?RolloutInfra=prod"), 
-        DeploymentStartTime= StartTime,  
-        DeploymentEndTime=EndTime, 
-        DeploymentLastUpdateTime = Modified, 
-        DepoymentStatus = Status, 
-        ChangeOwner=ServiceTreeGuid,  
-        ChangeOwnerType='ServiceId',  
-        Payload=strcat(DeploymentServiceName, "=", BuildNumber), 
-        PayloadProgressionLink= case(BuildNumber != "<null>" and BuildNumber != "0.0.0.0" and BuildNumber != "0", strcat("https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_source=all&p-_entityType=all&p-_payload=v-", url_encode(BuildNumber), "#84c6c83e-687d-44a3-a599-110f700efce7"), ""), 
-        ADOOrganizationName,  
-        ADOProjectId,  
-        ADOBuildId,  
-        BuildUrl,  
-        BuildBranch = '',  
-        BuildLocation ='',  
-        BuildLocationType = '' 
-    | summarize arg_max(DeploymentLastUpdateTime, *) by DeploymentId, DeploymentSource, ADOOrganizationName, ADOProjectId, ADOBuildId 
-    } 
+.create-or-alter function with (folder = "FCMDataPlatform/Build2Deployment", docstring = "GetBuild2Deployment_v1", skipvalidation = "true")
+    GetBuild2Deployment_v1(AdoOrganizationName: string, AdoProjectId: string, AdoBuildId: string) {
+     Build2Payload
+    | where OrganizationName == AdoOrganizationName
+        and ProjectId == AdoProjectId
+        and Id == AdoBuildId
+    | distinct OrganizationName, ProjectId, Id, Payload
+    // grab only rows that have matching records
+    | join kind=inner EntityChangeEvents on $left.Payload == $right.Payload
+    // we don't want the adorelease records, just ev2
+    | where Source == 'expressv2'   
+    // simplify the data to just rollout entries; they follow the below regex
+    | where ChangeActivity matches regex ".*?/[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}" 
+    // gets the latest entry (i.e. last updated from ev2 for the given rollout)
+    | summarize arg_max(Timestamp, *) by ChangeActivity
+    | extend DeploymentId = split(ChangeActivity, '/')[1]
+    | extend DeploymentServiceName = split(ChangeActivity, '/')[0]
+    // we could have different rolloutinfra such as Test or Mooncake, should take a look at this
+    | extend DeploymentRolloutInfra = "Prod"
+    | extend DeploymentUrl = strcat('https://ev2portal.azure.net/#/Rollout/', DeploymentServiceName, '/', DeploymentId, '?RolloutInfra=', DeploymentRolloutInfra)
+    | extend LastUpdatedTime = Timestamp
+    // set endtime to DateTime.Max if it's still in progress
+    | extend EndtTime = iff(ChangeState == 'inprogress', datetime('9999-12-31T23:59:59.999'), EndTime)
+    // below because we haven't standardized payloads for fcm one deploy dashboard
+    | extend PayloadId = tostring(split(Payload, '=')[1])
+    | extend FcmProgressionLink = strcat('https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_entityType=all&p-_payload=', url_encode(PayloadId), '#84c6c83e-687d-44a3-a599-110f700efce7')
+    | extend MetaData = ""
+    | project
+        DeploymentId,
+        DeploymentUrl,
+        StartTime,
+        EndTime,
+        LastUpdatedTime,
+        ChangeState,
+        Source,
+        ChangeOwner,
+        ChangeOwnerType,
+        PayloadId,
+        FcmProgressionLink,
+        EntityId,
+        MetaData
+    | extend Payloads = pack_array(bag_pack_columns(PayloadId, FcmProgressionLink))
+ }
 ```
 
 ## Caching
@@ -474,3 +528,44 @@ We utilize ARM templates and EV2 deployments as our infrastructure solution for 
 - Our team has extensive experienec with Ev2 ARM templates and has written release/configurations as such. 
 
 We will come to an agreement on what best practices to follow when naming resources so we avoid issues with resource naming across environments in the future. Some best practices for azure can be found in [define your naming convention](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming). 
+
+## Appendix
+### Initial (Old) Approach for Data Layer
+Currently, we do not have any Kusto tables that have deployment to build mappings. Thus, we can create these during the read time or use materialized views to generate these mappings during the ingestion time. In order to have better performance, we will go with the second option and use materialized views. We will create the materialized view with the following query (The version below only support getting deployment to build mappings for ExpressV2. We will update the query for other deployment systems once we finalize the right way to create those mappings.): 
+
+```sql
+.create async materialized-view with (docString="Deployment to Build MaterializedView", folder='MaterializedViews') Deployment2BuildMaterializedView on table ChangeEvent { 
+    ChangeEvent 
+    | where ExternalSourceName =~ "ExpressV2" and (ExternalParentId contains "msazure" or ExternalParentId contains "msdata") 
+    | extend AzureDevOps = parse_json(parse_json(Description).AzureDevOps) 
+    | extend
+        ADOOrganizationName = tostring(split(split(tostring(AzureDevOps.TeamFoundationCollectionUri), "https://")[1], ".")[0]),
+        ADOProjectId = tostring(AzureDevOps.TeamProjectId),
+        ADOBuildId = toint(AzureDevOps.BuildId),
+        ReleaseWebUrl = tostring(AzureDevOps.ReleaseWebUrl),  
+        BuildNumber = tostring(AzureDevOps.BuildNumber), 
+        DeploymentServiceName = tostring(split(ExternalId, "/")[0]) 
+    | where isnotnull(ADOBuildId)   
+    | extend BuildUrl = strcat(tostring(AzureDevOps.TeamFoundationCollectionUri), ADOProjectId, "/_build/results?buildId=", ADOBuildId) 
+    | project  
+        DeploymentId = ExternalId,  
+        DeploymentSource = ExternalSourceName,  
+        DeploymentUrl= strcat("https://ev2portal.azure.net/#/Rollout/", ExternalId, "?RolloutInfra=prod"), 
+        DeploymentStartTime= StartTime,  
+        DeploymentEndTime=EndTime, 
+        DeploymentLastUpdateTime = Modified, 
+        DepoymentStatus = Status, 
+        ChangeOwner=ServiceTreeGuid,  
+        ChangeOwnerType='ServiceId',  
+        Payload=strcat(DeploymentServiceName, "=", BuildNumber), 
+        PayloadProgressionLink= case(BuildNumber != "<null>" and BuildNumber != "0.0.0.0" and BuildNumber != "0", strcat("https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_source=all&p-_entityType=all&p-_payload=v-", url_encode(BuildNumber), "#84c6c83e-687d-44a3-a599-110f700efce7"), ""), 
+        ADOOrganizationName,  
+        ADOProjectId,  
+        ADOBuildId,  
+        BuildUrl,  
+        BuildBranch = '',  
+        BuildLocation ='',  
+        BuildLocationType = '' 
+    | summarize arg_max(DeploymentLastUpdateTime, *) by DeploymentId, DeploymentSource, ADOOrganizationName, ADOProjectId, ADOBuildId 
+    } 
+```
