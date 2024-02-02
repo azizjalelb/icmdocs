@@ -7,8 +7,8 @@ items:
         href: TSGs/tsgs.md
       - name: DataPlatform
         items:
-          - name: ChangeSearchService Canaries
-            href: TSGs/DataPlatform/ChangeSearchService/canaries.md
+          - name: FCM DP API TSG
+            href: TSGs/DataPlatform/ChangeSearchService/fcm_dp_api_tsg.md
       - name: ChangeExplorerV2
         items:
           - name: ChangeExplorerV2
@@ -71,10 +71,18 @@ items:
             href: TSGs/ChangeGuard/LogSilentCanaries.md
           - name: CXP Retrieval Error
             href: TSGs/ChangeGuard/CXPRetrievalError.md
+          - name: ChangeGuard - Arcus SDK Authentication Error
+            href: TSGs/ChangeGuard/ArcusSdkUnauthorized.md
+          - name: ChangeGuard - Arcus SDK High Latency
+            href: TSGs/ChangeGuard/ArcusSdkLatency.md
+          - name: ChangeGuard - Arcus SDK Error Retrieving BoQ Value
+            href: TSGs/ChangeGuard/ArcusSdkErrorRetrievingBoqData.md
           - name: Whitelist a Build
             href: TSGs/ChangeGuard/WhitelistBuild.md
           - name: Add or remove service from SafeFly approval process
             href: TSGs/ChangeGuard/ChangeApprovalProcessForService.md
+          - name: Search for a Subscription in ChangeGuard
+            href: TSGs/ChangeGuard/SearchForSubscription.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
@@ -205,6 +213,18 @@ items:
             href: TeamDocs/DataPlatform/bug_bash_test_cases.md
           - name: Analysis of DataPlatform APIs on Azure Declared Outages
             href: TeamDocs/DataPlatform/dp_on_azure_declared_outages.md
+      - name: Build2Deployment
+        items: 
+          - name: Build2Deployment
+            href: TeamDocs/DataPlatform/Build2Deployment/build2deployment_technical_design_doc.md
+          - name: Build2Deployment - Endpoint Guide
+            href: TeamDocs/DataPlatform/Build2Deployment/b2d_api_endpoint_how_to.md
+      - name: Deployment2Build
+        items: 
+          - name: Deployment2Build
+            href: TeamDocs/DataPlatform/Deployment2Build/build2deployment_technical_design_doc.md
+          - name: Deployment2Build - Endpoint Guide
+            href: TeamDocs/DataPlatform/Deployment2Build/d2b_api_endpoint_how_to.md
       - name: DeploymentGuide
         items: 
           - name: ChangeExplorerV2 AGC

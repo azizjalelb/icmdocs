@@ -1,10 +1,10 @@
-### <a name="changeDetails"> <h1> Navigating the “Change Details” View </h1> </a>
+### <a name="changeDetails"> <h1> Navigating the “All Changes” View </h1> </a>
 
-The Change Details View provides exhaustive details of the changes. Change details can be looked up for a specific time-range, location (region, availability zone, data center etc.), a specific entity Id (node, cluster, fabric cluster, storage tenant, sql cluster, etc.),a specific service or ICM team name.
+The All Changes View provides exhaustive details of the changes. Change details can be looked up for a specific time-range, location (region, availability zone, data center etc.), a specific entity Id (node, cluster, fabric cluster, storage tenant, sql cluster, etc.),a specific service or ICM team name.
 
 ### <a name="payloadRisk"> <h3> Find payloads with highest risk: </h3> </a>
 
-1. Navigate to “Change Details” Page  
+1. Navigate to “All Changes” Page  
 2. Clear any pre-populated filters 
 3. Select a time range  
 4. Select the impacted region  
@@ -18,12 +18,12 @@ The “All Updates” table shows the list of all the changes, made by all servi
 
 ### <a name="hostUpdate"> <h3>Find Host Updates in a region: </h3> </a>
 
-- Navigate to “Change Details” Page  
+- Navigate to “All Changes” Page  
 - Clear any pre-populated filters 
 - Select a time range  
 - Select the impacted region  
 
-The “Host Update Summary” table shows the count of host updates being made at a given region. Use the Node view to navigate and review the details of the changes being made at the node level. 
+The “Host Update Summary” table shows the count of host updates being made at a given region. Use the Host Drill Down view to navigate and review the details of the changes being made at the node level. 
 
 The “Host Updates” table provides the details of each individual payload that is being applied to a node. The change owner of the payload, associated VE Name and Change Type are also provided for detailed investigation. 
 
@@ -36,7 +36,7 @@ The “Host Updates” table provides the details of each individual payload tha
 ### <a name="qcsChanges"> <h3>Find changes made by Quality Critical Service: </h3> </a>
 
 For a scenario where multiple changes are being deployed in a given time-frame and to find changes that were specifically made by Quality Critical Services, follow the below steps: 
-Navigate to “Change Details” Page ➔ select a time range ➔ select the Region 
+Navigate to “All Changes” Page ➔ select a time range ➔ select the Region 
 
 The table, “All Changes by QCS Service” will show the payload and other metadata associated with the change. 
 
@@ -50,7 +50,7 @@ Host Networking is a Quality Critical Service, and during Incident Mitigation, D
 
 To identify the changes,  
 
-1. Navigate to the “Change Details” Page 
+1. Navigate to the “All Changes” Page 
 2. Clear any pre-populated filters 
 3. Select the incident time-line 
 4. Select the impacted location – region, cluster information that might be available 

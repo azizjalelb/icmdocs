@@ -43,12 +43,13 @@ When an incident is triggered, it means that the metric has been reading **"Zero
                1. Go to the keyvault that those certs are in (you can find that in the image above.)
                1. Rotate the certificates if they haven't been auto-rotated already and copy the thumbprint of the latest version of the certificate.
                   ```
-                  IMPORTANT! Even if the certs are auto-rotated, connectors won't pick the thumbprint from the new version of the cert automatically unless there was a deployment recently. 
+                  IMPORTANT! Even if the certs are auto-rotated, cloud services won't pick the thumbprint from the new version of the cert automatically unless there was a deployment recently. 
                   ```
-               1. Stop the connector that you're going to update the certificates of.
-               1. Update the configuration file of the connector and set the thumbprints of the certificates to be the thumbprints of the new version of the certificate that you copied above and save your changes.
+               1. Stop the cloud services that you're going to update the certificates of.
+                  - if the issue happens with webapi, stop connectors first and then webapi.
+               1. Update the configuration file of the cloudservice and set the thumbprints of the certificates to be the thumbprints of the new version of the certificate that you copied above and save your changes.
                ![alt text](media/ConfigCerts.png)
-               1. Restart the connectors.
+               1. Restart the cloud services, first the Web APIs and then the connectors.
          
      1. Try running the below query on the corresponding database to see if there has actually been no data for the given look back period.
          ```

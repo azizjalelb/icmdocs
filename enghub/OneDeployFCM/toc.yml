@@ -1,12 +1,20 @@
 - name: Overview and FAQ
   href: Overview_FAQ.md
-- name: Interface How-To's
-  items:
-    - name: Top-Level View
-      href: InterfaceHowTo/TopLevelView.md
-    - name: Change Details View
-      href: InterfaceHowTo/ChangeDetails.md
-    - name: Node View
-      href: InterfaceHowTo/NodeView.md
 - name: Examples and Scenarios
   href: Scenarios.md
+- name: Interface How-To's
+  items:
+    - name: Host Changes View
+      href: InterfaceHowTo/HostChanges.md
+    - name: Host Drill Down View
+      href: InterfaceHowTo/NodeView.md
+    - name: Payload Details View
+      href: InterfaceHowTo/PayloadView.md
+    - name: Subscription/VM View
+      href: InterfaceHowTo/Subscription_VMView.md
+    - name: Customer View
+      href: InterfaceHowTo/CustomerView.md
+    - name: All Changes View
+      href: InterfaceHowTo/ChangeDetails.md
+    - name: Top-Level View
+      href: InterfaceHowTo/TopLevelView.md
