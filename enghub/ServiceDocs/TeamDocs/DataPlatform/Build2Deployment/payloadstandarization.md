@@ -25,4 +25,4 @@ Standardized Payload will contain the ServiceTreeGuid/ServiceGroupName and the B
 |PilotFish | ServiceTreeGuid=BuildNumber |1bd5fd01-0565-4c8e-affe-ec1b21c96529=5093666  |
 
 
-In the first iteratoin of this work, we will be standardizing the paylaods for 3 Source Systems - ExpressV2, AzDeployer and PilotFish and will explore other source systems in the next iterations.
+In the first iteration of this work, we will be standardizing the payloads for 3 Source Systems - ExpressV2, AzDeployer and PilotFish and will explore other source systems in the next iterations.
