@@ -334,10 +334,10 @@ Response Body:
 
 Currently, we do not have any Kusto tables that have deployment to build mappings or build to deployment mappings. However, we have Payload to Deployment mapping in EntityChangeEventsMaterializedView. In order to create these Build2Deployment mapping, we will initially populate a new table called Build2Payload. This table will include ADOBuild to Payload mappings. Then we will use this table to join with EntityChangeEventsMaterializedView to find deployments for given builds or vice versa. (The version below only support getting deployment to build mappings for ExpressV2. We will update the query for other deployment systems once we finalize the right way to create those mappings.):
 
-**MapBuild2Payload:** 
+**MapBuild2PayloadEv2:** 
 
 ```sql 
-.create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Mapping Builds to payload", skipvalidation = "true") MapBuild2Payload(startTime:datetime, endTime:datetime)
+.create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Mapping Builds to payload", skipvalidation = "true") MapBuild2PayloadEv2(startTime:datetime, endTime:datetime)
 {
 cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ChangeEvent
 | where (ingestion_time() >= startTime and ingestion_time() < endTime)
@@ -360,12 +360,118 @@ DeploymentServiceName = tostring(split(ExternalId, "/")[0])
 }
 ```
 
+**MapBuild2PayloadAzDeployer:** 
+
+```sql 
+.create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Mapping Builds to payload", skipvalidation = "true") MapBuild2PayloadAzDeployer(startTime:datetime, endTime:datetime)
+{
+cluster('azdeployerfollower.eastus.kusto.windows.net').database('AzDeployerKusto').DeploymentAuditEvent
+| where ingestion_time() >= startTime and ingestion_time() < endTime
+// Filtering out
+// 1) Helloworld Changes
+// 2) GenevaAction changes 
+// 3) Changes with invalid startTime
+// 4) Changes that are made on test VEs
+// 5) Changes where the tenant is Zeus as those are not cluster level changes.
+// 6) We want to get cluster level changes so for azdeployerv2, we need to add tolower(TargetType) == 'cluster' and for azdeployerv1, there is no target type so we would like to include those changes as well.
+| where RolloutLabel !contains("HelloWorld_AzDeployer.xml") and RolloutLabel !contains("GenevaAction") and StartDateTime>datetime("2000-01-01") and Payload !contains "onedeploytest" and Tenant !contains "Zeus"
+and (isempty(TargetType) or tolower(TargetType) == 'cluster')
+| where Build !contains "pilotfish"
+| where isnotempty(Payload) and Payload != "<null>"
+| extend branch = tostring(split(Build,```\```)[5])
+| extend version = tostring(split(Build,```\```)[6])
+| project branch, version, Build, Payload
+| where isnotempty(branch) and isnotempty(version)
+| join kind= inner
+(
+cluster('1es').database('AzureDevOps').BuildArtifact  
+| where BuildArtifactName == "BuildDropLocation"
+| extend branch = tostring(split(ResourceData,```\```)[5])
+| extend version = tostring(split(ResourceData,```\```)[6])
+)
+on branch and version
+| extend BuildUrl = strcat("https://",OrganizationName,".visualstudio.com/", ProjectId, "/_build/results?buildId=",BuildId)
+| extend Timestamp = now()
+| distinct  
+          Timestamp,
+          OrganizationName,
+          ProjectId,
+          Id=tostring(BuildId),
+          BuildUrl,
+          Payload=tolower(Payload),
+          BuildSource = 'ado'
+}
+```
+
+**MapBuild2PayloadPF:** 
+
+```sql 
+.create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Mapping Builds to payload", skipvalidation = "true") MapBuild2PayloadPF(startTime:datetime, endTime:datetime)
+{
+cluster('azdeployer.kusto.windows.net').database('AzDeployerKusto').DeploymentAuditEvent
+| where ingestion_time() >= startTime and ingestion_time() < endTime
+// Filtering out
+// 1) Helloworld Changes
+// 2) GenevaAction changes 
+// 3) Changes with invalid startTime
+// 4) Changes that are made on test VEs
+// 5) Changes where the tenant is Zeus as those are not cluster level changes.
+// 6) We want to get cluster level changes so for azdeployerv2, we need to add tolower(TargetType) == 'cluster' and for azdeployerv1, there is no target type so we would like to include those changes as well.
+| where RolloutLabel !contains("HelloWorld_AzDeployer.xml") and RolloutLabel !contains("GenevaAction") and StartDateTime>datetime("2000-01-01") and Payload !contains "onedeploytest" and Tenant !contains "Zeus"
+and (isempty(TargetType) or tolower(TargetType) == 'cluster')
+| where Build contains "pilotfish"
+// Get changes with valid payload
+| where isnotempty(Payload) and Payload != "<null>"
+| distinct Payload, RTOIdentifier
+// Process payload to remove the prefixes, this is needed when joining with GetPFBuilderMessage. We are not ingesting this trimmed payload.
+| project PayloadTrimmed = case(Payload startswith "envconfig", trim_start("envconfig=", Payload),
+                           Payload startswith "dataimage", trim_start("dataimage~", Payload),
+                           Payload contains "data\\",  replace_string(Payload, "data\\", ""),
+                           Payload), 
+          RTOIdentifier, Payload
+  // expand payload to multiple buildversions in order to join with Payload-BuildPathMapping table
+ | mv-expand BuildVersions=split(PayloadTrimmed," ")
+ // Get the BuildVersion from expanded Payload. Remove the service name if the BuildVersion has '='
+ | extend BuildVersions = tostring(BuildVersions)
+ | extend BuildVersion= tolower(iff(BuildVersions contains "=",tostring(split(BuildVersions,"=")[1]), BuildVersions)) // this should be removed as part of payload standardization
+ // join with Payload-BuildPathMapping in order to find the Buildpath for payloads.
+ | join kind=inner 
+ (cluster('azdeployer.kusto.windows.net').database('AzDeployerKusto').GetPFBuilderMessage(startTime-1d, endTime) | extend BuildLabel = tolower(BuildLabel)) on $left.BuildVersion == $right.BuildLabel and $left.RTOIdentifier == $right.RTOId
+ | where  BuildPath startswith ```\\reddog```
+| extend branch = tostring(split(BuildPath,```\```)[5])
+| extend version = tostring(split(BuildPath,```\```)[6])
+| where isnotempty(branch) and isnotempty(version)
+| distinct BuildLabel, branch, version, BuildPath, Payload
+// Join with BuilPath-ADOBuild table to get Payload to ADOBuild mapping.
+| join kind= inner
+(
+cluster('1es').database('AzureDevOps').BuildArtifact  
+| where BuildArtifactName == "BuildDropLocation"
+| extend branch = tostring(split(ResourceData,```\```)[5])
+| extend version = tostring(split(ResourceData,```\```)[6])
+)
+ on branch and version
+| extend BuildUrl = strcat("https://",OrganizationName,".visualstudio.com/", ProjectId, "/_build/results?buildId=",BuildId)
+| extend Timestamp = now()
+| distinct 
+          Timestamp,
+          OrganizationName,
+          ProjectId,
+          Id=tostring(BuildId),
+          BuildUrl,
+          Payload= tolower(Payload),
+          BuildSource = 'ado'  
+}
+```
+
 **GetDeployment2Build_v1:**
 ```sql 
 .create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Getting list of builds for the given deployments", skipvalidation = "true") GetDeployment2Build_v1(DeploymentSource:string, DeploymentId:string) {
+let aboveArmSources = dynamic(["expressv2"]);
+let belowArmSources = dynamic(["azdeployer", "pilotfish"]);
 materialized_view('EntityChangeEventsMaterializedView', 10m) 
-| where Source == DeploymentSource and ChangeActivity == DeploymentId
-| project Payload, Source, ChangeActivity
+| where (Source == DeploymentSource and ChangeActivity == DeploymentId and DeploymentSource in (aboveArmSources)) or (Source == 'azdeployer' and ParentChangeActivity == DeploymentId and DeploymentSource in (belowArmSources))
+| distinct Payload, Source, ChangeActivity=iff(DeploymentSource in (aboveArmSources), ChangeActivity, ParentChangeActivity)
 | join kind=leftouter Build2Payload on Payload
 | distinct OrganizationName,
           ProjectId,
@@ -373,7 +479,17 @@ materialized_view('EntityChangeEventsMaterializedView', 10m)
           Url = BuildUrl,
           Source = BuildSource,
           DeploymentId= ChangeActivity,
-          DeploymentSource = Source
+          DeploymentSource = DeploymentSource 
+// Next lines are need to return rows with empty ado build information only when the given deployment is actually valid but we couldn't find a matching a build in FCM.
+| order by OrganizationName desc
+| where not (isempty(Id) and isnotempty(prev(Id)))
+| project OrganizationName,
+          ProjectId,
+          Id,
+          Url,
+          Source,
+          DeploymentId,
+          DeploymentSource  
 }
 ```
 

@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "f3990ab0-9326-4d43-b458-ca0d04b8ca8a",
 		"name": "DataPlatform",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1442359"
 	},
 	"item": [
 		{
@@ -223,6 +224,62 @@
 								{
 									"key": "deploymentId",
 									"value": "ContainerService/b03fe328-9f11-42c4-8eed-73a0f0d1c944"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "azdeployer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=azdeployer&deploymentId=80561803",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{d2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "azdeployer"
+								},
+								{
+									"key": "deploymentId",
+									"value": "80561803"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pilotfish",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=pilotfish&deploymentId=20240213-171812-e590c07791ed2ed9812b1bfe17537e84500f6cc5_69060604",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{d2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "pilotfish"
+								},
+								{
+									"key": "deploymentId",
+									"value": "20240213-171812-e590c07791ed2ed9812b1bfe17537e84500f6cc5_69060604"
 								}
 							]
 						}
