@@ -1,163 +1,107 @@
 {
-    "info": {
-        "name": "DataPlatform",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  "info": {
+    "name": "DataPlatform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Build2Deployment",
+      "item": [
+        {
+          "name": "Template",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=&adoProjectId=&adoBuildId="
+          }
+        },
+        {
+          "name": "azdeployer_msazure",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "undefinedundefined{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msazure&adoProjectId=b32aa71e-8ed2-41b2-9d77-5bc261222004&adoBuildId=79119662"
+          }
+        },
+        {
+          "name": "ev2_admetrics",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=admetrics&adoProjectId=c6f597f2-902e-47df-9dbd-f5ee1ac627f2&adoBuildId=69514"
+          }
+        },
+        {
+          "name": "ev2_msazure",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msazure&adoProjectId=09706533-03bf-4b43-9a9b-b49c75429646&adoBuildId=85471733"
+          }
+        },
+        {
+          "name": "ev2_msdata",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msdata&adoProjectId=ba574a88-a171-48e0-8fcb-5fef6d23739c&adoBuildId=115856310"
+          }
+        },
+        {
+          "name": "pilotfish_msazured",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msazure&adoProjectId=b32aa71e-8ed2-41b2-9d77-5bc261222004&adoBuildId=81303682"
+          }
+        }
+      ]
     },
-    "item": [
+    {
+      "name": "Deployment2Build",
+      "item": [
         {
-            "name": "Build2Deployment",
-            "item": [
-                {
-                    "name": "Template",
-                    "event": [],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=&adoProjectId=&adoBuildId="
-                    }
-                },
-                {
-                    "name": "azdeployer_msazure",
-                    "event": [],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msazure&adoProjectId=b32aa71e-8ed2-41b2-9d77-5bc261222004&adoBuildId=79119662"
-                    }
-                },
-                {
-                    "name": "ev2_admetrics",
-                    "event": [],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=admetrics&adoProjectId=c6f597f2-902e-47df-9dbd-f5ee1ac627f2&adoBuildId=69514"
-                    }
-                },
-                {
-                    "name": "ev2_msazure",
-                    "event": [],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msazure&adoProjectId=09706533-03bf-4b43-9a9b-b49c75429646&adoBuildId=85471733"
-                    }
-                },
-                {
-                    "name": "ev2_msdata",
-                    "event": [],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msdata&adoProjectId=ba574a88-a171-48e0-8fcb-5fef6d23739c&adoBuildId=115856310"
-                    }
-                },
-                {
-                    "name": "pilotfish_msazured",
-                    "event": [],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msazure&adoProjectId=b32aa71e-8ed2-41b2-9d77-5bc261222004&adoBuildId=79119662"
-                    }
-                }
-            ]
+          "name": "Template",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=&deploymentId="
+          }
         },
         {
-            "name": "Deployment2Build",
-            "item": [
-                {
-                    "name": "Template",
-                    "event": [],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=&deploymentId="
-                    }
-                },
-                {
-                    "name": "expressv2",
-                    "event": [],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=expressv2&deploymentId=ContainerService/b03fe328-9f11-42c4-8eed-73a0f0d1c944"
-                    }
-                },
-                {
-                    "name": "azdeployer",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=azdeployer&deploymentId=80561803",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "{{d2bcomponent}}",
-                                "builds"
-                            ],
-                            "query": [
-                                {
-                                    "key": "deploymentSource",
-                                    "value": "azdeployer"
-                                },
-                                {
-                                    "key": "deploymentId",
-                                    "value": "80561803"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "pilotfish",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=pilotfish&deploymentId=20240213-171812-e590c07791ed2ed9812b1bfe17537e84500f6cc5_69060604",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "{{d2bcomponent}}",
-                                "builds"
-                            ],
-                            "query": [
-                                {
-                                    "key": "deploymentSource",
-                                    "value": "pilotfish"
-                                },
-                                {
-                                    "key": "deploymentId",
-                                    "value": "20240213-171812-e590c07791ed2ed9812b1bfe17537e84500f6cc5_69060604"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
+          "name": "expressv2",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=expressv2&deploymentId=ContainerService/b03fe328-9f11-42c4-8eed-73a0f0d1c944"
+          }
         }
-    ],
-    "variable": [
-        {
-            "key": "base_url",
-            "value": "",
-            "type": "default"
-        },
-        {
-            "key": "b2dcomponent",
-            "value": "",
-            "type": "default"
-        },
-        {
-            "key": "d2bcomponent",
-            "value": "",
-            "type": "default"
-        }
-    ]
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "b2dcomponent",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "d2bcomponent",
+      "value": "",
+      "type": "default"
+    }
+  ]
 }
