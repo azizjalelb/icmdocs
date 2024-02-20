@@ -213,6 +213,8 @@ items:
             href: TeamDocs/DataPlatform/bug_bash_test_cases.md
           - name: Analysis of DataPlatform APIs on Azure Declared Outages
             href: TeamDocs/DataPlatform/dp_on_azure_declared_outages.md
+          - name: Payload Standardization
+            href: TeamDocs/DataPlatform/payloadstandarization.md
       - name: Build2Deployment
         items: 
           - name: Build2Deployment
