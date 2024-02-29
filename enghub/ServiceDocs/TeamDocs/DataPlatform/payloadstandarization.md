@@ -9,18 +9,9 @@ Standardized Payload will contain the ServiceTreeGuid/ServiceGroupName and the B
 Standardized Payload Format: 
 
 
-- For AzDeployer  
-    - It has only App Deployments. Standard format will be 'ServiceName = BuildVersion’ 
+- For Below ARM– ServiceName or DataFolder = BuildVersion. 
 
-- For PilotFish – There are three types of deployments 
-
-    - Configuration changes, Standard format will be ‘DataFolder = BuildVersion’
-    - Data Deployments, standard format will be ‘DataFolder = BuildVersion’
-    - App Deployments, standard format will be ‘ServiceName = BuildVersion’
-
-- For EV2 - ‘ServiceTreeGruid/Ev2ServiceGroupName = Buildversion’ 
-
-- For node level changes we are receiving from EM, we are receiving the payload in standard format. i.e. ‘ServiceName = BuildVersion’
+- For Above ARM- ‘ServiceTreeGruid/Ev2ServiceGroupName = Buildversion’ 
 
 
 ## Standardized Payload Format Examples:
@@ -28,8 +19,9 @@ Standardized Payload Format:
 |Source| Standardized PayloadFormat | Example |
 |--|----------------------------|---------|
 |ExpressV2 | ServiceTreeGuid/ServiceGroupName=BuildNumber | fe63f845-4aee-4313-9b2e-3a8a2fe61897/analyticsingestion=1.0.9.1265 |
-|AzDeployer | Servicename=BuildNumber | slbhostplugin=slbhp_90f060a9_11752060_12-0-1793-0 |
-|PilotFish | Servicename=BuildNumber |network resource provider =5093666   |
+|PilotFish | Servicename=BuildNumber |hostconfigmanager=hcm_24_01_27_299   |
+|PilotFish | DataFolder=BuildNumber |dataimage~amd64_prd=133526099359554534   |
+|OMRollout | Servicename=BuildNumber |nicagent=nicagent_5_2_2_127   |
 
 
 #### Note: 
