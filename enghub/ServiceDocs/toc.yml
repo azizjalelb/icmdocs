@@ -83,6 +83,10 @@ items:
             href: TSGs/ChangeGuard/ChangeApprovalProcessForService.md
           - name: Search for a Subscription in ChangeGuard
             href: TSGs/ChangeGuard/SearchForSubscription.md
+          - name: Onboard or remove an R2D service from the SafeFly approval process
+            href: TSGs/ChangeGuard/ChangeApprovalProcessForAllServices.md
+          - name: Log Silent Canaries - Secret store errors
+            href: TSGs/ChangeGuard/LogSilentCanariesSecretStoreErrors.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
