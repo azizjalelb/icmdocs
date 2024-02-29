@@ -90,3 +90,26 @@ Use this section to add common/known issues. Additionally, use this section to s
 ```
 
 to add a new sub-section.
+
+### 403 Forbidden
+
+FCM uses the following two certificates to call ICM APIs:
+
+- `KV-IcmClientCert`
+- `KV-IcmClientCertProd` (in non-prod environments)
+
+Sometimes, ICM will return a 403 Forbidden status code on a given incident. The reason it does is because the certificate used is not in scope for the tenant id of the ticket, meaning that the service has no onboarded to allow us to query their incidents. In this case, we have two remediation steps:
+
+- If testing, consider switching to `KV-IcmClientCertProd` in non-test environments (like **INT** or **PPE**). These are currently configure to use a scoped down version of the cert.
+- If a customer is unable to query using their incidents, please instruct them on using the following guide to allow our certificate to query their tenant: https://icmdocs.azurewebsites.net/developers/AuthorizingCertificatesForProgrammaticAccessToIcM.html
+
+We currently have an active work item to increase our cert's scope to all tenants now and in the future. To find if a tenant is in scope for our cert, use the query below:
+
+Execute in [Web] [Desktop] [cluster('icmcluster.kusto.windows.net').database('IcmDataWarehouse')]
+AuthZRoleClaims 
+| where Claim contains "icmclient.fcm.msftcloudes.com" 
+| distinct TenantId 
+| join kind=rightanti Tenants on TenantId 
+| distinct TenantId 
+
+A partner request has been cut to ICM here: https://dev.azure.com/msazure/One/_workitems/edit/26912841
