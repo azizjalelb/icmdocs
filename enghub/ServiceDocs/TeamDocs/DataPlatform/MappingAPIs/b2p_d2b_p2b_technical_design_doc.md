@@ -1,4 +1,4 @@
-# Build2Deployment and Deployment2Build APIs Design Document 
+# Build2Deployment, Payload2Build and Deployment2Build APIs Design Document 
 
 
 | Owner(s)     | Status                   | Approvers | Last Updated |
@@ -10,10 +10,11 @@
 
 This document proposes the high-level design architecture and also the low-level design for Build2Deployment and Deployment2Build APIs.
 
-Our primary goal is to build functionality which will allow us to give a Azure DevOps (ADO) build provide all the deployment information across different orchestrators, AzDeployer, Pilotfish, ExpressV2 (currently in scope) and vice versa, given a deployment Id and deployment system, we will provide ADO build details. This document presents the API Contracts for the two APIs that FCM Team will implement, Build2Deployment and Deployment2Build APIs:
+Our primary goal is to build functionality which will allow us to give a Azure DevOps (ADO) build provide all the deployment information across different orchestrators, AzDeployer, Pilotfish, ExpressV2 (currently in scope) and vice versa, given a deployment Id and deployment system, we will provide ADO build details. This document presents the API Contracts for the two APIs that FCM Team will implement, Build2Deployment, Payload2Build and Deployment2Build APIs:
 
 - **Build2Deployment(B2D)**: Given an Azure DevOps (ADO) build, namely Azure DevOps Organization Name, Azure DevOps Project ID and AzureDevOps BuildId, return in response a list of all deployment across all deployment systems (AzDeployer, Pilotfish, ExpressV2).  
-- **Deployment2Build(D2B)**:  Given a deploymentId and a deployment source, return the list of Azure DevOps (ADO) builds which have been deployed with this deployment.  
+- **Deployment2Build(D2B)**:  Given a deploymentId and a deployment source, return the list of Azure DevOps (ADO) builds which have been deployed with this deployment.
+- **Payload2Build(D2B)**:  Given a payload and a deployment source, return the list of Azure DevOps (ADO) builds.    
 
 ## SLAs
 
@@ -40,7 +41,7 @@ The technical requirements are:
 
 ## High Level Design Architecture
 
-![Alt text](./media/b2d_hld_diagram.png)
+![Alt text](./media/b2d_p2b_d2b_hld_diagram.png)
 
 
 ## API Design
@@ -330,6 +331,70 @@ Response Body:
 | **503**       | application/json | ```{"code":"503","message":"Service Unavailable"}``` |
 
 
+### Payload2Build (P2B) API
+
+#### Sequence Diagram
+
+![Alt text](./media/p2b_sequence_diagram.png)
+
+#### Parameters
+
+##### Input
+
+| Parameter name   | Parameter type | Parameter description | Required |
+|------------------|----------------|-----------------------|----------|
+| **DeploymentSource** | String         | ‘azdeployer’, ‘expressv2’, ‘pilotfish’ | Yes |
+| **Payload**     | String         | Payload to get the ado build for. For **EV2**: `$'{ServiceTreeId}/{ServiceGroupName}={BuildNumber}'`. For **AzDeployer** it will be `$'{DeploymentTemplate};{BuildBranch};{BuildVersion}'`, for **Pilotfish**, it will be `$'{ServiceComponentName}={BuildLabel}'` | Yes |
+
+##### Output
+
+
+| Parameter name        | Parameter type | Parameter description                               | Required |
+|-----------------------|----------------|-----------------------------------------------------|----------|
+| **DeploymentSource**      | String         | Same as input param                                 | Yes      |
+| **Payload**          | String         | Returning standardized payload.                                 | Yes      |
+| **Builds**                | List<Build>    | List of builds associated with the deployment in request | Yes |
+| **Build.OrganizationName**| string         | Azure DevOps organization for which the build belongs to | Yes |
+| **Build.ProjectId**       | string         | Azure Devops Project Id for which the build belongs to | Yes |
+| **Build.Id**              | string         | Id of the build that is being deployed              | Yes      |
+| **Build.Url**             | string         | URL link to the build in the build system           | Yes      |
+| **Build.Source**          | string         | ‘ADO’                                               | Yes      |
+
+Response Body:
+```json
+{
+    "DeploymentSource": "string",
+    "Payload": "string",
+    "Builds": [
+        {
+            "OrganizationName": "string",
+            "ProjectId": "string",
+            "Id": "int",
+            "Url": "string"
+        }
+    ]
+}
+```
+
+
+#### Example cURL 
+
+```curl``` -X **GET** https://api.dp.fcm.msftcloudes.com/p2b/builds?payload={```Payload```}&deploymentSource={```DeploymentSource```}
+
+
+#### Support Result Codes
+
+| Http Code | content-type   | Response |
+|-----------|----------------|----------|
+| **200**       | application/json | ```Payload2Build``` response; see above |
+| **400**       | application/json | ```{"code":"400","message":"Bad Request"}``` |
+| **401**       | application/json | ```{"code":"401","message":"Unauthorized"}``` |
+| **404**       | application/json | ```{"code":"404","message":"Payload {payload} from DeploymentSource {deploymentSource} is not found"}``` |
+| **429**       | application/json | ```{"code":"429","message":"Too Many Requests"}``` |
+| **500**       | application/json | ```{"code":"500","message":"Internal Server Error"}``` |
+| **503**       | application/json | ```{"code":"503","message":"Service Unavailable"}``` |
+
+
 ## Data Layer  
 
 Currently, we do not have any Kusto tables that have deployment to build mappings or build to deployment mappings. However, we have Payload to Deployment mapping in EntityChangeEventsMaterializedView. In order to create these Build2Deployment mapping, we will initially populate a new table called Build2Payload. This table will include ADOBuild to Payload mappings. Then we will use this table to join with EntityChangeEventsMaterializedView to find deployments for given builds or vice versa. (The version below only support getting deployment to build mappings for ExpressV2. We will update the query for other deployment systems once we finalize the right way to create those mappings.):
@@ -356,7 +421,8 @@ DeploymentServiceName = tostring(split(ExternalId, "/")[0])
           Id,
           BuildUrl,
           Payload=tolower(strcat(ServiceTreeGuid, "/", DeploymentServiceName, "=", BuildNumber)),
-          BuildSource = 'ado'
+          BuildSource = 'ado',
+          DeploymentSource= 'expressv2'
 }
 ```
 
@@ -399,7 +465,8 @@ on branch and version
           Id=tostring(BuildId),
           BuildUrl,
           Payload=tolower(Payload),
-          BuildSource = 'ado'
+          BuildSource = 'ado',
+          DeploymentSource= 'azdeployer'
 }
 ```
 
@@ -423,25 +490,19 @@ and (isempty(TargetType) or tolower(TargetType) == 'cluster')
 // Get changes with valid payload
 | where isnotempty(Payload) and Payload != "<null>"
 | distinct Payload, RTOIdentifier
-// Process payload to remove the prefixes, this is needed when joining with GetPFBuilderMessage. We are not ingesting this trimmed payload.
-| project PayloadTrimmed = case(Payload startswith "envconfig", trim_start("envconfig=", Payload),
-                           Payload startswith "dataimage", trim_start("dataimage~", Payload),
-                           Payload contains "data\\",  replace_string(Payload, "data\\", ""),
-                           Payload), 
-          RTOIdentifier, Payload
   // expand payload to multiple buildversions in order to join with Payload-BuildPathMapping table
- | mv-expand BuildVersions=split(PayloadTrimmed," ")
+ | mv-expand BuildVersions=split(Payload," ")
  // Get the BuildVersion from expanded Payload. Remove the service name if the BuildVersion has '='
- | extend BuildVersions = tostring(BuildVersions)
- | extend BuildVersion= tolower(iff(BuildVersions contains "=",tostring(split(BuildVersions,"=")[1]), BuildVersions)) // this should be removed as part of payload standardization
+ | extend BuildVersion = tolower(tostring(BuildVersions))
+ | extend BuildLabel = tolower(iff(BuildVersion contains "=",tostring(split(BuildVersion,"=")[1]), BuildVersion))
  // join with Payload-BuildPathMapping in order to find the Buildpath for payloads.
  | join kind=inner 
- (cluster('azdeployer.kusto.windows.net').database('AzDeployerKusto').GetPFBuilderMessage(startTime-1d, endTime) | extend BuildLabel = tolower(BuildLabel)) on $left.BuildVersion == $right.BuildLabel and $left.RTOIdentifier == $right.RTOId
- | where  BuildPath startswith ```\\reddog```
+ (cluster('azdeployer.kusto.windows.net').database('AzDeployerKusto').GetPFBuilderMessage(startTime-1d, endTime) | extend BuildLabel = tolower(BuildLabel)) on $left.BuildLabel == $right.BuildLabel and $left.RTOIdentifier == $right.RTOId
+| where  BuildPath startswith ```\\reddog```
 | extend branch = tostring(split(BuildPath,```\```)[5])
 | extend version = tostring(split(BuildPath,```\```)[6])
 | where isnotempty(branch) and isnotempty(version)
-| distinct BuildLabel, branch, version, BuildPath, Payload
+| distinct BuildVersion, BuildLabel, branch, version, BuildPath
 // Join with BuilPath-ADOBuild table to get Payload to ADOBuild mapping.
 | join kind= inner
 (
@@ -459,27 +520,33 @@ cluster('1es').database('AzureDevOps').BuildArtifact
           ProjectId,
           Id=tostring(BuildId),
           BuildUrl,
-          Payload= tolower(Payload),
-          BuildSource = 'ado'  
+          Payload= tolower(BuildVersion),
+          BuildSource = 'ado',
+          DeploymentSource= 'pilotfish'  
 }
 ```
 
 **GetDeployment2Build_v1:**
 ```sql 
 .create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Getting list of builds for the given deployments", skipvalidation = "true") GetDeployment2Build_v1(DeploymentSource:string, DeploymentId:string) {
-let aboveArmSources = dynamic(["expressv2"]);
-let belowArmSources = dynamic(["azdeployer", "pilotfish"]);
 materialized_view('EntityChangeEventsMaterializedView', 10m) 
-| where (Source == DeploymentSource and ChangeActivity == DeploymentId and DeploymentSource in (aboveArmSources)) or (Source == 'azdeployer' and ParentChangeActivity == DeploymentId and DeploymentSource in (belowArmSources))
-| distinct Payload, Source, ChangeActivity=iff(DeploymentSource in (aboveArmSources), ChangeActivity, ParentChangeActivity)
-| join kind=leftouter Build2Payload on Payload
+| where (DeploymentSource == 'expressv2' and Source == DeploymentSource and ChangeActivity == DeploymentId) or 
+        (DeploymentSource == 'azdeployer' and Source == DeploymentSource and ParentChangeActivity == DeploymentId) or 
+        (DeploymentSource == 'pilotfish' and Source in ('azdeployer','pilotfish') and  ParentChangeActivity == DeploymentId)
+| where case(DeploymentSource == 'azdeployer', Source == 'azdeployer' and MetaData !contains 'pilotfishbuildversion',
+             Timestamp >= datetime(2024-02-20) and DeploymentSource == 'pilotfish', Source == 'pilotfish',
+             Timestamp < datetime(2024-02-20) and DeploymentSource == 'pilotfish', Source == 'azdeployer' and MetaData contains 'pilotfishbuildversion',
+             true)
+| extend deploymentSource = iff(Source == 'azdeployer' and MetaData contains 'pilotfishbuildversion', 'pilotfish', Source)
+| distinct BuildVersion, deploymentSource, ChangeActivity=iff(DeploymentSource == 'expressv2', ChangeActivity, ParentChangeActivity)
+| join kind=leftouter Build2Payload on $left.BuildVersion == $right.Payload
 | distinct OrganizationName,
           ProjectId,
           Id,
           Url = BuildUrl,
           Source = BuildSource,
           DeploymentId= ChangeActivity,
-          DeploymentSource = DeploymentSource 
+          DeploymentSource = deploymentSource 
 // Next lines are need to return rows with empty ado build information only when the given deployment is actually valid but we couldn't find a matching a build in FCM.
 | order by OrganizationName desc
 | where not (isempty(Id) and isnotempty(prev(Id)))
@@ -489,7 +556,7 @@ materialized_view('EntityChangeEventsMaterializedView', 10m)
           Url,
           Source,
           DeploymentId,
-          DeploymentSource  
+          DeploymentSource
 }
 ```
 
@@ -504,25 +571,41 @@ materialized_view('EntityChangeEventsMaterializedView', 10m)
         and Id == AdoBuildId
     | distinct OrganizationName, ProjectId, Id, Payload
     // grab only rows that have matching records
-    | join kind=inner EntityChangeEvents on $left.Payload == $right.Payload
-    // we don't want the adorelease records, just ev2
-    | where Source == 'expressv2'   
-    // simplify the data to just rollout entries; they follow the below regex
-    | where ChangeActivity matches regex ".*?/[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}" 
-    // gets the latest entry (i.e. last updated from ev2 for the given rollout)
-    | summarize arg_max(Timestamp, *) by ChangeActivity
-    | extend DeploymentId = split(ChangeActivity, '/')[1]
-    | extend DeploymentServiceName = split(ChangeActivity, '/')[0]
+    | join kind=inner materialized_view('EntityChangeEventsMaterializedView', 10m) on $left.Payload == $right.BuildVersion    
+    | where ((Source == 'expressv2' and ChangeActivity matches regex ".*?/[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}")) or Source in ('azdeployer', 'pilotfish')
+    | extend Source = case(Source == 'azdeployer' and MetaData contains 'pilotfishbuildversion', 'pilotfish', Source)
+    | extend DeploymentId = iff(Source == 'expressv2', ChangeActivity, ParentChangeActivity)
+    | summarize
+        StartTime = min(StartTime),
+        EndTime = maxif(EndTime, ChangeState !contains 'blocked'),
+        arg_max(ModifiedDate, *)
+        by DeploymentId
     // we could have different rolloutinfra such as Test or Mooncake, should take a look at this
     | extend DeploymentRolloutInfra = "Prod"
-    | extend DeploymentUrl = strcat('https://ev2portal.azure.net/#/Rollout/', DeploymentServiceName, '/', DeploymentId, '?RolloutInfra=', DeploymentRolloutInfra)
-    | extend LastUpdatedTime = Timestamp
-    // set endtime to DateTime.Max if it's still in progress
-    | extend EndtTime = iff(ChangeState == 'inprogress', datetime('9999-12-31T23:59:59.999'), EndTime)
-    // below because we haven't standardized payloads for fcm one deploy dashboard
-    | extend PayloadId = tostring(split(Payload, '=')[1])
-    | extend FcmProgressionLink = strcat('https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_entityType=all&p-_payload=', url_encode(PayloadId), '#84c6c83e-687d-44a3-a599-110f700efce7')
+    | extend DeploymentUrl = case(Source == 'expressv2', strcat('https://ev2portal.azure.net/#/Rollout/', DeploymentId, '?RolloutInfra=', DeploymentRolloutInfra),
+                                  Source == 'azdeployer' or Source == 'pilotfish' ,strcat('https://azdeployer.trafficmanager.net/release/', DeploymentId),
+                                  '')
+    | extend LastUpdatedTime = ModifiedDate
+    | extend Payload = tolower(BuildVersion) 
+    | extend FcmProgressionLink = strcat('https://dataexplorer.azure.com/dashboards/d0357802-00ae-48c7-85a2-5cf02d98de77?p-_entityType=all&p-_payload=', url_encode(Payload), '#84c6c83e-687d-44a3-a599-110f700efce7')
     | extend MetaData = ""
+    | distinct
+        DeploymentId,
+        DeploymentUrl,
+        StartTime,
+        EndTime,
+        LastUpdatedTime,
+        ChangeState,
+        Source,
+        ChangeOwner,
+        ChangeOwnerType,
+        Payload,
+        FcmProgressionLink,
+        MetaData
+    | extend Payloads = pack_array(bag_pack_columns(Payload, FcmProgressionLink))
+    // Next lines are need to return rows with empty deployment information only when the given ado build is actually valid but we couldn't find a matching a deployment in FCM.
+    | order by DeploymentId desc
+    | where not (isempty(DeploymentId) and isnotempty(prev(DeploymentId)))
     | project
         DeploymentId,
         DeploymentUrl,
@@ -533,13 +616,38 @@ materialized_view('EntityChangeEventsMaterializedView', 10m)
         Source,
         ChangeOwner,
         ChangeOwnerType,
-        PayloadId,
-        FcmProgressionLink,
-        EntityId,
-        MetaData
-    | extend Payloads = pack_array(bag_pack_columns(PayloadId, FcmProgressionLink))
+        MetaData,
+        Payloads
  }
 ```
+
+**GetPayload2Build_v1**
+```sql
+.create-or-alter function with (folder = "KOJobs\\DataPlatformAPIs", docstring = "Getting list of builds for the given a payload", skipvalidation = "true") GetPayload2Build_v1(DeploymentSourceSystem:string, PayloadId:string) {
+let ev2PF=Build2Payload
+| where DeploymentSource == DeploymentSourceSystem and DeploymentSourceSystem != 'azdeployer' and Payload == PayloadId
+| distinct OrganizationName, ProjectId, Id, Url= BuildUrl, Source = BuildSource, Payload, DeploymentSource;
+let azdeployer = BuildVersion2Payload 
+| where DeploymentSourceSystem == 'azdeployer' and Source == DeploymentSourceSystem and  BuildVersionTrimmed == PayloadId
+| distinct BuildVersion, BuildVersionTrimmed, Payload, Source
+| join kind=leftouter (Build2Payload | where DeploymentSource == DeploymentSourceSystem) on $left.BuildVersion == $right.Payload and $left.Source == $right.DeploymentSource
+| distinct OrganizationName, ProjectId, Id, Url= BuildUrl, Source = BuildSource, Payload=BuildVersionTrimmed, DeploymentSource=Source;
+ev2PF
+| union azdeployer
+| distinct OrganizationName, ProjectId, Id, Url, Source, Payload, DeploymentSource
+// Next lines are need to return rows with empty ado build information only when the given deployment is actually valid but we couldn't find a matching a build in FCM.
+| order by OrganizationName desc
+| where not (isempty(Id) and isnotempty(prev(Id)))
+| project OrganizationName,
+          ProjectId,
+          Id,
+          Url,
+          Source,
+          Payload,
+          DeploymentSource   
+}
+```
+
 
 ## Caching
 
