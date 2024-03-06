@@ -219,7 +219,7 @@ items:
             href: TeamDocs/DataPlatform/dp_on_azure_declared_outages.md
           - name: Payload Standardization
             href: TeamDocs/DataPlatform/payloadstandarization.md
-      - name: DataPlatform - MappingAPIs (Build2Deployment, Deployment2Build, Payload2Build)
+      - name: DataPlatform - MappingAPIs
         items: 
           - name: MappingAPIs (Build2Deployment, Deployment2Build, Payload2Build)
             href: TeamDocs/DataPlatform/MappingAPIs/b2p_d2b_p2b_technical_design_doc.md
