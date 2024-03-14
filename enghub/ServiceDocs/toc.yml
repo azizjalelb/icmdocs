@@ -251,9 +251,7 @@ items:
         href: APIDocs/about.md
       - name: Change Explorer V2
         items:
-          - name: Change Search Service API
-            href: APIDocs/ChangeExplorerV2/ChangeSearchService/change_search_service_api.json
-          - name: Service Information Provider API
-            href: APIDocs/ChangeExplorerV2/ServiceInformationProvider/service_information_provider_api.json
-          - name: UI Backend Service
-            href: APIDocs/ChangeExplorerV2/UIBackendService/uibackendservice_api.json    
+          - name: ChangeExplorerV2 API (CEV2.V1)
+            href: https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/one-fleet-platform-timmall/federated-change-management/onedeploy-fcm-apis?definition=84C816C42FD62C38D2AD8A0E3EB8E631F2F409CE5914C7DC06457382C64E5329.json
+          - name: Data DataPlatform API (DP.V1)
+            href: https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/one-fleet-platform-timmall/federated-change-management/onedeploy-fcm-apis?definition=9187303849BC03E58DDA0E50F3817C1FAE745C30B70C74ACC5C98D2A49EEAF73.json  
