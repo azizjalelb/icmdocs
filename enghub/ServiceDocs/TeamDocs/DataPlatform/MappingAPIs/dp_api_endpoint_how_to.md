@@ -1,12 +1,20 @@
 # Build2Deployment & Deployment2Build & Payload2Build
 
+## Endpoints
+
+**INT**: *https://afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net*
+
+**PPE**: *https://afd-dp-ppe-bpa6h8dchaanfweh.b02.azurefd.net*
+
+**PROD**: *https://afd-dp-prod-akgsdsbaadasg7gk.b01.azurefd.net*
+
 ## Bruno
 
 [Bruno](https://www.usebruno.com/) is a "Fast and Git-Friendly Opensource API client" that is offline-only.
 
 ### Download Bruno Collection and Environment Variable Files
 
-Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EXwjOWmB78pKtv9OCWoF1pEBVAlZ3gzBffhw2NMw9qzpSw?e=Jwd0Ba). If you're having trouble download, you can copy and paste the files below into your local development environment:
+Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EbSeHS66eApIuCUrcI7YYogBUY18KtIo6QxY-nRchHLtgQ?e=zlj4La). If you're having trouble download, you can copy and paste the files below into your local development environment:
 
 **DataPlatform.bruno_collection.json**
 <details>
@@ -605,7 +613,7 @@ Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microso
 
 ```json
 {
-	"id": "8b24a332-ad22-4c7f-b196-68faa115e021",
+	"id": "4131f2e6-b1e0-422b-9c57-6737044e89a1",
 	"name": "dp-int",
 	"values": [
 		{
@@ -622,7 +630,7 @@ Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microso
 		},
 		{
 			"key": "base_url",
-			"value": "afd-dataplatform-int-apegeggveef0apbq.z01.azurefd.net",
+			"value": "afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net",
 			"type": "default",
 			"enabled": true
 		},
@@ -637,11 +645,41 @@ Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microso
 			"value": "d2b",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "p2bcomponent",
+			"value": "p2b",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "authUrl",
+			"value": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/authorize",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "headerPrefix",
+			"value": "Bearer",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "tokenName",
+			"value": "Authorization",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "state",
+			"value": "12345",
+			"type": "default",
+			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-01-19T16:00:09.561Z",
-	"_postman_exported_using": "Postman/9.31.30"
+	"_postman_exported_at": "2024-02-29T23:22:42.599Z",
+	"_postman_exported_using": "Postman/10.23.8"
 }
 ```
 </details>
@@ -696,7 +734,7 @@ print(token['accessToken'])
 
 ### Download the Postman Collection and Environment Variable Files
 
-Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EXwjOWmB78pKtv9OCWoF1pEBVAlZ3gzBffhw2NMw9qzpSw?e=Jwd0Ba). If you're having trouble download, you can copy and paste the files below into your local development environment:
+Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microsoft.sharepoint.com/:u:/t/FCM/EbSeHS66eApIuCUrcI7YYogBUY18KtIo6QxY-nRchHLtgQ?e=zlj4La). If you're having trouble download, you can copy and paste the files below into your local development environment:
 
 **DataPlatform.postman_collection.json**
 <details>
@@ -1183,9 +1221,10 @@ Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microso
 
 **dp-int.postman_environment.json**
 <details>
+
 ```json
 {
-	"id": "8b24a332-ad22-4c7f-b196-68faa115e021",
+	"id": "4131f2e6-b1e0-422b-9c57-6737044e89a1",
 	"name": "dp-int",
 	"values": [
 		{
@@ -1202,7 +1241,7 @@ Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microso
 		},
 		{
 			"key": "base_url",
-			"value": "afd-dataplatform-int-apegeggveef0apbq.z01.azurefd.net",
+			"value": "afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net",
 			"type": "default",
 			"enabled": true
 		},
@@ -1217,13 +1256,44 @@ Download the files from sharepoint here: [b2d_d2b_p2b_files.zip](https://microso
 			"value": "d2b",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "p2bcomponent",
+			"value": "p2b",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "authUrl",
+			"value": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/authorize",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "headerPrefix",
+			"value": "Bearer",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "tokenName",
+			"value": "Authorization",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "state",
+			"value": "12345",
+			"type": "default",
+			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-01-19T16:00:09.561Z",
-	"_postman_exported_using": "Postman/9.31.30"
+	"_postman_exported_at": "2024-02-29T23:22:42.599Z",
+	"_postman_exported_using": "Postman/10.23.8"
 }
 ```
+
 </details>
 
 For detailed instructions on importing data, see [import data on postman](https://learning.postman.com/docs/getting-started/importing-and-exporting/importing-data/). To execute a request, first retrieve a token using postman's authorization via browser:
@@ -1250,7 +1320,7 @@ client_id = '' # app id of your service
 client_secret = '' # secret; can use other auth methods (like cert) as  well
 resource = 'api://b565c703-fa73-48d1-92cf-a002721abe2e' # scope 
 
-d2b_api_endpoint = 'http://afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net/d2b/builds'
+d2b_api_endpoint = 'https://afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net/d2b/builds'
 deploymentId = 'ContainerService/b03fe328-9f11-42c4-8eed-73a0f0d1c944'
 deploymentSource = 'expressv2'
 
@@ -1286,7 +1356,7 @@ client_id = '' # app id of your service
 client_secret = '' # secret; can use other auth methods (like cert) as  well
 resource = 'api://b565c703-fa73-48d1-92cf-a002721abe2e' # scope 
 
-b2d_api_endpoint = 'http://afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net/b2d/deployments'
+b2d_api_endpoint = 'https://afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net/b2d/deployments'
 adoOrganizationName = 'dev'
 adoProjectId = '505e0832-097c-4d90-947b-777124cc8911'
 adoBuildId = '1531543'
@@ -1324,7 +1394,7 @@ client_id = '' # app id of your service
 client_secret = '' # secret; can use other auth methods (like cert) as  well
 resource = 'api://b565c703-fa73-48d1-92cf-a002721abe2e' # scope 
 
-p2b_api_endpoint = 'http://afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net/p2b/builds'
+p2b_api_endpoint = 'https://afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net/p2b/builds'
 payload = 'fe63f845-4aee-4313-9b2e-3a8a2fe61897/azuremonitorapi=1.0.02607.1033-5dd3a269'
 deploymentSource = 'expressv2'
 
