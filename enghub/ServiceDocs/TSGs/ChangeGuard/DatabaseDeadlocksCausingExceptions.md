@@ -15,7 +15,7 @@ The most probable cause for DB deadlocks is the existing refresh mechanism for C
 1. Connect to **chggrd-api-sql-db-prod.database.windows.net** server using SSMS.
     - If SSMS not installed in your computer, see: [SQL Server Management Studio (SSMS)](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms)
     - Username and Password are available
-      from [chggrd-api-kv-prod](https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/8830ba56-a476-4d01-b6ac-d3ee790383dc/resourceGroups/chggrd-api-prod-westus2/providers/Microsoft.Sql/servers/chggrd-api-sql-svr-prod) secrets (requires JIT
+      from [chggrd-api-kv-prod](https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/8830ba56-a476-4d01-b6ac-d3ee790383dc/resourceGroups/chggrd-api-prod-westus2/providers/Microsoft.KeyVault/vaults/chggrd-api-kv-prod) secrets (requires JIT
       to FcmProduction), under:
         - **chggrd-db-admin-username**
         - **chggrd-db-admin-password**
