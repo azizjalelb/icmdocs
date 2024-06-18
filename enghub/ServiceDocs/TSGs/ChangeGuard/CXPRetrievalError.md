@@ -7,7 +7,15 @@
 The Change Guard APIs are deployed as services inside an AKS cluster.
 One of the services is the CXP Retrieval, which calls the CXP team's [Event Readiness API](https://eng.ms/docs/cloud-ai-platform/azure-cxp/cxp-product-and-platform/assist-insights-data-and-engage-aide/event-readiness) 
 to retrieve CCOA Event information such as current or future events, dates, services and regions in scope.
-If the alert fires it means that there is an issue while connecting the the API and receiving data back.
+
+> [!NOTE]
+> - The Event Readiness API was migrated to use JWT token based authentication, from the previous client certificate based authentication.
+> - The system will make a call, using the Managed Identity of the AKS cluster, to the CXP Event Readiness API to get the token.
+> - The token will be used in the subsequent calls to retrieve data from the API.
+> - The used details for the JWT auth varies from environment to environment and can be seen inside the "appsettingssecrets.json" which can be found inside the environment's KeyVault, under the secret name "appsettingssecretsjson".
+> - The clientId, tenantId and resourceId used for the JWT token are found in the appsettings json, under :`jwtAuthentication`.
+
+If the alert fires it means that there is an issue while connecting the API and receiving data back.
 
 ### Steps taken to investigate the issue:
 
@@ -57,7 +65,7 @@ This will return the whole logs for the pods, and you can search for the error m
 
 ![Kusto Details](media/CxpRetrievalError/6_podlogmessage.png)
 
-The error message indicates that when connecting to the CXP Event Readiness API using the certificate authentication, our services receive the following error:
+The error message indicates that when connecting to the CXP Event Readiness API, our services receive the following error:
 `Unable to read data from the transport connection: Connection reset by peer`.
 
 After investigating this error it points to an issue on the server side which is dropping/refusing connections. In this case the server belongs to the CXP team.
