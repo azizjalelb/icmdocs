@@ -17,9 +17,7 @@ Federated Change Insights aggregates standardized change data streams from chang
 
 ### Points of Contact
 
-- Naveen, SDM: naveend@microsoft.com
-- Usha, PM: ushapinreddy@microsoft.com
-- FCM Support: fcmsupport@microsoft.com
+- FCM Feature Crew: fcmfc@microsoft.com
 
 ## Quick Links
 
