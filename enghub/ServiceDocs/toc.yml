@@ -179,6 +179,8 @@ items:
             href: TSGs/Ingestion/ZeroChangeCount.md
           - name: Synthetics and Monitors Issues
             href: TSGs/Ingestion/SyntheticsAndMonitorIssues.md
+          - name: EntityModel Monitors
+            href: TSGs/Ingestion/EntityModel Monitors.md
       - name: Expiring Certs
         items:
           - name: ExpiringInUseCerts
