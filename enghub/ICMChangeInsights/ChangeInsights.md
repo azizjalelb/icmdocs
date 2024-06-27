@@ -21,7 +21,7 @@ The following are the currently supported deployment Systems
 | Supported Deployment Systems | Known Gaps | NFZ/CCOA | Fast pause | 
 |:-----|:-----|:-----|:-----|
 |PF| Azure Virtual Envrionments Only| Supported | Supported for Azure Data plane deployments. Control Plane does not support fast pause| 
-|AzDeployer| No VMSS/VM image updates|| Supported | Supported for Azure Data plane deployments| 
+|AzDeployer| No VMSS/VM image updates| Supported | Supported for Azure Data plane deployments| 
 |EV2|| Supported | Not Available | 
 |FUSE|| Manual coordination | Not Available | 
 |WADI(Xstore)|| Supported | Not Available| 
