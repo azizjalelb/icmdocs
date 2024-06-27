@@ -8,23 +8,23 @@
            For services operating at region, the impact region in ICM should be specified).
 3. Who (The service responsible for the incident).
 
-| ICM location | Search Criteria | Results | Notes
-|:-----|:-----|:-----|:-----|
-| Region | Region+Service|Show top 10 change made by Sevice in the Impacted region for last 12hrs| Changes to any EntityType by that Service in that Region|
-| Cluster | Cluster|Show top 10 change made to the Cluster for last 12hrs| Changes made to Cluster, Nodes, ToR|
-| Node | Node|Show top 10 change mades to the Node for last 12hrs| Changes made to the Node,ToR|
-| ToR | ToR|Show top 10 change mades to the ToR for last 12hrs| Changes made to the ToR|
+| ICM location | Source | Search Criteria | Results | Notes
+|:-----|:-----|:-----|:-----|:-----|
+| Region | [FCM Regions](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAHPOSMxLT3WtKMjJL0otig%2fOzC3IyUzLTE3xSy0pzy%2fKDskvyM%2fJT6%2bsUSjPSC1KVfDJT04syczPC6ksSFWwtVVQKkpNB3KVeLlqFFIyi0sy85JL4Io8UwAqR0WoXwAAAA%3d%3d) | Region+Service|Show top 10 change made by Sevice in the Impacted region for last 12hrs| Changes to any EntityType by that Service in that Region|
+| Cluster | [FCM Clusters](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAD3KMQqAMAwAwF3wD6H%2fcBIHQVzsLqWNGqxNSSMq%2bHg3b752c2nF7s6RBWWe6MiRFsIwol4su%2bXMkdfnhWtDQRjYOyVO9skITQPGx7MoiqmrFwIVpeT1X334AOCeQnxgAAAA) | Cluster|Show top 10 change made to the Cluster for last 12hrs| Changes made to Cluster, Nodes, ToR|
+| Node | [FCM Nodes](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAD3KsQqAIBAA0D3oHw7%2fwykagmjJPUQvPTJPTDDBj2%2frzW%2fyOjqc3xQ4Yz52ulOgk9BuWCrnS3HiwK51qB4zwspGF%2bKoWkKQEkRki2IcOlh6CkVT%2frLYD124pHJdAAAA) | Node|Show top 10 change mades to the Node for last 12hrs| Changes made to the Node,ToR|
+| ToR | [FCM ToRs](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAD3KwQpAQBAG4LvyDpP3cJKDkgt3yQ4ma%2f9tjFD78G6%2b81dtU1i5fqKHso69HNHLIuw6thu6D4jwWN9E98bK1GKeTBCGNzKVJRUGVVzGWuRZIienSZjtf437ACPI8jpiAAAA)| ToR|Show top 10 change mades to the ToR for last 12hrs| Changes made to the ToR|
 
 The following are the currently supported deployment Systems
 
 
-| Supported Deployment Systems
-|:-----|
-|PF|
-|AzDeployer|
-|EV2|
-|FUSE|
-|WADI(Xstore)|
+| Supported Deployment Systems | Known Gaps | NFZ/CCOA | Fast pause | 
+|:-----|:-----|:-----|:-----|
+|PF| Azure Virtual Envrionments Only| Supported | Supported for Azure Data plane deployments. Control Plane does not support fast pause| 
+|AzDeployer| No VMSS/VM image updates| Supported | Supported for Azure Data plane deployments| 
+|EV2|| Supported | Not Available | 
+|FUSE|| Manual coordination | Not Available | 
+|WADI(Xstore)|| Supported | Not Available| 
 
 ## Identifying "Where"(impacted location) in ICM
 
@@ -80,8 +80,12 @@ Provide granular location (Cluster, node) to identify relevant changes.
 
   ![alt text](media/InstanceCluster.png)
 
-
-
+| Onboarding Deployment Systems | Known Gaps | NFZ/CCOA | Fast pause | 
+|:-----|:-----|:-----|:-----|
+|RSM SMD Guest updates| Onboarding in progress | Supported | Not Available | 
+|Maintenance Orchestrator Host Updates| Onboarding in progress| Manual Coordination | Not Available | 
+|AzDM Control Plane |Onboarding in progress | Supported | Not Available| 
+|AKS |Onboarding in progress | Manual Coordination | Not Available| 
 
 <!-- ### User Interface 
 Check out our demo video here!
