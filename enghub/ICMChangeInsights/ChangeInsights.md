@@ -18,14 +18,22 @@
 The following are the currently supported deployment Systems
 
 
-| Supported Deployment Systems | Known Gaps | NFZ/CCOA | Fast pause | 
-|:-----|:-----|:-----|:-----|
-|PF| Azure Virtual Envrionments Only| Supported | Supported for Azure Data plane deployments. Control Plane does not support fast pause| 
-|AzDeployer| No VMSS/VM image updates| Supported | Supported for Azure Data plane deployments| 
-|EV2|| Supported | Not Available | 
-|FUSE|| Manual coordination | Not Available | 
-|WADI(Xstore)|| Supported | Not Available| 
-
+| Supported Deployment Systems| Change Data Onboarded  | Change Data Granularity | NFZ/CCOA | Fast pause | 
+|:-----|:-----|:-----|:-----|:-----|
+|PF (generic) | Yes * (PF Maintenance Service rebootful in progress) | PFCluster, Environment, MachineFunction, Machine | Supported | Supported for Azure Data plane deployments. Control Plane does not support fast pause. | 
+|AzDeployer| Yes | Zone, Custom | Supported | Supported for Azure Data plane deployments, not for Control plane | 
+|EV2| Yes|Region, Zone, Custom(?)| Supported | Not Available | 
+|FUSE| Yes | ToR, Device/Switch | Manual coordination | Not Available | 
+|XDash (XStore)| Yes| Storage Stamp | Supported | Not Available| 
+| DC Ops | TBD | DC, COLO, ROW, RACK | Manual | Manual or N/A |
+| Asgard (SF) | TBD | ? | Manual | Manual |
+| Sql/CosmosDB Ring (SF) | Yes | Ring | Information only | N/A |
+| SF (Generic) | TBD | Ring, App, Service, Machine | TBD | TBD |
+| K8S (Generic) | TBD | POD, Node, PODSet | TBD | TBD | 
+| K8S (Generic) | TBD | POD, Node, PODSet | TBD | TBD | 
+| PaaS (Generic) | TBD | Tenant, Role, RoleInstance | TBD | TBD |
+| VMSS (Generic Platform driven (RSM)) | In Progress | VM, VMSet | Yes | TBD |
+| VMSS (Generic) | TBD | VM, Set | TBD | TBD |
 ## Identifying "Where"(impacted location) in ICM
 
 Change Insights uses location (Where) in the incident to provide relevant changes in the incident
