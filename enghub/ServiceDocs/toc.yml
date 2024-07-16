@@ -199,6 +199,14 @@ items:
             href: TeamDocs/DeveloperDocs/MonitorGuidelines.md
           - name: CoPilot Guide
             href: TeamDocs/DeveloperDocs/copilot_guide.md
+      - name: FCM AI Summary
+        iteam:
+          - name: Overview
+            href: TeamDocs/FCMAISummary/Overview.md
+          - name: ICMEventProcessor(IEP)
+            href: TeamDocs/FCMAISummary/iep.md
+          - name: GetIncidentChangesAPI
+            href: TeamDocs/FCMAISummary/getIncidentChangesAPI.md
       - name: Change Explorer V2
         items:
           - name: Change Search Service
