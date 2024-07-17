@@ -46,6 +46,7 @@ Note that not all connections or components are demonstrated in the diagram abov
 
 - MISE Compliance:
     - Requirement: All tokens that are issued by Azure must be validated by a [MISE compliant library/package](https://identitydivision.visualstudio.com/DevEx/_git/MISE?path=%2Fdocs%2FMigrationGuides%2Fmigrate-web-apis-to-mise-and-sal-handler.md&version=GBmaster&_a=preview&anchor=not-sure-why-you-are-here%3F). In our case, we utilize APIM to managed our APIs and handle JWT token authentiation. This requires use of the [validate-azure-ad-token](https://eng.ms/docs/cloud-ai-platform/devdiv/serverless-paas-balam/serverless-paas-vikr/api-management/api-management-team-docs/first-party/features/mise-compliance) in the APIM's XML config with correct attribution to the backend application id the JWT token is accessing. To go this route, it is require that the APIM and the web API sit within a vnet. We are currently compliant for the token validation portion but not the network isolation:
+    
     ![alt text](image.png)
     - Solution: Using the example from Azure quickstart templates for [creating a private api with app gateway and apim](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.web/private-webapp-with-app-gateway-and-apim) we construct a similar solutions with the above requirements in mind. Key considerations here are that the authentication of the application gateway to apim will be certificate auth issued by OneCert. An improvement would be to investigate if this can be changed to MSI auth.
     - Limitations:
@@ -151,3 +152,8 @@ with Diagram("Network Isolation", graph_attr=graph_attr, show=False):
     pepst >> Edge(color="blue", style="bold") >> subst
 ```
 
+### Work in Progress POC of Above System for DataPlatform in INT
+
+#### Resource group: `rg-dp-int-centralus`
+
+![Alt text](./rg-dp-int-centralus.png)
