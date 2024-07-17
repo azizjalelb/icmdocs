@@ -235,6 +235,8 @@ items:
             href: TeamDocs/DeploymentGuide/changeexploreragc.md
           - name: IngestionV1 AGC
             href: TeamDocs/DeploymentGuide/ingestionagc.md
+          - name: Deployment Guidance
+            href: TeamDocs/DeveloperDocs/deployment_guidance.md
       - name: Deployments
         items:
           - name: CompletedDeployments
