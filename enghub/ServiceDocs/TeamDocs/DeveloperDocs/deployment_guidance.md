@@ -34,24 +34,83 @@ The purpose of this document is to outline fundamental practices we must employ 
 
 - All pull requests must have [work items linked](https://learn.microsoft.com/en-us/azure/devops/boards/backlogs/add-link?view=azure-devops) to ensure proper tracking.
 - Minimum of [two approvers](https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies?view=azure-devops&tabs=browser) to merge; this is set by default as a branch policy to `develop` and `main`.
+    - Example [policies](https://msazure.visualstudio.com/DefaultCollection/One/_settings/repositories?_a=policiesMid&repo=25418867-b301-4e54-8e42-f0af51b19a02&refs=refs/heads/develop) for the above two points:
+
+    ![alt text](image-1.png)
 - All comments must be resolved, including nits. For larger tasks that are outside of the scope of the PR create backlog tasks and link them accordingly.
 - If a merge to `main` occurs, the deployment to production must be executed immediately to avoid code buildup when syncing from `develop`.
 - As part of the PR, the code must build using the `<REPO>-PullRequestBuild` pipeline.
+    - Successful [build for cev2](https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-ChangeExplorer-Backend/pullrequest/10439644) in the PR build pipeline:
+
+    ![alt text](image-2.png)
+
+
 
 #### Builds:
 - Any code merged into the `develop` and `main` branches must build using it's appropriate build pipeline i.e. **PullRequest** or **Official**.
 - As part of the build, all vulnerabilities must be indexed and uploaded to [codeql](https://liquid.microsoft.com/Home/Support?copilot=1). Remediate these vulnerabilities as flagged by the tool. *Note that this is done automatically as part of S360*.
+    - CodeQL logs can be retrieved from the build output on `Official` builds; [example log](https://msazure.visualstudio.com/DefaultCollection/One/_build/results?buildId=97224658&view=logs&j=1e5b7110-b3d4-52bb-6e5b-213256ced4e3&t=0ba3391b-d4e6-52cb-e383-4f8640a37b59):
+
+```
+Upload finished.
+##[verbose]Saving environment properties.
+##[verbose]Saving configuration variables.
+##[verbose]Saving status properties.
+__________________________________________________________________________________________________________________________________________
+|Language              |Status                     |Message                                                                              |
+|______________________|___________________________|_____________________________________________________________________________________|
+|csharp                |database finalized         |                                                                                     |
+|______________________|___________________________|_____________________________________________________________________________________|
+|csharp                |database uploaded          |https://codeql.microsoft.com/job/9c6f2fb5-ec8d-4538-93fd-c1c144ce454e                |
+|                      |                           |S360 should be updated within 48 hours after analysis completes in CodeQL Central    |
+|                      |                           |See https://aka.ms/codeql3000-faq#how-do-i-know-scans-are-working-and-complete       |
+|______________________|___________________________|_____________________________________________________________________________________|
+|powershell            |database finalize failed   |Database failed to finalize or no source code was built!                             |
+|______________________|___________________________|_____________________________________________________________________________________|
+|python                |database finalized         |                                                                                     |
+|______________________|___________________________|_____________________________________________________________________________________|
+|python                |database uploaded          |https://codeql.microsoft.com/job/7f887f1a-eb95-4e3e-9a1d-0ea84a8ed0d2                |
+|                      |                           |S360 should be updated within 48 hours after analysis completes in CodeQL Central    |
+|                      |                           |See https://aka.ms/codeql3000-faq#how-do-i-know-scans-are-working-and-complete       |
+|______________________|___________________________|_____________________________________________________________________________________|
+```
+
 - Ensure that `develop` and `main` pipelines always build prior to merging code; *do not merge code if the pipeline is broken*. Create a separate PR to address the broken build and ensure it's success before merging code updates. 
 #### Unit Tests:
 - Ensure that any code component has unit tests implemented, typically in [nuint](https://nunit.org/) for C# packages.
+    - For an example of implemented tests, see [DataPlatform tests](https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-DataPlatform?path=/tests)
+
+    ![alt text](image-3.png)
 - If a code component does not have unit tests, call it out during standup. Do not wait for someone else to create a skeleton test framework; generate your own. Seek help if you're unsure on how to do this. 
 - All tests must run and pass; *do not comment out failing tests or change test criteria to get a successful build*.
 - [Test behavior, not implementaiton](https://nunit.org/).
 - If testing proves difficult, consider refactoring the code on critical flows to allow more granular testing.
 - When reviewing a code PR doesn't have unit tests added/modified, ask why. Let's make it a habit to properly unit test all code.
+- Tests should be ran as part of the build and the result should be outputted to the ADO dashboard; an example of [dataplatform unit test output](https://msazure.visualstudio.com/DefaultCollection/One/_build/results?buildId=98936817&view=ms.vss-test-web.build-test-results-tab)
+
+![alt text](image-5.png)
 
 #### Code Coverage:
 - As part of builds ensure that [code coverage](https://learn.microsoft.com/en-us/azure/devops/pipelines/test/review-code-coverage-results?view=azure-devops) is emmitted, usually VSTest or XPlat.
+    - Example of [code coverage for dataplatform](https://msazure.visualstudio.com/DefaultCollection/One/_build/results?buildId=98936817&view=codecoverage-tab). Note that to enable the code coverage you will have to make the following modication in the build pipeline.
+
+    ![alt text](image-4.png)
+
+```
+              - task: PublishTestResults@2
+                displayName: 'Publish test results'
+                inputs:
+                  testResultsFormat: VSTest
+                  testResultsFiles: '$(Build.SourcesDirectory)/TestResults/**/*.trx'
+                  failTaskOnFailedTests: true
+
+              - task: PublishCodeCoverageResults@2
+                displayName: 'Publish code coverage results'
+                inputs:
+                  summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/**/*.trx'
+```
+
+
 - Azure guidance has a requirement for [pr code coverage diff](https://eng.ms/docs/cloud-ai-platform/azure-core/azure-core-docs/development-cycle/test/code-coverage), specifically >50% for lines of changed code with a northstar of >80%.
 - Internal team goal is code coverage of >90% on all branches with the aforementioned guidelines for PR code diff. 
 
@@ -66,10 +125,16 @@ The purpose of this document is to outline fundamental practices we must employ 
 #### ADO Release Pipeline
 
 - Link releases pipelines to [OneBranch](https://eng.ms/docs/products/onebranch/onebranch). For `Production` pipelines this is mandated.
+    - Pipeline linkage can be executed using the [onebranch](https://msazure.visualstudio.com/DefaultCollection/One/_apps/hub/EZStart.management-ux.onebranch-resources) tab on ADO:
+
+    ![alt text](image-6.png)
 - There must be two pipelines per repo:
     - The first pipeline deploys **development** code to a dev/int environment in the MSFT tenant.
     - The second pipeline deploys **production** code to a ppe and prod environment in the AME tenant.
 - If pipelines are not CI/CD, all deployments must be [manually triggered](https://learn.microsoft.com/en-us/azure/devops/pipelines/release/triggers?view=azure-devops). This includes the dev environment.
+    - To determine if the pipeline is manually triggered, ensure that the `Lightning Bolt` symbol is [grayed out](https://msazure.visualstudio.com/DefaultCollection/One/_releaseDefinition?definitionId=54453&_a=environments-editor-preview):
+
+    ![alt text](image-7.png)
 - For deploying POC code, consider generating a [buddy release](https://eng.ms/docs/products/onebranch/release/yamlreleasepipelines/manageyourpipeline) to deploy resources. This helps avoid issues with deploying potentially system breaking changes to the dev environment.
     - As an additional requirement, ensure all resources deployed with the above release are deleted if no longer in use; *do not leave stale/unused resources running as this creates operational overhead*.
 - Segment releases to the most granular locations possible; typically for FCM this is at the region level. More on this later.
@@ -78,37 +143,49 @@ The purpose of this document is to outline fundamental practices we must employ 
 
 - Require all changes to be deployed via [Ev2](https://ev2docs.azure.net/getting-started/overview.html) ARM templates.
 - Do not use `ev2 classic` for ARM deployments; this is on deprecation. All components, unless marked for deprecation, must be deployed using [region agnostic](https://ev2docs.azure.net/references/api/new-ra-rollout.html?q=region%20agnostic) (RA) Ev2.
+    - Infra that was set up initially as `ev2 classic` and then changed to `ev2 ra` would have two directories in the [`.deploy` folder](https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-DataPlatform?path=/.deploy). We should delete the `ev2 classic` directory if it's no longer in use.:
+
+    ![alt text](image-8.png)
 - Configure a minimum wait time/bake time when deploying changes; this is automatically configured as [1 day for deployments to the `prod` environment](https://ev2docs.azure.net/features/rollout-orchestration/managed-validation/overview.html?q=managed%20valida) through SDP.
     - Emergency deployments can have this setting overriden.
 - Ev2 deployments through the pipeline will be `code` deployments (i.e. deploying bits to existing infrastructure). `infra` deployments (i.e. deployments that set up resources for the first time in a subscription) can be executed using the CLI. These are typically ran only once and not again.
+    - `code` deployments are configured via the `ev2 ra` config. These would just update the code bits and not deploy any new infra, modify existing infra, assign rbac roles, etc. Example of [code config below](https://msazure.visualstudio.com/DefaultCollection/One/_git/FCM-DataPlatform?path=/.deploy/RegionAgnosticModel/ServiceGroupRoot/Config/Test.Config.json):
+
+    ```json
+    .
+    .
+    "monitoringGcsAuthId": "opentelcert.fcm.msftcloudes.com",
+    "monitoringConfigVersion": "1.0",
+    "openApiServerUrl": "https://afd-dp-int-a4f2g7dfgzfzeee0.b01.azurefd.net",
+    "deploymentType": "code",
+    "buildId": "98405387",
+    "storageZipDeployB2d": {
+      "filePath": "Build2Deployment"
+    },
+    .
+    .
+    ```
 
 #### Regional Deployment
 
 - Ensure that we are using [Safe deployment practices](https://ev2docs.azure.net/getting-started/sdp.html?tabs=regions) in all of our rollouts. 
 - Utilize **region based progression** for all rollouts:
 
-| Stage | Name    | Regions                                                                                   | Sequence                 |
-|-------|---------|-------------------------------------------------------------------------------------------|--------------------------|
-| 1     | Canary  | Central US EUAP, East US 2 EUAP                                                           | Serial (these two regions are paired) |
-| 2     | Pilot   | West Central US, East Asia                                                                | Parallel or serial       |
-| 3     | Medium  | UK South                                                                                  |                          |
-| 4     | Heavy   | East US                                                                                   |                          |
-| 5     | Broad 1 | 1st region of all public region pairs, public 3+0 regions, USDoD Central (FF), China North (MC), USNat East (US Nat), USSec West (US Sec) | Parallel or serial       |
-| 6     | Broad 2 | 2nd region of all public region pairs, public 3+0 regions, USDoD East (FF), China North 2 (MC), USNat West (US Nat), USSec East (US Sec) | Parallel or serial       |
-| 7     | Broad 3 | 1st region of all remaining region pairs (FF / MC / US Nat / US Sec), remaining 3+0 regions (FF / MC / US Nat / US Sec) | Parallel or serial       |
-| 8     | Broad 4 | 2nd region of all remaining region pairs (FF / MC / US Nat / US Sec), remaining 3+0 regions (FF / MC / US Nat / US Sec) |                          |
+| Stage | Name    | Regions                      | Sequence                              |
+| ----- | ------- | ---------------------------- | ------------------------------------- |
+| 1     | Canary  | `East US 2 EUAP`             | Serial (these two regions are paired) |
+| 2     | Pilot   | `West Central US`            | Parallel or serial                    |
+| 3     | Medium  | `East US`                    |                                       |
+| 4     | Heavy   | `West US`                    |                                       |
+| 5     | Broad 1 | `East US 2` and `Central US` | Parallel or serial                    |
+| 6+    | Broad + | For stage 5+ in highly scaled systems, deploy in [region pairs](https://eng.ms/docs/cloud-ai-platform/azure-core/azure-networking/sdn-dbansal/azure-virtual-network-manager/azure-virtual-network-manager/devops/environments/public/region-pairing) as required. | Parallel or serial |
 
-- Ensure we deploy in the following order:
-    - Deploy to the canary region `east us 2 euap` (stage 1).
-    - Deploy to the pilot region `west central us` (stage 2).
-    - Deploy to the heavy region `east us` (stage 3).
-    - Deploy to the broad region `west us` (stage 4, region pair of `east us`).
-    - Deploy to the broad regions `east us 2` and `central us` (region pairs).
-    - For stage 5+ in highly scaled systems, deploy in [region pairs](https://eng.ms/docs/cloud-ai-platform/azure-core/azure-networking/sdn-dbansal/azure-virtual-network-manager/azure-virtual-network-manager/devops/environments/public/region-pairing) as required.
 - We must at minimum deploy our service to 1 canary, 1 pilot and 4 heavy/broad regions. All regions must be region paired.
 - Bake time is mandated by SDP and auto configured; *do not bypass this* by triggering a secondary stage on the pipeline.
 - Ensure that tasks [require successful prior deployment](https://learn.microsoft.com/en-us/azure/devops/pipelines/release/releases?view=azure-devops) to continue fan out.
-    - For example, pilot region will require a successful deployment to the canary and the heavy region will require a successful deployment of the pilot, etc.
+    - For example, pilot region will require a successful deployment to the canary and the heavy region will require a successful deployment of the pilot, etc. See the [stage rollout](https://msazure.visualstudio.com/DefaultCollection/One/_releaseDefinition?definitionId=65168&_a=environments-editor-preview) as an example below.
+
+    ![alt text](image-9.png)
 - **Do not execute deployments on Friday**. Deployments on Friday will require the DRI to address any incoming tickets that might be related to the deployment. Deploy on any other weekday during business hours.
 
 #### Rollbacks
@@ -121,6 +198,8 @@ The purpose of this document is to outline fundamental practices we must employ 
 - **Before a deployment, familiarize yourself with the rollback mechanism and test it the dev and ppe environments before continuing deployment to prod**.
     - As an example, a lot of FCM's code is deployed to Azure Functions. We have opted to utilize a standard [app slot swap rollback](https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots?tabs=portal) that is a built-in feature of functions to quickly help rollback any code change that is causing issues.
 - **Rolling back problem changes should almost always be the first course of action taken when a problem arises**. In some cases, rolling forward is preferred (i.e. emergency deployment to fix a bug) although this will require manager approval. 
+- Rollbacks will **not be automated** until we have confidence in a CI/CD solution. Rollbacks will be initiated by the deploying engineer after looking at relevant metric drops or the ICM ticket queue.
+- All rollbacks should be documented using a TSG that has been uploaded onto [engineering hub](aka.ms/enghub). 
 
 
 ### Validation
@@ -129,6 +208,9 @@ The purpose of this document is to outline fundamental practices we must employ 
 
 - All components must have integrations tests built directly into the release pipeline as part of the deployment. This can be done using [vstest on ado](https://learn.microsoft.com/en-us/azure/devops/test/run-automated-tests-from-test-hub?view=azure-devops) although simpler solutions, such as generating a `*_IntegrationTests.dll` package and executing it will suffice.
     - As an example, take a look at the integration tests created for [ChangeSearchService in DP platform](https://msazure.visualstudio.com/One/_git/FCM-DataPlatform?path=/tests/ChangeSearchServiceIntegrationTests).
+    - These tests can be run in the pipeline after the `ev2` release has finished using a VSTest task. As an example, check out [CSS integration tests](https://msazure.visualstudio.com/One/_releaseProgress?_a=release-task-editor&releaseId=10630859&environmentId=42679794) that was part of an intern project.
+
+    ![alt text](image-11.png)
 - When deploying new code, add integration tests to validate the deployed changes output the expected behavior. If modifying paths that impact existing code ensure that integration tests succeed locally before continuing with the deployment. Any test failing should be addressed as part of the PR.
 - If integration testing fails do not continue the deployment. Fix the tests in a PR.
 
@@ -158,6 +240,9 @@ The purpose of this document is to outline fundamental practices we must employ 
     - **CPU/memory usage**: Has the CPU and/or memory usage increased? Consider if this is siginificant enough to cause degradation in the other metrics.
         - We heavily rely on [kusto](https://azure.microsoft.com/en-us/products/data-explorer) as our database of choice. Monitor the [cluster performance dashboard](https://learn.microsoft.com/en-us/azure/data-explorer/using-metrics) to ensure that it is healthy.
 - **Monitor dashboards for one day after deployment completion**. A deployment can be considered **complete** after having been deployed for at least one day in the last stage.
+    - Example of a dashboard with operational metrics above can be [seen here](https://kusto.azure.com/dashboards/f6687c24-35db-4cfb-a7db-34a85bdc26ec?p-_startTime=6hours&p-_endTime=now&p-_incidentId=all#20cf7b0e-18ff-4922-b915-4664a93b666e):
+
+    ![alt text](image-10.png)
 
 #### ICM Queue
 
