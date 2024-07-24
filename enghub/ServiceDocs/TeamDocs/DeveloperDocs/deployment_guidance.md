@@ -188,6 +188,13 @@ ________________________________________________________________________________
     ![alt text](image-9.png)
 - **Do not execute deployments on Friday**. Deployments on Friday will require the DRI to address any incoming tickets that might be related to the deployment. Deploy on any other weekday during business hours.
 
+#### SafeFly
+
+- All deployments must have an associated [SafeFly R2d](aka.ms/r2d) request submmitted for them. Fill out the request form below prior to deployment:
+
+![alt text](image-12.png)
+
+
 #### Rollbacks
 
 - Before executing a deployment, ask yourself if it is a [one way or two way door](https://medium.com/one-to-n/one-way-two-way-door-decisions-a0e29029e200) deployment.
