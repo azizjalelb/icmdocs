@@ -8,6 +8,7 @@ It is used to trigger all exception not caught by the specific exceptions:
 - [ChangeGuard - Connection refused](ConnectionRefused.md).
 - [ChangeGuard - Resource temporarily unavailable](ResourceTemporarilyUnavailable.md).
 - [ChangeGuard - CXP Retrieval Error](CXPRetrievalError.md).
+- [Change Guard SQL DB CPU load over 85 percent](SQLCPUHighLoad.md).
 
 #### Use the steps provided in the above TSGs to investigate the problem:
 - If the problem falls into one of the previous TSGs, use the steps presented there to mitigate it `and` contact the SME to update that specific Alarm to also catch this kind of exception.
