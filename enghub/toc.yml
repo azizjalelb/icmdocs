@@ -4,8 +4,8 @@
   href: Onboard/
 - name: Change Explorer
   href: ChangeExplorer/
-- name: SafeFly CCOA Exceptions
-  href: SafeFlyCCOAExceptions/
+# - name: SafeFly CCOA Exceptions
+#   href: SafeFlyCCOAExceptions/
 - name: Change Guard
   href: ChangeGuard/
 - name: SafeFly CCOA Exceptions
