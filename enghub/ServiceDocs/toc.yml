@@ -243,6 +243,8 @@ items:
             href: TeamDocs/DeploymentGuide/changeexploreragc.md
           - name: IngestionV1 AGC
             href: TeamDocs/DeploymentGuide/ingestionagc.md
+          - name: Enabling Rollback for MSI Enabled Azure Functions
+            href: TeamDocs/DeploymentGuide/msi_rollback_for_azure_functions.md
       - name: Deployments
         items:
           - name: CompletedDeployments
