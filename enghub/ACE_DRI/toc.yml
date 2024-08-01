@@ -1,10 +1,10 @@
-- Name: Overview
+- name: Overview
   href: ACEOverview.md
-- Name: Tooling Overview
+- name: Tooling Overview
   href: ToolingOverview.md
-- Name: Find Node Level Changes
+- name: Find Node Level Changes
   href: FindNodeLevelChanges.md
-- Name: Changes for a Region, Customer, and Time Range
+- name: Changes for a Region, Customer, and Time Range
   href: RegionCustomerTimeChanges.md
-- Name: Changes for a Resource URI and Time Range
+- name: Changes for a Resource URI and Time Range
   href: ResourceURITimeChanges.md
