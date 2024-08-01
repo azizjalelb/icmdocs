@@ -41,8 +41,8 @@ items:
         items:
           - name: Environment Setup TSGs
             href: TSGs/ChangeGuard/EnvironmentSetupTSGs.md
-          - name: Recreate INT AKS cluster 
-            href: TSGs/ChangeGuard/RecreateAKSClusterInINT.md  
+          - name: Recreate INT AKS cluster
+            href: TSGs/ChangeGuard/RecreateAKSClusterInINT.md
           - name: Exception Request email failed
             href: TSGs/ChangeGuard/ExceptionRequestEmailFailed.md
           - name: Lens Orchestrator job failed
@@ -87,6 +87,10 @@ items:
             href: TSGs/ChangeGuard/ChangeApprovalProcessForAllServices.md
           - name: Log Silent Canaries - Secret store errors
             href: TSGs/ChangeGuard/LogSilentCanariesSecretStoreErrors.md
+          - name: Changes to Non Person Accounts or Email Workflows
+            href: TSGs/ChangeGuard/ChangesToNonPersonAccounts.md
+          - name: Change Guard SQL DB CPU load over 85 percent
+            href: TSGs/ChangeGuard/SQLCPUHighLoad.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
@@ -102,7 +106,7 @@ items:
           - name: Access
             href: TSGs/Change Explorer/Access.md
           - name: MitigationSteps
-            href: TSGs/Change Explorer/Mitigate.md        
+            href: TSGs/Change Explorer/Mitigate.md
       - name: VirtualMonitor [MdmQos] is unhealthy
         items:
           - name: Access
@@ -118,7 +122,7 @@ items:
           - name: MitigationSteps
             href: TSGs/UserAccountEnabledOnNode/Mitigate.md
       - name: ChangeManagerUI
-        items: 
+        items:
           - name: Access
             href: TSGs/ChangeManagerUI/Access.md
           - name: MitigationSteps
@@ -130,37 +134,37 @@ items:
           - name: MitigationSteps
             href: TSGs/FailureWhileProcessingFromXStoreEvents/Mitigate.md
       - name: MDS EventProcessor Failures
-        items: 
+        items:
           - name: Access
             href: TSGs/MDSEventProcessorFailures/Access.md
           - name: MitigationSteps
             href: TSGs/MDSEventProcessorFailures/Mitigate.md
       - name: Network Isolation--Internet Exposed Endpoint
-        items: 
+        items:
           - name: Access
             href: TSGs/NetworkIsolationInternetExposedEndpoint/Access.md
           - name: MitigationSteps
             href: TSGs/NetworkIsolationInternetExposedEndpoint/Mitigate.md
       - name: No [SourceName] items Modified in the last X mins
-        items: 
+        items:
           - name: Access
             href: TSGs/NoItemsModified/Access.md
           - name: MitigationSteps
             href: TSGs/NoItemsModified/Mitigate.md
       - name: No Data being processed from Xstore Events
-        items: 
+        items:
           - name: Access
             href: TSGs/NoDataProcessedXstoreEvents/Access.md
           - name: MitigationSteps
             href: TSGs/NoDataProcessedXstoreEvents/Mitigate.md
       - name: Lens Orchestrator Job Failures
-        items: 
+        items:
           - name: Access
             href: TSGs/LensOrchestratorJobFailures/Access.md
           - name: MitigationSteps
             href: TSGs/LensOrchestratorJobFailures/Mitigate.md
       - name: ADOReleaseEvents
-        items: 
+        items:
           - name: Access
             href: TSGs/ADOReleaseEvents/Access.md
           - name: MitigationSteps
@@ -173,20 +177,28 @@ items:
             href: TSGs/Ingestion/FindAllDetailsForTheFailingMonitor.md
           - name: Debug data latency
             href: TSGs/Ingestion/InvestigateHighDataIngestionLatency.md
-          - name: Debug Zero Change Count  
+          - name: Debug Zero Change Count
             href: TSGs/Ingestion/ZeroChangeCount.md
           - name: Synthetics and Monitors Issues
             href: TSGs/Ingestion/SyntheticsAndMonitorIssues.md
+          - name: EntityModel Monitors
+            href: TSGs/Ingestion/EntityModel Monitors.md
       - name: Expiring Certs
         items:
           - name: ExpiringInUseCerts
             href: TSGs/ExpiringCerts/ExpiringInUseCerts.md
+      - name: OneDeployFCM Dashboard
+        items:
+          - name: Acess Guide
+            href: TSGs/OneDeployFCM/Access.md
+          - name: Mitigation Steps
+            href: TSGs/OneDeployFCM/OneDeployFCM.md
   - name: Team Docs
     items:
       - name: Team Docs
         href: TeamDocs/team_docs.md
       - name: Developer Docs
-        items: 
+        items:
           - name: New Hire Onboarding
             href: TeamDocs/DeveloperDocs/NewHireOnboarding.md
           - name: DRI Responsibilities
@@ -210,7 +222,7 @@ items:
               - name: Low Level Design
                 href: TeamDocs/ChangeExplorerV2/IncidentInformationProvider/incident_information_provider_lld.md
       - name: DataPlatform
-        items: 
+        items:
           - name: DataPlatform APIs Design
             href: TeamDocs/DataPlatform/fcm_dataplatform_api.md
           - name: FCM ITS Bug Bash Test Cases
@@ -219,30 +231,26 @@ items:
             href: TeamDocs/DataPlatform/dp_on_azure_declared_outages.md
           - name: Payload Standardization
             href: TeamDocs/DataPlatform/payloadstandarization.md
-      - name: Build2Deployment
-        items: 
-          - name: Build2Deployment
-            href: TeamDocs/DataPlatform/Build2Deployment/build2deployment_technical_design_doc.md
-          - name: Build2Deployment - Endpoint Guide
-            href: TeamDocs/DataPlatform/Build2Deployment/b2d_api_endpoint_how_to.md
-      - name: Deployment2Build
-        items: 
-          - name: Deployment2Build
-            href: TeamDocs/DataPlatform/Deployment2Build/build2deployment_technical_design_doc.md
-          - name: Deployment2Build - Endpoint Guide
-            href: TeamDocs/DataPlatform/Deployment2Build/d2b_api_endpoint_how_to.md
+      - name: DataPlatform - MappingAPIs
+        items:
+          - name: MappingAPIs (Build2Deployment, Deployment2Build, Payload2Build)
+            href: TeamDocs/DataPlatform/MappingAPIs/b2p_d2b_p2b_technical_design_doc.md
+          - name: How-To Guide
+            href: TeamDocs/DataPlatform/MappingAPIs/dp_api_endpoint_how_to.md
       - name: DeploymentGuide
-        items: 
+        items:
           - name: ChangeExplorerV2 AGC
             href: TeamDocs/DeploymentGuide/changeexploreragc.md
           - name: IngestionV1 AGC
             href: TeamDocs/DeploymentGuide/ingestionagc.md
+          - name: Enabling Rollback for MSI Enabled Azure Functions
+            href: TeamDocs/DeploymentGuide/msi_rollback_for_azure_functions.md
       - name: Deployments
-        items: 
+        items:
           - name: CompletedDeployments
             href: TeamDocs/Deployments/CompletedDeployments/SearchByIncidentIdDeployment.md
       - name: Onboarding
-        items: 
+        items:
           - name: Onboarding New Customer
             href: TeamDocs/Onboarding/onboarding.md
           - name: EntityModel ChangeEvents SDK
@@ -257,9 +265,7 @@ items:
         href: APIDocs/about.md
       - name: Change Explorer V2
         items:
-          - name: Change Search Service API
-            href: APIDocs/ChangeExplorerV2/ChangeSearchService/change_search_service_api.json
-          - name: Service Information Provider API
-            href: APIDocs/ChangeExplorerV2/ServiceInformationProvider/service_information_provider_api.json
-          - name: UI Backend Service
-            href: APIDocs/ChangeExplorerV2/UIBackendService/uibackendservice_api.json    
+          - name: ChangeExplorerV2 API (CEV2.V1)
+            href: https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/one-fleet-platform-timmall/federated-change-management/onedeploy-fcm-apis?definition=84C816C42FD62C38D2AD8A0E3EB8E631F2F409CE5914C7DC06457382C64E5329.json
+          - name: Data DataPlatform API (DP.V1)
+            href: https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/one-fleet-platform-timmall/federated-change-management/onedeploy-fcm-apis?definition=9187303849BC03E58DDA0E50F3817C1FAE745C30B70C74ACC5C98D2A49EEAF73.json  

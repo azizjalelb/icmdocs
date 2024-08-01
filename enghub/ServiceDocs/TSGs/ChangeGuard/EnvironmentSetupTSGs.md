@@ -113,27 +113,13 @@ Uri: ' https://fcm-changemanager-kv.vault.azure.net/secrets/aksclusterkubeconfig
   - Check the status of the PODs if the logs are still showing the `secrets-store-creds` error 
 
 ### CxpRetrieval service failing when connecting to retrieve the latest events due to a certificate error 
-- The CxpRetrieval job uses a certificate to call the Cxp Team's endpoint and retrieve the latest events.
-  - The used certificate varies from environment to environment and can be seen inside the "appsettingssecrets.json" which can be found inside the environment's KeyVault, under the secret name "appsettingssecretsjson" 
-- The certificates used are base64 encoded and saved as secrets inside the KeyVault, under the names: 
-  - `chggrd-client-cer-dev-scrt` (secret name in KeyVault) , `chggrd-client-cer-dev.pfx` (name used inside the service's codebase) 
-  - `chggrd-client-cer-ppe-scrt` (secret name in KeyVault) , `chggrd-client-cer-ppe.pfx` (name used inside the service's codebase) 
-  - `chggrd-client-cer-prod-scrt` (secret name in KeyVault) , `chggrd-client-cer-prod.pfx` (name used inside the service's codebase) 
-- Validate if the certificate used by the environment is valid.
-  - Double check that the certificates are valid and match the encoded ones inside the KV secrets.
-    - Go to Key Vault -> Certificates -> `chggrd-client-cer-[ENV]` -> Select Current version-> Download in PFX format 
-    - Convert it to base64 encoded 
-      - Open a Powershell window at the location the PFX file was downloaded and type:   
-        - ```
-          $pfxfile = "<pfx-file>"   
-          Set-Content -LiteralPath "chggrd-client-cer-[ENV].pfx.b64" -Encoding ascii -Value ([convert]::ToBase64String((Get-Content -path "$pfxfile" -AsByteStream )))  
-          ```
-    - Update the corresponding `chggrd-client-cer-[ENV]-scrt` secret inside the Key Vault with the content of the new generated .b64 file 
-      - You can do this either manually by copy & paste  
-      - OR by running the command:
-        - ```
-          az keyvault secret set --name chggrd-client-cer-[ENV]-scrt --vault-name chggrd-api-kv-[ENV]--encoding utf-8 --file chggrd-client-cer-[ENV].pfx.b64 
-          ```
+- The CxpRetrieval job uses a JWT token to call the Cxp Team's endpoint and retrieve the latest events.
+  - The used details for the JWT auth varies from environment to environment and can be seen inside the "appsettingssecrets.json" which can be found inside the environment's KeyVault, under the secret name "appsettingssecretsjson". 
+  - The clientId, tenantId and resourceId used for the JWT token are found in the appsettings json, under :`jwtAuthentication`. 
+  - Validate that the base url and the jwtAuthentication settings are correct, based on the design document https://microsoft.sharepoint.com/:w:/t/AzureCXPPRIMOTeam/ERRFzww5czhKpmRAvk27xC4B2-RqXOfdmmdvpVpNyFallw?e=EHZ8fb or by contacting the Cxp team.
+- Validate if there is a token received and if the token has the correct audience and details.
+  - You can validate the token using a JWT token decoder like https://jwt.io/
+- Validate if the token is passed to the method that retrieves the Cxp events.
 - Check results 
   - Validate the service is no longer failing when connecting to the CxP endpoint 
   - Validate that the services are added to the DB table: `[EventsRetrieval].[Events]` 

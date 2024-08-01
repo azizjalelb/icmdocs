@@ -1,0 +1,474 @@
+{
+	"info": {
+		"_postman_id": "f3990ab0-9326-4d43-b458-ca0d04b8ca8a",
+		"name": "DataPlatform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1442359"
+	},
+	"item": [
+		{
+			"name": "Build2Deployment",
+			"item": [
+				{
+					"name": "Template",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=&adoProjectId=&adoBuildId=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{b2dcomponent}}",
+								"deployments"
+							],
+							"query": [
+								{
+									"key": "adoOrganizationName",
+									"value": ""
+								},
+								{
+									"key": "adoProjectId",
+									"value": ""
+								},
+								{
+									"key": "adoBuildId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "msdata",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msdata&adoProjectId=ba574a88-a171-48e0-8fcb-5fef6d23739c&adoBuildId=115856310",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{b2dcomponent}}",
+								"deployments"
+							],
+							"query": [
+								{
+									"key": "adoOrganizationName",
+									"value": "msdata"
+								},
+								{
+									"key": "adoProjectId",
+									"value": "ba574a88-a171-48e0-8fcb-5fef6d23739c"
+								},
+								{
+									"key": "adoBuildId",
+									"value": "115856310"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "msazure",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msazure&adoProjectId=09706533-03bf-4b43-9a9b-b49c75429646&adoBuildId=85471733",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{b2dcomponent}}",
+								"deployments"
+							],
+							"query": [
+								{
+									"key": "adoOrganizationName",
+									"value": "msazure"
+								},
+								{
+									"key": "adoProjectId",
+									"value": "09706533-03bf-4b43-9a9b-b49c75429646"
+								},
+								{
+									"key": "adoBuildId",
+									"value": "85471733"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admetrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=admetrics&adoProjectId=c6f597f2-902e-47df-9dbd-f5ee1ac627f2&adoBuildId=69514",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{b2dcomponent}}",
+								"deployments"
+							],
+							"query": [
+								{
+									"key": "adoOrganizationName",
+									"value": "admetrics"
+								},
+								{
+									"key": "adoProjectId",
+									"value": "c6f597f2-902e-47df-9dbd-f5ee1ac627f2"
+								},
+								{
+									"key": "adoBuildId",
+									"value": "69514"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dev",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=dev&adoProjectId=505e0832-097c-4d90-947b-777124cc8911&adoBuildId=1531543",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{b2dcomponent}}",
+								"deployments"
+							],
+							"query": [
+								{
+									"key": "adoOrganizationName",
+									"value": "dev"
+								},
+								{
+									"key": "adoProjectId",
+									"value": "505e0832-097c-4d90-947b-777124cc8911"
+								},
+								{
+									"key": "adoBuildId",
+									"value": "1531543"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Deployment2Build",
+			"item": [
+				{
+					"name": "Template",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=&deploymentId=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{d2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": ""
+								},
+								{
+									"key": "deploymentId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expressv2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=expressv2&deploymentId=KCM/c6f1777e-0fcf-45da-84b7-c269ebd51898",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{d2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "expressv2"
+								},
+								{
+									"key": "deploymentId",
+									"value": "KCM/c6f1777e-0fcf-45da-84b7-c269ebd51898"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "azdeployer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=azdeployer&deploymentId=80561803",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{d2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "azdeployer"
+								},
+								{
+									"key": "deploymentId",
+									"value": "80561803"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pilotfish",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=pilotfish&deploymentId=20240213-171812-e590c07791ed2ed9812b1bfe17537e84500f6cc5_69060604",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{d2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "pilotfish"
+								},
+								{
+									"key": "deploymentId",
+									"value": "20240213-171812-e590c07791ed2ed9812b1bfe17537e84500f6cc5_69060604"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payload2Build",
+			"item": [
+				{
+					"name": "Template",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{p2bcomponent}}/builds?deploymentSource=&payload=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{p2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": ""
+								},
+								{
+									"key": "payload",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "expressv2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{p2bcomponent}}/builds?deploymentSource=expressv2&payload=fe63f845-4aee-4313-9b2e-3a8a2fe61897/azuremonitorapi=1.0.02607.1033-5dd3a269",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{p2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "expressv2"
+								},
+								{
+									"key": "payload",
+									"value": "fe63f845-4aee-4313-9b2e-3a8a2fe61897/azuremonitorapi=1.0.02607.1033-5dd3a269"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "azdeployer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{p2bcomponent}}/builds?deploymentSource=azdeployer&payload=configpush.xml;git_networking_nsm_master;18.3.3.0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{p2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "azdeployer"
+								},
+								{
+									"key": "payload",
+									"value": "configpush.xml;git_networking_nsm_master;18.3.3.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pilotfish",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{p2bcomponent}}/builds?deploymentSource=pilotfish&payload=vfpagent=vfpagent_rel_vnet_enc_1_1_2_126_v_1_2_67_41",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{p2bcomponent}}",
+								"builds"
+							],
+							"query": [
+								{
+									"key": "deploymentSource",
+									"value": "pilotfish"
+								},
+								{
+									"key": "payload",
+									"value": "vfpagent=vfpagent_rel_vnet_enc_1_1_2_126_v_1_2_67_41"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "tokenName",
+				"value": "Authorization",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/authorize",
+				"type": "string"
+			},
+			{
+				"key": "state",
+				"value": "12345",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "{{scope}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{client_id}}",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "implicit",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

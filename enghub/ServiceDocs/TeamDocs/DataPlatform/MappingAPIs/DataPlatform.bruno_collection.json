@@ -1,0 +1,583 @@
+{
+  "name": "DataPlatform",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "Build2Deployment",
+      "items": [
+        {
+          "type": "http",
+          "name": "admetrics",
+          "seq": 4,
+          "request": {
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=admetrics&adoProjectId=c6f597f2-902e-47df-9dbd-f5ee1ac627f2&adoBuildId=69514",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "adoOrganizationName",
+                "value": "admetrics",
+                "enabled": true
+              },
+              {
+                "name": "adoProjectId",
+                "value": "c6f597f2-902e-47df-9dbd-f5ee1ac627f2",
+                "enabled": true
+              },
+              {
+                "name": "adoBuildId",
+                "value": "69514",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "dev",
+          "seq": 5,
+          "request": {
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=dev&adoProjectId=505e0832-097c-4d90-947b-777124cc8911&adoBuildId=1531543",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "adoOrganizationName",
+                "value": "dev",
+                "enabled": true
+              },
+              {
+                "name": "adoProjectId",
+                "value": "505e0832-097c-4d90-947b-777124cc8911",
+                "enabled": true
+              },
+              {
+                "name": "adoBuildId",
+                "value": "1531543",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "msazure",
+          "seq": 3,
+          "request": {
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msazure&adoProjectId=09706533-03bf-4b43-9a9b-b49c75429646&adoBuildId=85471733",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "adoOrganizationName",
+                "value": "msazure",
+                "enabled": true
+              },
+              {
+                "name": "adoProjectId",
+                "value": "09706533-03bf-4b43-9a9b-b49c75429646",
+                "enabled": true
+              },
+              {
+                "name": "adoBuildId",
+                "value": "85471733",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "msdata",
+          "seq": 2,
+          "request": {
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=msdata&adoProjectId=ba574a88-a171-48e0-8fcb-5fef6d23739c&adoBuildId=115856310",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "adoOrganizationName",
+                "value": "msdata",
+                "enabled": true
+              },
+              {
+                "name": "adoProjectId",
+                "value": "ba574a88-a171-48e0-8fcb-5fef6d23739c",
+                "enabled": true
+              },
+              {
+                "name": "adoBuildId",
+                "value": "115856310",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "Template",
+          "seq": 1,
+          "request": {
+            "url": "{{base_url}}/{{b2dcomponent}}/deployments?adoOrganizationName=&adoProjectId=&adoBuildId=",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "adoOrganizationName",
+                "value": "",
+                "enabled": true
+              },
+              {
+                "name": "adoProjectId",
+                "value": "",
+                "enabled": true
+              },
+              {
+                "name": "adoBuildId",
+                "value": "",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Deployment2Build",
+      "items": [
+        {
+          "type": "http",
+          "name": "azdeployer",
+          "seq": 3,
+          "request": {
+            "url": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=azdeployer&deploymentId=80561803",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "deploymentSource",
+                "value": "azdeployer",
+                "enabled": true
+              },
+              {
+                "name": "deploymentId",
+                "value": "80561803",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "expressv2",
+          "seq": 2,
+          "request": {
+            "url": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=expressv2&deploymentId=KCM/c6f1777e-0fcf-45da-84b7-c269ebd51898",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "deploymentSource",
+                "value": "expressv2",
+                "enabled": true
+              },
+              {
+                "name": "deploymentId",
+                "value": "KCM/c6f1777e-0fcf-45da-84b7-c269ebd51898",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "pilotfish",
+          "seq": 4,
+          "request": {
+            "url": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=pilotfish&deploymentId=20240213-171812-e590c07791ed2ed9812b1bfe17537e84500f6cc5_69060604",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "deploymentSource",
+                "value": "pilotfish",
+                "enabled": true
+              },
+              {
+                "name": "deploymentId",
+                "value": "20240213-171812-e590c07791ed2ed9812b1bfe17537e84500f6cc5_69060604",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "Template",
+          "seq": 1,
+          "request": {
+            "url": "{{base_url}}/{{d2bcomponent}}/builds?deploymentSource=&deploymentId=",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "deploymentSource",
+                "value": "",
+                "enabled": true
+              },
+              {
+                "name": "deploymentId",
+                "value": "",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Payload2Build",
+      "items": [
+        {
+          "type": "http",
+          "name": "azdeployer",
+          "seq": 3,
+          "request": {
+            "url": "{{base_url}}/{{p2bcomponent}}/builds?deploymentSource=azdeployer&payload=configpush.xml;git_networking_nsm_master;18.3.3.0",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "deploymentSource",
+                "value": "azdeployer",
+                "enabled": true
+              },
+              {
+                "name": "payload",
+                "value": "configpush.xml;git_networking_nsm_master;18.3.3.0",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "expressv2",
+          "seq": 2,
+          "request": {
+            "url": "{{base_url}}/{{p2bcomponent}}/builds?deploymentSource=expressv2&payload=fe63f845-4aee-4313-9b2e-3a8a2fe61897/azuremonitorapi=1.0.02607.1033-5dd3a269",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "deploymentSource",
+                "value": "expressv2",
+                "enabled": true
+              },
+              {
+                "name": "payload",
+                "value": "fe63f845-4aee-4313-9b2e-3a8a2fe61897/azuremonitorapi=1.0.02607.1033-5dd3a269",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "pilotfish",
+          "seq": 4,
+          "request": {
+            "url": "{{base_url}}/{{p2bcomponent}}/builds?deploymentSource=pilotfish&payload=vfpagent=vfpagent_rel_vnet_enc_1_1_2_126_v_1_2_67_41",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "deploymentSource",
+                "value": "pilotfish",
+                "enabled": true
+              },
+              {
+                "name": "payload",
+                "value": "vfpagent=vfpagent_rel_vnet_enc_1_1_2_126_v_1_2_67_41",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "http",
+          "name": "Template",
+          "seq": 1,
+          "request": {
+            "url": "{{base_url}}/{{p2bcomponent}}/builds?deploymentSource=&payload=",
+            "method": "GET",
+            "headers": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "auth": {
+              "mode": "none",
+              "basic": {
+                "username": "",
+                "password": ""
+              },
+              "bearer": {
+                "token": ""
+              }
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "query": [
+              {
+                "name": "deploymentSource",
+                "value": "",
+                "enabled": true
+              },
+              {
+                "name": "payload",
+                "value": "",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "environments": []
+}
