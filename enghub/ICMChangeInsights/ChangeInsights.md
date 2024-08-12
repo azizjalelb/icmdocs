@@ -64,58 +64,7 @@ The following location types are yet to be supported:
 | Cosmosdb Federation |
 
 
-## Detailed guide to provide "Where"(impacted location) in ICM
 
-### Service using EV2 (Above ARM services) for deployments
-
-#### Monitor Raised incidents -Detected DC/Region
-
-To identify the impacted region for the incident, ChangeInsights relies on Impacted Regions in ICM
-
-##### How to map MDM dimension to ICM DC/Region
-
-![alt text](media/Monitor-RegionMapping.png)
-
-#### Manually Raised incidents - Impact Region
-
-To identify the impacted region for the incident, ChangeInsights relies on Impacted Regions in ICM
-
-### Service using AzDeployer/PF (Below ARM services) for deployments
-
-Provide granular location (Cluster, node) to identify relevant changes.
-
-#### Monitor Raised incidents - specify impacted cluster
-
-To identify the impacted cluster for the incident, ChangeInsights relies on  "Instance/Cluster" field in ICM
-
-![alt text](media/InstanceCluster.png)
-
-##### How to map MDM dimension to "Instance/Cluster" field in ICM
-
-![alt text](media/Monitor-InstanceClusterMapping.png)
-
-#### Incidents - specify impacted Nddes for an incident
-
-To identify the impacted node for the incident, ChangeInsights relies on  "Instance/Cluster" field in ICM
-
-![alt text](media/InstanceCluster-Node.png)
-
-#### Manually Raised incidents - Instance/Cluster
-
-To identify the impacted cluster/node for the incident, update "Instance/Cluster" field in ICM
-
-![alt text](media/InstanceCluster.png)
-
-<!--
-
-| Onboarding Deployment Systems | Known Gaps | NFZ/CCOA | Fast pause |
-| --- | --- | --- | --- |
-| RSM SMD Guest updates | Onboarding in progress | Supported | Not Available |
-| Maintenance Orchestrator Host Updates | Onboarding in progress | Manual Coordination | Not Available |
-| AzDM Control Plane | Onboarding in progress | Supported | Not Available |
-| AKS | Onboarding in progress | Manual Coordination | Not Available |
-
--->
 
 ## Change insight availability by deployment system 
 
