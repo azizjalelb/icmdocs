@@ -25,7 +25,11 @@ Please refer to [official Geneva documentation for emitting metrics](https://eng
 1. If you have added a new dimension to the underlying metric of the monitor or the identified action item is <span style="background-color:rgb(255, 200, 62)">`MapMDMDimensionToICMLocation`</span>, 
 then identify which dimension in the monitor represents a standard value by going through the `MonitorDimensionMappings` column of the dashboard.
 
-    > :construction: Any dimension key-value pair which does not contain `DefaultMapping` is identified as a standard location by our system.</br>This dimension should now be correctly mapped to ICM Location Attributes while creating incidents.
+    > :warning: The dimension key identified by the kusto-dashboard is all `lowercase`. To find the <ins>case-sensitive</ins> value please refer to below section of the monitor.
+
+    | MDM_v1 | MDM_v2 |
+    | --- | --- |
+    | ![alt text](media/resourcedimensions_mdmv1.png) | ![alt text](media/resourcedimensions_mdmv2.png) |
 
 1. Refer to the below table to find ICM mapping configuration.
     
@@ -35,9 +39,16 @@ then identify which dimension in the monitor represents a standard value by goin
 
 1. Use the below table to map the dimension to their respective ICM Location Attributes.
     
-    > :warning: Replace `IdentifiedDimensionKey` with the dimension key identified in step *3*.
+    > :warning: Replace `IdentifiedDimensionKey(s)` with the dimension key(s) identified in step *3*.</br>To provide multiple values for an **ICM Metadata Key**, use `,` (comma separated) values as shown in screenshot below.</br></br>
+
+    | MDM_v1 | MDM_v2 |      
+    | --- | --- |
+    | ![alt text](media/icm_mapping_mdmv1.png) | ![alt text](media/icm_mapping_mdmv2.png) |    
     
-    | ICM Location Attribute | ICM Metadata Key| Monitor Dimension | Conditions | 
-    | --- | --- | --- | --- |
-    | Detected DC/Region | Icm.OccurringLocation</br>.DataCenter | `{Monitor.Dimension.IdentifiedDimensionKey}` | If identified dimension is of type **region** or **datacenter**. |
-    | Instance/Cluster   | Icm.OccurringLocation</br>.DeviceName | `{Monitor.Dimension.IdentifiedDimensionKey}` | If identified dimension is of type cluster, node, tor, vm, etc. |
+
+    | Conditions | ICM Metadata Key| Monitor Dimension |
+    | --- | --- | --- |
+    | Identified dimension is of type **region** or **datacenter**. | Icm.OccurringLocation.DataCenter | `{Monitor.Dimension.IdentifiedDimensionKey}` |
+    | Identified dimension is of type cluster, node, pfenvironment, pfmachine, tor, vm, etc. | Icm.OccurringLocation.DeviceName | `{Monitor.Dimension.IdentifiedDimensionKey}` | 
+
+    > :construction: Please refer to the [Geneva official documentation](https://eng.ms/docs/products/geneva/alerts/howdoi/customizeicmfields) for more information on how to customize ICM fields.
