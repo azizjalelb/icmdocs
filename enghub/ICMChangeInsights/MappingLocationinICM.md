@@ -40,6 +40,7 @@ then identify which dimension in the monitor represents a standard value by goin
 1. Use the below table to map the dimension to their respective ICM Location Attributes.
     
     > :warning: Replace `IdentifiedDimensionKey(s)` with the dimension key(s) identified in step *3*.</br>To provide multiple values for an **ICM Metadata Key**, use `,` (comma separated) values as shown in screenshot below.</br></br>
+    > :memo: **Alternatively**, use the dimension values provided in the `Suggested_IcM_Datacenter_Metadata` and `Suggested_IcM_DeviceName_Metadata` columns in the dashboard for the corresponding IcM metadata key, if those columns are not empty.</br></br>
 
     | MDM_v1 | MDM_v2 |      
     | --- | --- |
