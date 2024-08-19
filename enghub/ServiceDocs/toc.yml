@@ -91,6 +91,8 @@ items:
             href: TSGs/ChangeGuard/ChangesToNonPersonAccounts.md
           - name: Change Guard SQL DB CPU load over 85 percent
             href: TSGs/ChangeGuard/SQLCPUHighLoad.md
+          - name: Write access to Change Guard SQL DB through JIT
+            href: TSGs/ChangeGuard/JITAccessToSQLDatabase.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
