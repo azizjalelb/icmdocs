@@ -18,14 +18,14 @@ The steps to request access are as follows:
 
 #### The values for Production are:
 - Server Name: chggrd-api-sql-svr-prod
-- Subscription: FCMProduction subscription Id
+- Subscription: 8830ba56-a476-4d01-b6ac-d3ee790383dc
 - Location: westus2
 - DB Name: chggrd-api-sql-db-prod
 - Access level: db_datawriter
 
 #### The values for PPE are:
 - Server Name: chggrd-api-sql-svr-ppe
-- Subscription: PPE subscription Id
+- Subscription: 6ac089d6-2695-4daf-95df-ea06d302b618
 - Location: westus2
 - DB Name: chggrd-api-sql-db-ppe
 - Access level: db_datawriter
