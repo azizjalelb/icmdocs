@@ -11,7 +11,7 @@ IEP doesn't try to get changes for all the incidents that is created in ICM. Cur
 
 1) incident is active and
 2) incident has severity <=2 and
-3) incident owning service tree id is not excluded (currently only excluded ServiceTreeId is `53ed86d2-2404-43b0-b7be-903b45386319`) and 
+3) incident owning service tree id is not excluded and 
 4) incident is an Azure incident
 
 ## Criteria for Updating Incidents
@@ -38,7 +38,7 @@ IEP will update an incident with "No changes found." only if there has been more
 ## Preventing Multiple Updates to Same Incident
 As IEP reads events from ICM Eventhub as they get ingested to the event hub, due to the race conditions, IEP would process multiple events for the same incident, call GetIncidentChangesAPI to get relevant changes and then, try to update the incident discussion with same set of changes multiple times. However, this will create a noise in the incident discussion and can cause the DRI to miss the relevant information when working on mitigating an incident.
 
-In order to prevent this, IEP uses [leasing with Azure Blob Storage](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-lease). In Azure Blob storage, currently we have 256 containers to be used for leasing. When a thread starts processing an incident event, we determine which container it should lease by computing `IncidentId % 256`. 
+In order to prevent this, IEP uses [leasing with Azure Blob Storage](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-lease). In Azure Blob storage, currently we have 1024 containers to be used for leasing. When a thread starts processing an incident event, we determine which container it should lease by computing `IncidentId % 1024`. 
 
 #### **Scanario 1: Container is available for a thread to acquire it for leasing.**
 The processing thread acquires the lease for that container if the container is not already leased and holds for a maximum of 59 seconds. Once it processes the incident, it releases the lease so that other threads can pick it up. 
