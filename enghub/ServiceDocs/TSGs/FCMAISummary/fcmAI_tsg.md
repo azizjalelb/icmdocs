@@ -25,15 +25,15 @@ In this dashboard, the main tiles to check are
    **Action**: 
     In this case, first run the query below to find out the error message that kusto returns:
 
-    ```sql
-    let incidentId = ""; //Update the incident id here
-    let ids = cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').FCMCopilot
-    | where IncidentId == incidentId | where severityText contains "Error"
-    | distinct env_dt_spanId, env_dt_traceId;
-    cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ChangeProvider
-    | join kind=inner ids on env_dt_spanId, env_dt_traceId
-    | where severityText =~ 'error'
-    ```
+        ```sql
+        let incidentId = ""; //Update the incident id here
+        let ids = cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').FCMCopilot
+        | where IncidentId == incidentId | where severityText contains "Error"
+        | distinct env_dt_spanId, env_dt_traceId;
+        cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ChangeProvider
+        | join kind=inner ids on env_dt_spanId, env_dt_traceId
+        | where severityText =~ 'error'
+        ```
     
     If the error is a semantic error, that means either there was a recent change in the C# code when calling Kusto or there is an issue with the parameters that we pass when calling Kusto or there is a change in the `GetChangesCopilot` Kusto function. 
 
@@ -87,12 +87,12 @@ In this dashboard, the main tiles to check are
 
     You can run the following query in AppInsights logs to find the exceptions that are happening:
     
-    ```sql
-    let operations = requests | where timestamp >= ago(1h) and resultCode == 500
-    | distinct operation_Id;
-    exceptions
-    | where operation_Id in(operations)
-    ```
+        ```sql
+        let operations = requests | where timestamp >= ago(1h) and resultCode == 500
+        | distinct operation_Id;
+        exceptions
+        | where operation_Id in(operations)
+        ```
 
     Since IIP is also dependent on fcmdatafollower kusto, please also check the health of the fcmdatafollower kusto cluster using this [link](https://portal.microsoftgeneva.com/dashboard/KustoProd/MdmEngineMetrics/engine%2520health%2520V3?overrides=[{%22query%22:%22//*[id%3D%27Account%27]%22,%22key%22:%22regex%22,%22replacement%22:%22*%22},{%22query%22:%22//*[id%3D%27Cluster%27]%22,%22key%22:%22value%22,%22replacement%22:%22FCMDATAFOLLOWER%22},{%22query%22:%22//dataSources%22,%22key%22:%22account%22,%22replacement%22:%22KustoCentralUS%22},{%22query%22:%22//*[id%3D%27TargetCluster%27]%22,%22key%22:%22value%22,%22replacement%22:%22FCMDATAFOLLOWER%22},{%22query%22:%22//*[id%3D%27Account%27]%22,%22key%22:%22value%22,%22replacement%22:%22%22}]%20) by following same the guidelines above. 
 
@@ -100,13 +100,13 @@ In this dashboard, the main tiles to check are
 4) There might be a case where incidents by a certain team started to cause issues in the system. Even though this is a very edge case scenario, when teams configure new monitors, those new monitors might create incidents with poorly populated values and cause issue in IIP, CP or IEP. In that case, we need to exclude that teams incidents to be processed by IEP. In that case, 
     1) First, find the service tree Id of the team owning service using the query below:
     
-    ```sql
-    let IncidentId='';
-    cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ICMEventProcessor
-    | where IncidentId == 'IncidentId'
-    | distinct OwningServiceTreeId
-    ```
-     
+        ```sql
+        let IncidentId='';
+        cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ICMEventProcessor
+        | where IncidentId == 'IncidentId'
+        | distinct OwningServiceTreeId
+        ```
+
     2) Then go to IEP resources, these are resource are following the naming convention of `func-ai-iep-prod-{regionName}` and update the `ExcludedServiceTreeIds` environment variable and add the ServiceTreeId that you got from the previous step to the comma separated list of excludedServiceTreeIds list.
 
     ![Alt text](media/excludedSTId.png)
