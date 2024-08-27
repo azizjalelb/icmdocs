@@ -24,7 +24,8 @@ In this dashboard, the main tiles to check are
 
    **Action**: 
     In this case, first run the query below to find out the error message that kusto returns:
-    ```
+
+    ```sql
     let incidentId = ""; //Update the incident id here
     let ids = cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').FCMCopilot
     | where IncidentId == incidentId | where severityText contains "Error"
@@ -39,11 +40,11 @@ In this dashboard, the main tiles to check are
     If the error is not a semantic error but it's related to a query timeout or it's a network error, you need to check whether the our FCMDataFollower kusto cluster and EntityChangeEventsMaterializedView is healthy or not. 
     - [FCMDataFollower](https://portal.microsoftgeneva.com/s/396D4C45?overrides=[{"query":"//*[id='Cluster']","key":"value","replacement":"Fcmdatafollower"},{"query":"//*[id='Account']","key":"value","replacement":""},{"query":"//*[id='TargetCluster']","key":"value","replacement":"Fcmdatafollower"},{"query":"//dataSources","key":"account","replacement":"KustoCentralUS"}]%20)
     - [FCMData](https://portal.microsoftgeneva.com/s/FF83BA1B?overrides=[{"query":"//*[id='Account']","key":"regex","replacement":"*"},{"query":"//*[id='Cluster']","key":"value","replacement":"FCMDATA"},{"query":"//dataSources","key":"account","replacement":"KustoCentralUS"},{"query":"//*[id='TargetCluster']","key":"value","replacement":"FCMDATA"},{"query":"//*[id='Account']","key":"value","replacement":""}]%20)
-    - EntityChangeEventsMaterializedView: 
-        ``` 
+    - EntityChangeEventsMaterializedView:
+
+        ```sql
         .show materialized-view EntityChangeEventsMaterializedView
         | project MaterializedTo, LastRun, TimeSinceLastMaterialization = datetime_diff('minute', now(), MaterializedTo)
-
         ```
 
     - In the dashboard for the primary Kusto cluster it's important to check `Materialized Views Age Minutes` tile.
@@ -54,12 +55,14 @@ In this dashboard, the main tiles to check are
         1) There is a job that is changing the schema of the base table, EntityChangeEvents.
         2) There could be a spike in the ingestion from a specific source. 
             - You can determine this by running the following query in Kusto:
-            ```
+            
+            ```sql
             cluster('fcmdata.kusto.windows.net').database('EntityModel').EntityChangeEvents
             | where ingestion_time() >= ago(2d)
             | summarize count() by Source, bin(Timestamp, 30m)
             | render timechart
             ``` 
+
         3) There could be an infrastructural issue on our kusto cluster
             - In order to check that, check Machine state tile and also CPUs used by the nodes of Kusto. Check these tiles both in fcmdatafollower and fcmdata kusto cluster. If you see that consistently there are some OfflineMachines or if you see that there is a significant increase in the CPU usage involve Kusto team DRI by creating an incident using [Gaia chatbot](https://aka.ms/gaia)
 
@@ -83,7 +86,8 @@ In this dashboard, the main tiles to check are
     - [WestUS](https://ms.portal.azure.com/#@MSAzureCloud.onmicrosoft.com/resource/subscriptions/8830ba56-a476-4d01-b6ac-d3ee790383dc/resourceGroups/ChangeExplorer-PROD-WestUs/providers/microsoft.insights/components/changeexplorerProd/logs) 
 
     You can run the following query in AppInsights logs to find the exceptions that are happening:
-    ```
+    
+    ```sql
     let operations = requests | where timestamp >= ago(1h) and resultCode == 500
     | distinct operation_Id;
     exceptions
@@ -95,12 +99,14 @@ In this dashboard, the main tiles to check are
 
 4) There might be a case where incidents by a certain team started to cause issues in the system. Even though this is a very edge case scenario, when teams configure new monitors, those new monitors might create incidents with poorly populated values and cause issue in IIP, CP or IEP. In that case, we need to exclude that teams incidents to be processed by IEP. In that case, 
     1) First, find the service tree Id of the team owning service using the query below:
-    ```
+    
+    ```sql
     let IncidentId='';
     cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ICMEventProcessor
     | where IncidentId == 'IncidentId'
     | distinct OwningServiceTreeId
-    ``` 
+    ```
+     
     2) Then go to IEP resources, these are resource are following the naming convention of `func-ai-iep-prod-{regionName}` and update the `ExcludedServiceTreeIds` environment variable and add the ServiceTreeId that you got from the previous step to the comma separated list of excludedServiceTreeIds list.
 
     ![Alt text](media/excludedSTId.png)
