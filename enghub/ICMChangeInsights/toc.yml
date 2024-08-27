@@ -1,2 +1,5 @@
-- Name: ChangeInsights
+- name: ChangeInsights
   href: ChangeInsights.md
+- name: MappingLocationinICM
+  href: MappingLocationinICM.md
+

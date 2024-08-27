@@ -1,22 +1,22 @@
-- Name: CCOA Exceptions in SafeFly Overview
+- name: CCOA Exceptions in SafeFly Overview
   href: CCOAinSafeFlyOverview.md
-- Name: Pilot Services
+- name: Pilot Services
   items:
-    - Name: Pilot Services Overview
+    - name: Pilot Services Overview
       href: PilotServices/PilotServicesOverview.md  
-    - Name: Pilot Services
+    - name: Pilot Services
       href: PilotServices/PilotServices.md
-    - Name: Submitting CCOA Requests for Pilot Services
+    - name: Submitting CCOA Requests for Pilot Services
       href: PilotServices/SubmittingCCOARequestsPilot.md
-    - Name: Bypassing R2D approval
+    - name: Bypassing R2D approval
       href: PilotServices/BypassingR2D.md
-    - Name:  Issues/Errors
+    - name: Issues/Errors
       items:
-      - Name: Ev2 Pilot Services Errors
+      - name: Ev2 Pilot Services Errors
         href: PilotServices/Errors/Ev2PilotServicesErrors.md
-      - Name: Host Pilot Services Errors
+      - name: Host Pilot Services Errors
         href: PilotServices/Errors/HostPilotServicesErrors.md
-- Name: R2D Non-Pilot Ev2 services
+- name: R2D Non-Pilot Ev2 Services
   href: R2DnonPilotEv2.md
-- Name: R2D Non-Pilot AzD services
+- name: R2D Non-Pilot AzD services
   href: R2DnonPilotAzD.md
