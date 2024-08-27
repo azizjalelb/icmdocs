@@ -185,6 +185,10 @@ items:
         items:
           - name: ExpiringInUseCerts
             href: TSGs/ExpiringCerts/ExpiringInUseCerts.md
+      - name: FCMAISummary
+        items:
+          - name: FCM AI Summary TSGs
+            href: TSGs/FCMAISummary/fcmAI_tsg.md
   - name: Team Docs
     items:
       - name: Team Docs
@@ -200,13 +204,11 @@ items:
           - name: CoPilot Guide
             href: TeamDocs/DeveloperDocs/copilot_guide.md
       - name: FCM AI Summary
-        iteam:
+        items:
           - name: ICMEventProcessor(IEP)
             href: TeamDocs/FCMAISummary/iep.md
           - name: GetIncidentChangesAPI
             href: TeamDocs/FCMAISummary/getIncidentChangesAPI.md
-          - name: FCM AI Summary TSG
-            href: TeamDocs/TSGs/FCMAISummary/fcmAI_tsg.md
       - name: Change Explorer V2
         items:
           - name: Change Search Service
