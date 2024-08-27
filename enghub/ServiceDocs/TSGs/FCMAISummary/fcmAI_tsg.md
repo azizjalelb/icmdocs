@@ -25,29 +25,29 @@ In this dashboard, the main tiles to check are
    **Action**: 
     In this case, first run the query below to find out the error message that kusto returns:
 
-        ```sql
-        let incidentId = ""; //Update the incident id here
-        let ids = cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').FCMCopilot
-        | where IncidentId == incidentId | where severityText contains "Error"
-        | distinct env_dt_spanId, env_dt_traceId;
-        cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ChangeProvider
-        | join kind=inner ids on env_dt_spanId, env_dt_traceId
-        | where severityText =~ 'error'
-        ```
+```sql
+let incidentId = ""; //Update the incident id here
+let ids = cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').FCMCopilot
+| where IncidentId == incidentId | where severityText contains "Error"
+| distinct env_dt_spanId, env_dt_traceId;
+cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ChangeProvider
+| join kind=inner ids on env_dt_spanId, env_dt_traceId
+| where severityText =~ 'error'
+```
     
-    If the error is a semantic error, that means either there was a recent change in the C# code when calling Kusto or there is an issue with the parameters that we pass when calling Kusto or there is a change in the `GetChangesCopilot` Kusto function. 
+If the error is a semantic error, that means either there was a recent change in the C# code when calling Kusto or there is an issue with the parameters that we pass when calling Kusto or there is a change in the `GetChangesCopilot` Kusto function. 
 
-    If the error is not a semantic error but it's related to a query timeout or it's a network error, you need to check whether the our FCMDataFollower kusto cluster and EntityChangeEventsMaterializedView is healthy or not. 
+If the error is not a semantic error but it's related to a query timeout or it's a network error, you need to check whether the our FCMDataFollower kusto cluster and EntityChangeEventsMaterializedView is healthy or not. 
     - [FCMDataFollower](https://portal.microsoftgeneva.com/s/396D4C45?overrides=[{"query":"//*[id='Cluster']","key":"value","replacement":"Fcmdatafollower"},{"query":"//*[id='Account']","key":"value","replacement":""},{"query":"//*[id='TargetCluster']","key":"value","replacement":"Fcmdatafollower"},{"query":"//dataSources","key":"account","replacement":"KustoCentralUS"}]%20)
     - [FCMData](https://portal.microsoftgeneva.com/s/FF83BA1B?overrides=[{"query":"//*[id='Account']","key":"regex","replacement":"*"},{"query":"//*[id='Cluster']","key":"value","replacement":"FCMDATA"},{"query":"//dataSources","key":"account","replacement":"KustoCentralUS"},{"query":"//*[id='TargetCluster']","key":"value","replacement":"FCMDATA"},{"query":"//*[id='Account']","key":"value","replacement":""}]%20)
     - EntityChangeEventsMaterializedView:
 
-        ```sql
-        .show materialized-view EntityChangeEventsMaterializedView
-        | project MaterializedTo, LastRun, TimeSinceLastMaterialization = datetime_diff('minute', now(), MaterializedTo)
-        ```
+```sql
+.show materialized-view EntityChangeEventsMaterializedView
+| project MaterializedTo, LastRun, TimeSinceLastMaterialization = datetime_diff('minute', now(), MaterializedTo)
+```
 
-    - In the dashboard for the primary Kusto cluster it's important to check `Materialized Views Age Minutes` tile.
+- In the dashboard for the primary Kusto cluster it's important to check `Materialized Views Age Minutes` tile.
 
     ![Alt text](media/materializations.png)
 
@@ -56,23 +56,23 @@ In this dashboard, the main tiles to check are
         2) There could be a spike in the ingestion from a specific source. 
             - You can determine this by running the following query in Kusto:
             
-            ```sql
-            cluster('fcmdata.kusto.windows.net').database('EntityModel').EntityChangeEvents
-            | where ingestion_time() >= ago(2d)
-            | summarize count() by Source, bin(Timestamp, 30m)
-            | render timechart
-            ``` 
+```sql
+cluster('fcmdata.kusto.windows.net').database('EntityModel').EntityChangeEvents
+| where ingestion_time() >= ago(2d)
+| summarize count() by Source, bin(Timestamp, 30m)
+| render timechart
+``` 
 
-        3) There could be an infrastructural issue on our kusto cluster
+3) There could be an infrastructural issue on our kusto cluster
             - In order to check that, check Machine state tile and also CPUs used by the nodes of Kusto. Check these tiles both in fcmdatafollower and fcmdata kusto cluster. If you see that consistently there are some OfflineMachines or if you see that there is a significant increase in the CPU usage involve Kusto team DRI by creating an incident using [Gaia chatbot](https://aka.ms/gaia)
 
-            ![Alt text](media/offlineMachines.png)
-            ![Alt text](media/kustoCpu.png)
+![Alt text](media/offlineMachines.png)
+![Alt text](media/kustoCpu.png)
 
 
-    **IMPORTANT**: If the EntityChangeEventsMaterializedView latency is getting close to ~60 mins or if the ingestion latency of the major change systems (OMRollouts, expressv2, azdeployer, pilotfish, ScheduledEvents) is getting larger than 60 mins, you must update IEP to set `ShouldShowNoChanges` environment variable to **false** in order to disable 'Found No Changes' functionality.
+**IMPORTANT**: If the EntityChangeEventsMaterializedView latency is getting close to ~60 mins or if the ingestion latency of the major change systems (OMRollouts, expressv2, azdeployer, pilotfish, ScheduledEvents) is getting larger than 60 mins, you must update IEP to set `ShouldShowNoChanges` environment variable to **false** in order to disable 'Found No Changes' functionality.
 
-    ![Alt text](media/showNoChanges.png)
+![Alt text](media/showNoChanges.png)
 
 
 2) **Error Message**: "Failed to retrieve service details from SIP..."
@@ -87,29 +87,29 @@ In this dashboard, the main tiles to check are
 
     You can run the following query in AppInsights logs to find the exceptions that are happening:
     
-        ```sql
-        let operations = requests | where timestamp >= ago(1h) and resultCode == 500
-        | distinct operation_Id;
-        exceptions
-        | where operation_Id in(operations)
-        ```
+```sql
+let operations = requests | where timestamp >= ago(1h) and resultCode == 500
+| distinct operation_Id;
+exceptions
+| where operation_Id in(operations)
+```
 
-    Since IIP is also dependent on fcmdatafollower kusto, please also check the health of the fcmdatafollower kusto cluster using this [link](https://portal.microsoftgeneva.com/dashboard/KustoProd/MdmEngineMetrics/engine%2520health%2520V3?overrides=[{%22query%22:%22//*[id%3D%27Account%27]%22,%22key%22:%22regex%22,%22replacement%22:%22*%22},{%22query%22:%22//*[id%3D%27Cluster%27]%22,%22key%22:%22value%22,%22replacement%22:%22FCMDATAFOLLOWER%22},{%22query%22:%22//dataSources%22,%22key%22:%22account%22,%22replacement%22:%22KustoCentralUS%22},{%22query%22:%22//*[id%3D%27TargetCluster%27]%22,%22key%22:%22value%22,%22replacement%22:%22FCMDATAFOLLOWER%22},{%22query%22:%22//*[id%3D%27Account%27]%22,%22key%22:%22value%22,%22replacement%22:%22%22}]%20) by following same the guidelines above. 
+Since IIP is also dependent on fcmdatafollower kusto, please also check the health of the fcmdatafollower kusto cluster using this [link](https://portal.microsoftgeneva.com/dashboard/KustoProd/MdmEngineMetrics/engine%2520health%2520V3?overrides=[{%22query%22:%22//*[id%3D%27Account%27]%22,%22key%22:%22regex%22,%22replacement%22:%22*%22},{%22query%22:%22//*[id%3D%27Cluster%27]%22,%22key%22:%22value%22,%22replacement%22:%22FCMDATAFOLLOWER%22},{%22query%22:%22//dataSources%22,%22key%22:%22account%22,%22replacement%22:%22KustoCentralUS%22},{%22query%22:%22//*[id%3D%27TargetCluster%27]%22,%22key%22:%22value%22,%22replacement%22:%22FCMDATAFOLLOWER%22},{%22query%22:%22//*[id%3D%27Account%27]%22,%22key%22:%22value%22,%22replacement%22:%22%22}]%20) by following same the guidelines above. 
 
 
 4) There might be a case where incidents by a certain team started to cause issues in the system. Even though this is a very edge case scenario, when teams configure new monitors, those new monitors might create incidents with poorly populated values and cause issue in IIP, CP or IEP. In that case, we need to exclude that teams incidents to be processed by IEP. In that case, 
     1) First, find the service tree Id of the team owning service using the query below:
     
-        ```sql
-        let IncidentId='';
-        cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ICMEventProcessor
-        | where IncidentId == 'IncidentId'
-        | distinct OwningServiceTreeId
-        ```
+```sql
+let IncidentId='';
+cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ICMEventProcessor
+| where IncidentId == 'IncidentId'
+| distinct OwningServiceTreeId
+```
 
-    2) Then go to IEP resources, these are resource are following the naming convention of `func-ai-iep-prod-{regionName}` and update the `ExcludedServiceTreeIds` environment variable and add the ServiceTreeId that you got from the previous step to the comma separated list of excludedServiceTreeIds list.
+2) Then go to IEP resources, these are resource are following the naming convention of `func-ai-iep-prod-{regionName}` and update the `ExcludedServiceTreeIds` environment variable and add the ServiceTreeId that you got from the previous step to the comma separated list of excludedServiceTreeIds list.
 
-    ![Alt text](media/excludedSTId.png)
+![Alt text](media/excludedSTId.png)
 
 
 ## Making A Deployment
