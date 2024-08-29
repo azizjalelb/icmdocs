@@ -211,6 +211,111 @@ ________________________________________________________________________________
 
 ### Validation
 
+#### Ev2 Health Checks
+
+[Ev2 Health checks](https://ev2docs.azure.net/features/service-artifacts/actions/health-checks/overview.html) allow you to integrate tests to validate rollouts. There are three main ways to can leverage Ev2 Health Checks in our RA deployments:
+
+
+##### Azure Monitor Checks
+
+These health checks leverage the build in functionality of Azure Monitor resources (such as Application insights) to determine if a deployment is healthy. For example, the following will ensure that there are no failed requests for this API in the last 1H by checking application insights logs:
+
+```json
+{
+    "name": "postDeployCheck2",
+    "waitDuration": "PT5M",
+    "maxElasticDuration": "PT30M",
+    "healthyStateDuration": "PT1H",    
+    "healthChecks": [
+      {
+          "name": "Check no failure requests",
+          "request": {
+            "method": "POST",
+            "uri": "https://api.applicationinsights.io/v1/apps/myapp/query",
+            "authentication": {
+              "type": "ApiKey",
+              "name": "x-api-key",
+              "in": "Header",
+              "valueReference": {
+                "provider": "AzureKeyVault",
+                "parameters": {
+                    "secretId": "https://yourKeyVaultName.vault.azure.net:443/secrets/appInsightsKey"
+                  }
+              }
+            },
+            "body": {
+              "query": "requests | count"
+            }
+        },
+        "response": {
+            "successStatusCodes": [
+            "OK"
+            ],
+            "regex": {
+                "matchQuantifier": "All",
+                "matches": [
+                  "0"
+                ]
+            }
+        }
+      }
+    ]
+  }
+```
+
+For more information, see [REST health check](https://ev2docs.azure.net/features/service-artifacts/actions/health-checks/rest-health-check/resthealthcheck.html).
+
+##### ICM Health Check
+
+ICM health checks can be used to configure our rollout to stop whenever an ICM ticket is cut to our queue. The following example demonstrates this:
+
+```json
+  [
+    {
+      "name": "IcMSearch",
+      "waitDuration": "PT1M",
+      "healthyStateDuration": "PT1M",
+      "healthChecks": [
+        {
+          "name": "NoRecentIcMs",
+          "request": {
+            "method": "Get",
+            "uri": "https://prod.microsofticm.com/api/cert/incidents?$filter=(CreateDate%20gt%20datetime%272022-07-11T00:00:00%27)&$select=Id&$top=101",
+            "authentication": {
+              "type": "Certificate",
+              "valueReference": {
+                "provider": "AzureKeyVault",
+                "parameters": {
+                  "secretId": "https://mykeyvault.vault.azure.net:443/secrets/MyIcmClientCert"
+                }
+              }
+            }
+          },
+          "response": {
+            "successStatusCodes": [
+              "Ok"
+            ],
+            "regex": {
+              "matchQuantifier": "Any",
+              "matches": [
+                "\"value\":\\s*\\[[\\n\\s]*\\]"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+```
+
+
+For more information, see [ICM Health Check](https://ev2docs.azure.net/features/service-artifacts/actions/health-checks/icm/overview.html)
+
+##### Kusto Helath Check
+
+Lastly, we can leverage Kusto health checks as well to change logs that we transfer over with Geneva using jarvis. For more information, see [Kusto Health Check](https://ev2docs.azure.net/features/service-artifacts/actions/health-checks/kusto/overview.html)
+
+
 #### Integration Tests
 
 - All components must have integrations tests built directly into the release pipeline as part of the deployment. This can be done using [vstest on ado](https://learn.microsoft.com/en-us/azure/devops/test/run-automated-tests-from-test-hub?view=azure-devops) although simpler solutions, such as generating a `*_IntegrationTests.dll` package and executing it will suffice.
