@@ -257,6 +257,8 @@ items:
             href: TeamDocs/DeploymentGuide/ingestionagc.md
           - name: Enabling Rollback for MSI Enabled Azure Functions
             href: TeamDocs/DeploymentGuide/msi_rollback_for_azure_functions.md
+          - name: Deployment Guidance
+            href: TeamDocs/DeveloperDocs/deployment_guidance.md
       - name: Deployments
         items:
           - name: CompletedDeployments
