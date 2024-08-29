@@ -267,6 +267,10 @@ items:
             href: TeamDocs/Onboarding/onboarding.md
           - name: EntityModel ChangeEvents SDK
             href: TeamDocs/Onboarding/EntityModelChangeEventsSdk.md
+      - name: Network Isolation
+        items:
+          - name: Network Isolation for Azure Function APIs
+            href: TeamDocs/DataPlatform/NetworkIsolation/network_isolation.md
   - name: Team Onboarding
     items:
       - name: Onboarding New Customer
