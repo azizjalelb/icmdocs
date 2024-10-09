@@ -2,8 +2,6 @@
   href: index.md
 - name: Onboard
   href: Onboard/
-- name: Change Explorer
-  href: ChangeExplorer/
 - name: Change Guard
   href: ChangeGuard/
 - name: SafeFly CCOA Exceptions
