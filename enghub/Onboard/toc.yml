@@ -9,7 +9,7 @@
     - name: Kusto
       items:
         - name: Kusto Queries
-          href: FCMArchitecture/kusto/kustoqueries.md
+          href: FCMArchitecture/kusto/kusto.md
 - name: Sending Data to FCM Production
   items:
     - name: How to send data to FCM Production
