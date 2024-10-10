@@ -14,6 +14,7 @@
 | GenevaActions | Yes| Region |
 | AzCIS | Yes| Cluster |
 | AzDM | Yes| AzDM Tenant |
+| OOAS | Yes| node,container,cluster,tenant,soc..etc |
 
 ## Change data coverage by QCS, HVT,TCB
 [ChangeInsights Coverage](https://aka.ms/fcmcoverage)
