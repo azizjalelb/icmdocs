@@ -4,6 +4,8 @@
   href: whyFCM.md
 - name: Onboarded Orchestrators
   href: Orchestrators.md
+- name: Payload Standardization
+  href: PayloadStandardization.md
 - name: Kusto Details
   items:
     - name: Kusto
