@@ -2,16 +2,16 @@ FCM in [Kusto​](https://aka.ms/kusto) enables engineers to answer ad hoc quest
 
 ## Access
 
-The FCM Change events are in the fcmdata kusto cluster, under the EntityModel database in table EntityChangeEvents.
+The FCM Change events are in the fcmdataro kusto cluster, under the EntityModel database in table EntityChangeEvents.
 
 
 
-To view this data through the Kusto Explorer, please go to: [fcmdata.EntityModel | Azure Data Explorer](https://dataexplorer.azure.com/clusters/fcmdata/databases/EntityModel) and run the below query
+To view this data through the Kusto Explorer, please go to: [fcmdataro.EntityModel | Azure Data Explorer](https://dataexplorer.azure.com/clusters/fcmdataro/databases/EntityModel) and run the below query
 
 
-Execute [[Web](https://dataexplorer.azure.com/clusters/fcmdata/databases/EntityModel?query=H4sIAAAAAAAAA3PNK8ksqXTOSMxLT3UtS80rKeaqUShJzE5VMDQAANXLbsQcAAAA)][[Desktop](https://dataexplorer.azure.com/clusters/fcmdata/databases/EntityModel?query=H4sIAAAAAAAAA3PNK8ksqXTOSMxLT3UtS80rKeaqUShJzE5VMDQAANXLbsQcAAAA&web=0)]
+Execute [[Web](https://dataexplorer.azure.com/clusters/fcmdataro/databases/EntityModel?query=H4sIAAAAAAAAA3PNK8ksqXTOSMxLT3UtS80rKeaqUShJzE5VMDQAANXLbsQcAAAA)][[Desktop](https://dataexplorer.azure.com/clusters/fcmdataro/databases/EntityModel?query=H4sIAAAAAAAAA3PNK8ksqXTOSMxLT3UtS80rKeaqUShJzE5VMDQAANXLbsQcAAAA&web=0)]
 ```
-cluster('fcmdata.kusto.windows.net').database('EntityModel').EntityChangeEvents
+cluster('fcmdataro.kusto.windows.net').database('EntityModel').EntityChangeEvents
 | take 10
 ```
 
