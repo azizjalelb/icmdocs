@@ -7,7 +7,7 @@ We ingest significant amounts of data from the EMPlatform team for application a
 - [MapNodeUpgradesToEntityModel](https://kustoorchestrator-prod-web.azurewebsites.net/Manage/Details?cluster=Fcmdata&database=EntityModel&actorId=MapNodeUpgrades_ToEntityModel): Ingests data into the `EntityChangeEvents` table.
 - [MapDataUpgradesToEntitymodel](https://kustoorchestrator-prod-web.azurewebsites.net/Manage/Details?cluster=Fcmdata&database=EntityModel&actorId=MapDataUpgrades_ToEntityModel): Ingests data into the `EntityChangeEvents_DataDeployments` table.
 
-### Data Sources
+### Data Sources (Source column value in EntityChangeEvents Table)
 
 The following source data are pulled by these jobs (source names start with):
 
