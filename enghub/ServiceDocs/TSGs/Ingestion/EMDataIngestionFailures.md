@@ -9,7 +9,7 @@ We ingest significant amounts of data from the EMPlatform team for application a
 
 ### Data Sources (Source column value in EntityChangeEvents Table)
 
-The following source data are pulled by these jobs (source names start with):
+The following sources data are pulled by the above two jobs (source names start with):
 
 1. OMRollout*
 2. ScheduledEvent*
