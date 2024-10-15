@@ -185,6 +185,10 @@ items:
             href: TSGs/Ingestion/SyntheticsAndMonitorIssues.md
           - name: EntityModel Monitors
             href: TSGs/Ingestion/EntityModel Monitors.md
+          - name: Data Ingestion Sources
+            href: TSGs/Ingestion/DataIngestionSources.md
+          - name: EM Data Ingestion Failures
+            href: TSGs/Ingestion/EMDataIngestionFailures.md
       - name: Expiring Certs
         items:
           - name: ExpiringInUseCerts
