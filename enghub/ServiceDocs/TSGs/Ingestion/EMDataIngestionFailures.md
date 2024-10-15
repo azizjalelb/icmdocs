@@ -9,7 +9,7 @@ We ingest significant amounts of data from the EMPlatform team for application a
 
 ### Data Sources
 
-The following sources are pulled by these jobs (source names start with):
+The following source data are pulled by these jobs (source names start with):
 
 1. OMRollout*
 2. ScheduledEvent*
