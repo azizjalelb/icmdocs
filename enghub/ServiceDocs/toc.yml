@@ -223,6 +223,8 @@ items:
             href: TeamDocs/FCMAISummary/iep.md
           - name: GetIncidentChangesAPI
             href: TeamDocs/FCMAISummary/getIncidentChangesAPI.md
+          - name: Local Setup and Testing
+            href: TeamDocs/FCMAISummary/localTestingWithEHEmulator.md
       - name: Change Explorer V2
         items:
           - name: Change Search Service
