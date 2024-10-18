@@ -203,6 +203,10 @@ items:
             href: TSGs/OneDeployFCM/Access.md
           - name: Mitigation Steps
             href: TSGs/OneDeployFCM/OneDeployFCM.md
+      - name: BCDR
+        items:
+          - name: Failover Plan for ChangeInsights Services
+            href: TSGs/BCDR/FailbackPlan/failover_plan.md
   - name: Team Docs
     items:
       - name: Team Docs
