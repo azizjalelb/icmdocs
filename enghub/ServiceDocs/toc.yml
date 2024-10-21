@@ -185,16 +185,28 @@ items:
             href: TSGs/Ingestion/SyntheticsAndMonitorIssues.md
           - name: EntityModel Monitors
             href: TSGs/Ingestion/EntityModel Monitors.md
+          - name: Data Ingestion Sources
+            href: TSGs/Ingestion/DataIngestionSources.md
+          - name: EM Data Ingestion Failures
+            href: TSGs/Ingestion/EMDataIngestionFailures.md
       - name: Expiring Certs
         items:
           - name: ExpiringInUseCerts
             href: TSGs/ExpiringCerts/ExpiringInUseCerts.md
+      - name: FCMAISummary
+        items:
+          - name: FCM AI Summary TSGs
+            href: TSGs/FCMAISummary/fcmAI_tsg.md
       - name: OneDeployFCM Dashboard
         items:
           - name: Acess Guide
             href: TSGs/OneDeployFCM/Access.md
           - name: Mitigation Steps
             href: TSGs/OneDeployFCM/OneDeployFCM.md
+      - name: BCDR
+        items:
+          - name: Failover Plan for ChangeInsights Services
+            href: TSGs/BCDR/FailbackPlan/failover_plan.md
   - name: Team Docs
     items:
       - name: Team Docs
@@ -209,6 +221,14 @@ items:
             href: TeamDocs/DeveloperDocs/MonitorGuidelines.md
           - name: CoPilot Guide
             href: TeamDocs/DeveloperDocs/copilot_guide.md
+      - name: FCM AI Summary
+        items:
+          - name: ICMEventProcessor(IEP)
+            href: TeamDocs/FCMAISummary/iep.md
+          - name: GetIncidentChangesAPI
+            href: TeamDocs/FCMAISummary/getIncidentChangesAPI.md
+          - name: Local Setup and Testing
+            href: TeamDocs/FCMAISummary/localTestingWithEHEmulator.md
       - name: Change Explorer V2
         items:
           - name: Change Search Service
@@ -247,6 +267,8 @@ items:
             href: TeamDocs/DeploymentGuide/ingestionagc.md
           - name: Enabling Rollback for MSI Enabled Azure Functions
             href: TeamDocs/DeploymentGuide/msi_rollback_for_azure_functions.md
+          - name: Deployment Guidance
+            href: TeamDocs/DeveloperDocs/deployment_guidance.md
       - name: Deployments
         items:
           - name: CompletedDeployments
@@ -257,6 +279,10 @@ items:
             href: TeamDocs/Onboarding/onboarding.md
           - name: EntityModel ChangeEvents SDK
             href: TeamDocs/Onboarding/EntityModelChangeEventsSdk.md
+      - name: Network Isolation
+        items:
+          - name: Network Isolation for Azure Function APIs
+            href: TeamDocs/DataPlatform/NetworkIsolation/network_isolation.md
   - name: Team Onboarding
     items:
       - name: Onboarding New Customer

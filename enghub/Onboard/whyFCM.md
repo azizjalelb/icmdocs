@@ -14,6 +14,7 @@ FCM focuses on three primary personas:
 
 FCM can, however, be a valuable tool for any engineer (regardless of specific function) that is interested in gaining insights about their services or tracking changes of other services.
 
+
 ### Problem Statement
 Consider the service operations process diagram below. 
 
@@ -47,6 +48,10 @@ Given the same process flow, FCM takes the following steps to improve the situat
 - Correlates change and incident data 
 - Merges change and current state data for accurate picture of production 
 - Exposes insights via UX and API to Engineers (on the left and right) to make their jobs easier 
+
+
+
+
 
 <!--
 - Engineers (on the left) making changes aren't aware of other change activity up or down the stack that might adversely impact their changes 

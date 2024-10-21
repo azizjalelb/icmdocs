@@ -22,7 +22,7 @@ In the event, the change was made by the dependent service, identifying that cha
 
 Log Analytics Control Plane DRI gets paged for a Sev 2 IcM Incident that was created. The DRI looks up the incident details in IcM and acknowledges the incident. 
 
-The DRI navigates to [FCM Change Explorer](aka.ms/fcm) to identify which change(s) could have caused the incident. The DRI only has to provide the IcM Incident # and Change Explorer auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. 
+The DRI navigates to [FCM Change Explorer](https://aka.ms/fcm) to identify which change(s) could have caused the incident. The DRI only has to provide the IcM Incident # and Change Explorer auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. 
 
 The list of changes made by Log Analytics Control Plane at the fine-grained location are displayed as the search results. 
 The DRI can now easily go through the finite list of changes to determine which change has caused the incident for the Log Analytics Control Plane team.   
@@ -31,7 +31,7 @@ The DRI can now easily go through the finite list of changes to determine which 
 
 Log Analytics Control Plane DRI gets paged for a Sev 2 IcM Incident that was created. The DRI looks up the incident details in IcM and acknowledges the incident. The IcM incident does not mention the impacted location. The DRI checks the Azure DevOps Release to see if their team made any deployments. From Azure DevOps, the DRI knows that there were deployments, but it is a very tedious task to figure out the exact change that could have probably caused the incident. The DRI next looks up the Telemetry to find out the stamp (aks-useast-01, fine-grained location) that has been impacted by the incident. The DRI now knows that there were some deployments (but does not know what was deployed and when it was deployed) and the DRI knows the stamp that was impacted. 
 
-With this knowledge, the DRI now navigates to [FCM Change Explorer](aka.ms/fcm) to identify which change(s) could have caused the incident. The DRI only has to provide the IcM Incident # and FCM auto-populates the incident information from IcM, including the incident timeline. 
+With this knowledge, the DRI now navigates to [FCM Change Explorer](https://aka.ms/fcm) to identify which change(s) could have caused the incident. The DRI only has to provide the IcM Incident # and FCM auto-populates the incident information from IcM, including the incident timeline. 
 
 The DRI has the flexibility to refine the search by providing the fine-grained location and zeroing down on the Log Analytics Control Plane components. The list of changes made by Log Analytics Control Plane, for the specific components, at the aks-useast-01 location are displayed as the search results. The DRI can now easily go through the finite list of changes to determine which change has caused the incident for the Log Analytics Control Plane team.  
 
@@ -39,7 +39,7 @@ The DRI has the flexibility to refine the search by providing the fine-grained l
 
  XStore DRI gets paged for a Sev2 IcM incident that was created by a monitor. The DRI looks up the incident details in IcM and acknowledges the incident. Based on available internal XStore tools, DRI is able to retrieve the list of impact tenants. 
  
- DRI navigates to [FCM Change Explorer](aka.ms/fcm). DRI provides the incident # to start with and FCM auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. The list of changes, grouped by all the XStore services, for the impact location are displayed as the search results. 
+ DRI navigates to [FCM Change Explorer](https://aka.ms/fcm). DRI provides the incident # to start with and FCM auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. The list of changes, grouped by all the XStore services, for the impact location are displayed as the search results. 
  
  DRI can now further refine the search results, by filtering for the full list of impact tenants. The list of changes that were made across ALL the impact tenants, grouped by the XStore service are displayed. This helps to zero down on the change that was deployed on the list of impact tenants.
 
@@ -47,6 +47,6 @@ The DRI has the flexibility to refine the search by providing the fine-grained l
 
  ODSP DRI gets paged for a Sev2 IcM incident that was created as a response to a  ticket from a 1P Customer. The DRI looks up the incident details in IcM and acknowledges the incident. On checking the telemetry and logs, the DRI is able to confirm the regression but is unable to identify the cause of the regression. 
  
- DRI navigates to [FCM Change Explorer](aka.ms/fcm). DRI provides the incident # to start with. FCM auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. 
+ DRI navigates to [FCM Change Explorer](https://aka.ms/fcm). DRI provides the incident # to start with. FCM auto-populates the incident information from IcM, incident timeline, service and location associated with the incident. 
  
  DRI toggles the option to see the changes made by the dependent services. DRI de-selects their own services. Thus, all changes made by the dependent services, grouped by each of the dependent service, at the impact location is displayed. The DRI is able to zero down on the change made by the dependent service. The ODSP DRI, next selects the option to view the DRI point of contact of the dependent service and reaches out to the dependent service DRI for further mitigation
