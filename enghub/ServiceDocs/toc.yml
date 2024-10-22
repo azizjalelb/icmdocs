@@ -43,6 +43,8 @@ items:
             href: TSGs/ChangeGuard/EnvironmentSetupTSGs.md
           - name: Recreate INT AKS cluster
             href: TSGs/ChangeGuard/RecreateAKSClusterInINT.md
+          - name: Common issues during the CCOA period
+            href: TSGs/ChangeGuard/CommonIssuesDuringCCOA.md
           - name: Exception Request email failed
             href: TSGs/ChangeGuard/ExceptionRequestEmailFailed.md
           - name: Lens Orchestrator job failed
