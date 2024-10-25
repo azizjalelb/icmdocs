@@ -6,13 +6,11 @@
   href: ChangeGuard/
 - name: SafeFly CCOA Exceptions
   href: SafeFlyCCOAExceptions/
-- name: ICM ChangeInsights
-  href: ICMChangeInsights/
 - name: ACE DRI Knowledge
   href: ACE_DRI/
-- name: OneDeployFCM Dashboard Docs
-  href: OneDeployFCM/
 - name: FAQ
   href: FAQ/
 - name: Service Docs
   href: ServiceDocs/
+- name: Change Insights Experience
+  href: ChangeInsightsExp/
