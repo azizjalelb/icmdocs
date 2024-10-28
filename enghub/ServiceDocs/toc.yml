@@ -189,6 +189,8 @@ items:
             href: TSGs/Ingestion/DataIngestionSources.md
           - name: EM Data Ingestion Failures
             href: TSGs/Ingestion/EMDataIngestionFailures.md
+          - name: Onboarding New Source through KO Ingestion
+            href: TSGs/Ingestion/Onboarding New Source.md
       - name: Expiring Certs
         items:
           - name: ExpiringInUseCerts
