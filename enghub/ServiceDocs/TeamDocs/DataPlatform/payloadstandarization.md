@@ -16,12 +16,12 @@ Standardized Payload Format:
 
 ## Standardized Payload Format Examples:
 
-|Source| Standardized PayloadFormat | Example |
-|--|----------------------------|---------|
-|ExpressV2 | ServiceTreeGuid/ServiceGroupName=BuildNumber | fe63f845-4aee-4313-9b2e-3a8a2fe61897/analyticsingestion=1.0.9.1265 |
-|PilotFish | Servicename=BuildNumber |hostconfigmanager=hcm_24_01_27_299   |
-|PilotFish | DataFolder=BuildNumber |dataimage~amd64_prd=133526099359554534   |
-|OMRollout | Servicename=BuildNumber |nicagent=nicagent_5_2_2_127   |
+|Deployment System| Standardized PayloadFormat | Example | Canonical (North star) |
+|--|----------------------------|---------|------------------------------|
+|ExpressV2 | ServiceTreeGuid/ServiceGroupName=BuildNumber | fe63f845-4aee-4313-9b2e-3a8a2fe61897/analyticsingestion=1.0.9.1265 | EV2/ServiceTreeId/ServiceGroupName=SchemaVersion/ADOOrg/ADOProject/Repository/Branch/Version|
+|PilotFish (app) | Servicename=BuildNumber |hostconfigmanager=hcm_24_01_27_299   | PF/VEName/ServiceName = SchemaVersion/ADOOrg/ADOProject/Repository/Branch/Version|
+|PilotFish (data) | DataFolder=Version |amd64_prd=133526099359554534   |PF/VEName/DataFolder = SchemaVersion/SourceIdentifier/ADOOrg/ADOProject/Repository/Branch/Version or SMB Foldername or SourceDepotpath/Version|
+| AzDeployer (v1/v2) |omponent=template;branch;version | SLB=UpdateRingFlow.xml;git_networking_slb_hotfix_0_13_1321_0;0.13.1321.13 |ComponentName/Template = SchemaVersion/ADOOrg/ADOProject/Repository/Branch/Version|
 
 
 #### Note: 

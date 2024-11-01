@@ -32,8 +32,10 @@ Below are the supported location/ entity types to light up the change insights e
 | --- | --- | --- | --- | --- | --- |
 | Region | [FCM Regions](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAHPOSMxLT3WtKMjJL0otig%2fOzC3IyUzLTE3xSy0pzy%2fKDskvyM%2fJT6%2bsUSjPSC1KVfDJT04syczPC6ksSFWwtVVQKkpNB3KVeLlqFFIyi0sy85JL4Io8UwAqR0WoXwAAAA%3d%3d) | Region+Service | Impacted region(s) | Show top 10 change made by Service in the Impacted region for last 12hrs | Changes to any EntityType by that Service in that Region |
 | Cluster | [FCM Clusters](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAD3KMQqAMAwAwF3wD6H%2fcBIHQVzsLqWNGqxNSSMq%2bHg3b752c2nF7s6RBWWe6MiRFsIwol4su%2bXMkdfnhWtDQRjYOyVO9skITQPGx7MoiqmrFwIVpeT1X334AOCeQnxgAAAA) | Cluster | Instance/cluster (Comma separated list of clusters) | Show top 10 change made to the Cluster for last 12hrs | Changes made to Cluster, Nodes, ToR |
-| Node | [FCM Nodes](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAD3KsQqAIBAA0D3oHw7%2fwykagmjJPUQvPTJPTDDBj2%2frzW%2fyOjqc3xQ4Yz52ulOgk9BuWCrnS3HiwK51qB4zwspGF%2bKoWkKQEkRki2IcOlh6CkVT%2frLYD124pHJdAAAA) | Node | Instance/cluster (Comma separated list of node ids) | Show top 10 change made to the Node for last 12hrs | Changes made to the Node,ToR |
+| Node | [FCM Nodes](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAD3KsQqAIBAA0D3oHw7%2fwykagmjJPUQvPTJPTDDBj2%2frzW%2fyOjqc3xQ4Yz52ulOgk9BuWCrnS3HiwK51qB4zwspGF%2bKoWkKQEkRki2IcOlh6CkVT%2frLYD124pHJdAAAA) | Node,TOR | Instance/cluster (Comma separated list of node ids) | Show top 10 change made to the Node,TOR for last 12hrs | Changes made to the Node,ToR |
 | ToR | [FCM ToRs](https://dataexplorer.azure.com/clusters/https%3a%2f%2ffcmdata.kusto.windows.net/databases/FCMKustoStore?query=H4sIAAAAAAAEAD3KwQpAQBAG4LvyDpP3cJKDkgt3yQ4ma%2f9tjFD78G6%2b81dtU1i5fqKHso69HNHLIuw6thu6D4jwWN9E98bK1GKeTBCGNzKVJRUGVVzGWuRZIienSZjtf437ACPI8jpiAAAA) | ToR | Instance/cluster (Comma separated list of ToR ids) | Show top 10 change made to the ToR for last 12hrs | Changes made to the ToR |
+| StorageTenants | [FCM StorageTenants](https://dataexplorer.azure.com/clusters/fcmdata/databases/FCMKustoStore?query=H4sIAAAAAAAAAy3KMQqAMAwAwN1XBP%2FhIILg4KLdS2xDK0gjaUQqPl4R1%2BPa6xAyvPPGodi%2BG63BkO1MKC7ecEYSgolZTdkJmgbqrCwYSClh0rq6wa9Z1%2BT0a4N%2FhcWTwFJ%2BAczuAfxkaTpoAAAA) | Storage Tenant,Storage Cluster,TOR | Instance/cluster (Comma separated list of StorageTenants) | Show top 10 change made to the StorageTenant,Cluster,TOR for last 12hrs | Changes made to the StorageTenant,Cluster,TOR |
+| PFEnvironment | [FCM PFEnvironment](https://dataexplorer.azure.com/clusters/fcmdata/databases/FCMKustoStore?query=H4sIAAAAAAAAA03KsQrCQAwG4N2nCH0PJ3EQxMXuct79bYPXJKTBelB8dp3E9eM7TElGHF9W1eG3K89WeWCUC2JVf%2FRqWnVsG60THHTWnIJV%2Bmag%2FZs6GyBPdpUZEt1uo8JLsOT41VP5qnqB0739KaUlfwCpBtuSfwAAAA%3D%3D) | PFEnvironment | Instance/cluster (Comma separated list of PFEnvironments) | Show top 10 change made to the PFEnvironment for last 12hrs | Changes made to the PFEnvironment |
 
 #### Examples of the ICM fields that must be populated
 
@@ -56,66 +58,13 @@ The following location types are yet to be supported:
 
 | EntityType |
 | --- |
-| PFEnvironment |
-| Storage Tenant |
 | VirtualMachine |
 | VMSS |
 | SQL Ring |
 | Cosmosdb Federation |
 
 
-## Detailed guide to provide "Where"(impacted location) in ICM
 
-### Service using EV2 (Above ARM services) for deployments
-
-#### Monitor Raised incidents -Detected DC/Region
-
-To identify the impacted region for the incident, ChangeInsights relies on Impacted Regions in ICM
-
-##### How to map MDM dimension to ICM DC/Region
-
-![alt text](media/Monitor-RegionMapping.png)
-
-#### Manually Raised incidents - Impact Region
-
-To identify the impacted region for the incident, ChangeInsights relies on Impacted Regions in ICM
-
-### Service using AzDeployer/PF (Below ARM services) for deployments
-
-Provide granular location (Cluster, node) to identify relevant changes.
-
-#### Monitor Raised incidents - specify impacted cluster
-
-To identify the impacted cluster for the incident, ChangeInsights relies on  "Instance/Cluster" field in ICM
-
-![alt text](media/InstanceCluster.png)
-
-##### How to map MDM dimension to "Instance/Cluster" field in ICM
-
-![alt text](media/Monitor-InstanceClusterMapping.png)
-
-#### Incidents - specify impacted Nddes for an incident
-
-To identify the impacted node for the incident, ChangeInsights relies on  "Instance/Cluster" field in ICM
-
-![alt text](media/InstanceCluster-Node.png)
-
-#### Manually Raised incidents - Instance/Cluster
-
-To identify the impacted cluster/node for the incident, update "Instance/Cluster" field in ICM
-
-![alt text](media/InstanceCluster.png)
-
-<!--
-
-| Onboarding Deployment Systems | Known Gaps | NFZ/CCOA | Fast pause |
-| --- | --- | --- | --- |
-| RSM SMD Guest updates | Onboarding in progress | Supported | Not Available |
-| Maintenance Orchestrator Host Updates | Onboarding in progress | Manual Coordination | Not Available |
-| AzDM Control Plane | Onboarding in progress | Supported | Not Available |
-| AKS | Onboarding in progress | Manual Coordination | Not Available |
-
--->
 
 ## Change insight availability by deployment system 
 

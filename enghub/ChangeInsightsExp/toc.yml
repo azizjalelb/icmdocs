@@ -1,0 +1,50 @@
+- name: What is Change Insights?
+  href: introduction.md
+- name: Getting Started
+  items:
+    - name: Dashboard Overview
+      href: CIDashboard/dashboard-ov.md
+    - name: Examples and Scenarios
+      items:
+        - name: E2E Scenario - Subscription/VM Impact
+          href: CIDashboard/Scenarios/scA.md
+        - name: E2E Scenario - Host Changes Investigation
+          href: CIDashboard/Scenarios/scB.md
+        - name: E2E Scenario - Customer View Analysis
+          href: CIDashboard/Scenarios/scC.md
+        - name: Navigating Incidents That Involve Control Plane Changes
+          href: CIDashboard/Scenarios/controlPlaneChanges.md
+        - name: Navigating Incidents That Involve Networking Changes
+          href: CIDashboard/Scenarios/networkingChanges.md
+        - name: Investigating Unhealthy SQL Tenants and Host-Related Culprits
+          href: CIDashboard/Scenarios/sqlChanges.md
+    - name: Interface How-To's
+      items:
+        - name: Host Changes View
+          href: CIDashboard/InterfaceHowTo/HostChanges.md
+        - name: Host Drill Down View
+          href: CIDashboard/InterfaceHowTo/NodeView.md
+        - name: Payload Details View
+          href: CIDashboard/InterfaceHowTo/PayloadView.md
+        - name: Subscription/VM View
+          href: CIDashboard/InterfaceHowTo/Subscription_VMView.md
+        - name: Customer View
+          href: CIDashboard/InterfaceHowTo/CustomerView.md
+        - name: All Changes View
+          href: CIDashboard/InterfaceHowTo/ChangeDetails.md
+        - name: Top-Level View
+          href: CIDashboard/InterfaceHowTo/TopLevelView.md
+- name: User Guide
+  items:
+    - name: User Guide Overview
+      href: user-guide-ci.md
+    - name: Managing Location Details in Change Insights
+      href: managing-location-details.md
+    - name: ICM Location Attributes
+      href: icm-location-attributes.md
+- name: Understand Change Data
+  href: understand-change-data.md
+- name: Using Change Insights in ICM (Beta - SE Planned)
+  href: using-change-insights.md
+- name: Helpful Kusto Queries
+  href: helpful-kusto-queries.md
