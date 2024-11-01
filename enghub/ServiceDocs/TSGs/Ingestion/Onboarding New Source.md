@@ -7,6 +7,7 @@ This guide is intended for developers onboarding a new source to Change Insights
 1. **Identify the Source Cluster and Obtain Access**
     - **Individual Access:** Ensure you have individual access to analyze data and test ingestion queries.
     - **Security Group Access:** If the source team allows group-level access, request access for the following groups:
+        - FCM Feature Crew: fcmfc@microsoft.com
     - **KO App ID Access:** Since we use KO to ingest data into Kusto, request access early in the process. KO App Details: 
         - App ID: `3448865d-0a33-45b8-99ce-762f1f7d7caa`
         - Tenant (AME): `33e01921-4d64-4f8c-a055-5bdaffd5e33d`
@@ -44,4 +45,4 @@ This guide is intended for developers onboarding a new source to Change Insights
     - Verify the changes in [OneDeployFCM](aka.ms/onedeployfcm).
 
 9. **Verify Changes in FCMAISummary**
-    - Ensure all changes are reflected accurately in FCMAISummary, if applicable. Not all new ingestions will automatically reflect in FCMAISummary.
+    - Ensure all changes are reflected accurately in [FCMAISummary](https://eng.ms/docs/products/fcm-engineering-hub/changeinsightsexp/user-guide-ci), if applicable. Not all new ingestions will automatically reflect in FCMAISummary. You can use our [test incident ](https://portal.microsofticm.com/imp/v5/incidents/details/475711817/summary), update the impact start and end time and location details to see if your changes are being populated on the ICM by FCM AI Summary.
