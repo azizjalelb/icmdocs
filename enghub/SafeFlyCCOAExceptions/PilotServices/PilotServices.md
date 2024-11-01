@@ -1,4 +1,4 @@
-# List of Pilot Services
+# List of SafeFly CCOA-Enabled Services
 
 To see if your service qualifies, refer to the table below of the Service Tree IDs and Service Names who are in scope 
 

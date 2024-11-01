@@ -1,8 +1,8 @@
-# Submitting CCOA Requests for Pilot Services
+# Submitting CCOA Requests for QCS Services
 
 <!--![alt text](media/E2E_Pilot.png)-->
 
-When submitting a CCOA exception, pilot services will navigate to the SafeFly home page and create a new request. During a CCOA period, a banner will be displayed at the top of the page indicating that there is a CCOA in effect along with a link to the CCOA documentation.  
+When submitting a CCOA exception, QCS services will navigate to the SafeFly home page and create a new request. During a CCOA period, a banner will be displayed at the top of the page indicating that there is a CCOA in effect along with a link to the CCOA documentation.  
 
 ![alt text](media/SF_1.png)
 

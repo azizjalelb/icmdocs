@@ -1,6 +1,6 @@
-# Services who use Ev2 as a deployment system, are onboarded to R2D (Non-Pilot)
+# Services who use Ev2 as a deployment system, are onboarded to R2D (Non-QCS)
 
-If your service uses Ev2 as a deployment system, is onboarded to R2D and does not appear in the [Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests) list, this page will provide guidence for submitting CCOA Exception requests.
+If your service uses Ev2 as a deployment system, is onboarded to R2D and does not appear in the [SafeFly CCOA Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests) list, this page will provide guidence for submitting CCOA Exception requests.
 
 ## Step 1: Complete R2D review
 
@@ -36,8 +36,8 @@ After the request is approved by R2D, the user will then have to navigate back t
 ## Step 2: Submit a CCOA Exception request in Change Guard
 
 In order to submit an exception request in Change Guard, the service will have to meet one of the following criteria:
-1.	Services who use Ev2 as a deployment system but do not appear on the list of [Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests) 
-2.	Pilot service who use Ev2 as a deployment system but have experienced an error when submitting a CCOA exception request in SafeFly
+1.	QCS services who use Ev2 as a deployment system but do not appear on the list of [SafeFly CCOA Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests) 
+2.	QCS service who use Ev2 as a deployment system but have experienced an error when submitting a CCOA exception request in SafeFly
 3.	Services who are onboarded to R2D and have already completed the review process
 
 For a critical deployment that is planned during a Hi-Pri CCOA, navigate to [Change Guard](https://aka.ms/changeguard) to create a new Ev2 request and complete all of the required fields (title, business justification, etc..), click the submit button at the bottom of the form to kick off the approval process.
