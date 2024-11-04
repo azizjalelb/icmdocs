@@ -95,6 +95,14 @@ items:
             href: TSGs/ChangeGuard/SQLCPUHighLoad.md
           - name: Write access to Change Guard SQL DB through JIT
             href: TSGs/ChangeGuard/JITAccessToSQLDatabase.md
+      - name: Change Guard UI
+        items:
+          - name: Access
+            href: TSGs/ChangeManagerUI/Access.md
+          - name: MitigationSteps
+            href: TSGs/ChangeManagerUI/Mitigate.md
+          - name: UI Start/Debug
+            href: TSGs/ChangeManagerUI/RunDebug.md
       - name: ChangeCard
         items:
           - name: P90 Latency increase in changecard
@@ -125,12 +133,6 @@ items:
         items:
           - name: MitigationSteps
             href: TSGs/UserAccountEnabledOnNode/Mitigate.md
-      - name: ChangeManagerUI
-        items:
-          - name: Access
-            href: TSGs/ChangeManagerUI/Access.md
-          - name: MitigationSteps
-            href: TSGs/ChangeManagerUI/Mitigate.md
       - name: Failure while processing from XStore Events
         items:
           - name: Access
