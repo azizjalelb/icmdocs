@@ -213,6 +213,10 @@ items:
         items:
           - name: Failover Plan for ChangeInsights Services
             href: TSGs/BCDR/FailbackPlan/failover_plan.md
+      - name: S360 TSGs
+        items:
+          - name: GDPR Action Items
+            href: TSGs/S360/GDPR.md
   - name: Team Docs
     items:
       - name: Team Docs
