@@ -75,7 +75,6 @@ To see if your service qualifies, refer to the table below of the Service Tree I
 | a8b22b9a-cc51-41a4-aeba-9b8cd8b7606b     | SDN PubSub Service                                         | AzDeployer |
 | ee451931-51c6-412d-9d36-0080ec654e0f     | Service Bus                                                | Ev2        |
 | e11ab560-29a7-4616-a27b-232a84e09ade     | Service Fabric                                             | AzDeployer |
-| ServiceID                                | Service Name                                               | Type       |
 | 021d60de-795e-468a-953b-cb0067f8542e     | Software Load Balancer                                     | PilotFish  |
 | 61173952-2056-4f87-a4ad-809ba0db7528     | SQL Availability and GeoDR                                 | Ev2        |
 | be71dac7-9427-4621-8ba9-4edb1d54c072     | SQL Backup Restore                                         | Ev2        |
