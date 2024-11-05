@@ -2,8 +2,9 @@
 
 To see if your service qualifies, refer to the table below of the Service Tree IDs and Service Names who are in scope 
 
-| b5e6c5dc-dead-4787-897e-b050252c5182     | AMS COE Subscription                                       | PilotFish  |
+| Service name                             | ServiceId                                                  | Type       |
 |------------------------------------------|------------------------------------------------------------|------------|
+| b5e6c5dc-dead-4787-897e-b050252c5182     | AMS COE Subscription                                       | PilotFish  |
 | 6ba70dfa-ead9-4cc1-b894-049f8a17c22b     | API Management                                             | Ev2        |
 | 6ba70dfa-ead9-4cc1-b894-049f8a17c22b     | API Management                                             | PilotFish  |
 | df36aee8-c644-400b-a0ab-fd0f1191211d     | App Service (Web Apps)                                     | Ev2        |
