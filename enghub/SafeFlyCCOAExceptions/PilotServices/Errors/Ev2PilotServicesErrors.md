@@ -1,4 +1,4 @@
-# If an Error Occurs: Fallback Plan for Ev2 Pilot Services
+# If an Error Occurs: Fallback Plan for QCS Ev2 Services
 
 If you are a service that is QC, uses Ev2 as a deployment system and is onboarded to R2D, this page will provide the information to help navigate any issues. Below is an image of the decision path for this user experience.
 
@@ -8,6 +8,6 @@ If an error occurs and the service is unable to submit a CCOA exception request,
 
 Our on call engineers will conduct an investigation and will add your service to the approved services list. The deployment will then be unblocked and ready to roll out.
 
-Ev2 pilot services will not be able to submit an exception request in Change Guard without intervention from the Change Guard team. If they attempt to submit a CCOA request in the Change Guard portal instead of SafeFly, they will receive the following error that contains a link to the R2D form.
+QCS Ev2 services will not be able to submit an exception request in Change Guard without intervention from the Change Guard team. If they attempt to submit a CCOA request in the Change Guard portal instead of SafeFly, they will receive the following error that contains a link to the R2D form.
 
 ![alt text](media/SF_5.png)

@@ -1,6 +1,6 @@
-# Services who use AzDeployer, PilotFish, or ApStager as a deployment system, are onboarded to R2D (Non-Pilot)
+# Services who use AzDeployer, PilotFish, or ApStager as a deployment system, are onboarded to R2D (Non-QCS)
 
-If your service uses AzDeployer, PilotFish, or ApStager as a deployment system, is onboarded to R2D and does not appear in the [Pilot Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests) list, this page will provide guidence for submitting CCOA Exception requests.
+If your service uses AzDeployer, PilotFish, or ApStager as a deployment system, is onboarded to R2D and does not appear in the [SafeFly CCOA Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/SubmittingCCOARequests) list, this page will provide guidence for submitting CCOA Exception requests.
 
 ## Step 1: Complete R2D review
 
