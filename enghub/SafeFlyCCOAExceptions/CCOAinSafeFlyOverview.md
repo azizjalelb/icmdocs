@@ -19,27 +19,34 @@ However, this feature will only be enabled for a select number of services for t
 
 For a full list of SafeFly CCOA-enabled services who will submit CCOA exception requests in SafeFly, refer to the table here: [SafeFly CCOA Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/PilotServices/PilotServices)
 
-### Which Exception Process to Use for Ev2 Deployments
+## Exception Process Guidance
 
-| Quality Critical   Service (QCS)? | Onboarded to R2D | Appear in SafeFly CCOA Services List | Exception Process                                                                                                         |
-|-----------------------------------|------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| Yes                               | Yes              | Yes                                  | Submit CCOA requests in SafeFly                                                                                           |
-| No                                | Yes              | Yes                                  | Submit CCOA requests in SafeFly                                                                                           |
-| Yes                               | Yes              | No                                   | Submit SafeFly request, proceed with approvals and R2D review in SafeFly,   submit CCOA exception request in Change Guard |
-| Yes                               | No               | No                                   | Submit CCOA exception request in Change Guard                                                                             |
-| No                                | No               | No                                   | Submit CCOA exception request in Change Guard                                                                             |
+### Service is onboarded to R2D or is piloting new SafeFly experience  
+** Majority of QCS and select non-QC services will follow this process if they appear on [this list](https://eng.ms/docs/products/fcm-engineering-hub/safeflyccoaexceptions/pilotservices/pilotservices)
 
-### Which Exception Process to Use for AzDeployer and PilotFish Deployments
+| Criteria                                                                                                                                                                                                                                    | Exception Process                                                                                                                                                                                            |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Services that appear on [this list](https://eng.ms/docs/products/fcm-engineering-hub/safeflyccoaexceptions/pilotservices/pilotservices) <br>** List contains select QCS and select services that have historically applied for CCOA exceptions. | Submit exception requests in [SafeFly](https://aka.ms/r2d). Refer to documentation [here](https://eng.ms/docs/products/fcm-engineering-hub/safeflyccoaexceptions/pilotservices/submittingccoarequestspilot ) |
 
-| Quality Critical   Service (QCS)? | Onboarded to R2D | Appear in SafeFly CCOA Services List | Exception Process                                                                                                                                                                                                                                      |
-|-----------------------------------|------------------|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Yes                               | Yes              | Yes                                  | Submit CCOA requests in SafeFly                                                                                                                                                                                                                        |
-| No                                | Yes              | Yes                                  | Submit CCOA requests in SafeFly                                                                                                                                                                                                                        |
-| Yes                               | Yes              | No                                   | Submit SafeFly request, proceed with approvals and R2D review in SafeFly,   submit CCOA exception request following   [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling)   guidance |
-| Yes                               | No               | No                                   | Submit CCOA exception request following   [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling)   guidance                                                                             |
-| No                                | No               | No                                   | Submit CCOA exception request following   [NoFlyZone](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling)   guidance                                                                             |
+### If your service does not appear on [this list](https://eng.ms/docs/products/fcm-engineering-hub/safeflyccoaexceptions/pilotservices/pilotservices) but your service is onboarded to [SafeFly](https://aka.ms/r2d)
+** SFI changes for HVT, TCB must follow this process
+
+| Criteria                                                                                                                                                                                                                                    | Exception Process                                                                                                                                                                                            |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Deploys with Ev2 | - Submit [SafeFly](https://aka.ms/r2d) Request. Refer to documentation [here](https://eng.ms/docs/products/fcm-engineering-hub/safeflyccoaexceptions/pilotservices/submittingccoarequestspilot ) <br> - After R2D approval, submit Exception Request in [Change Guard](https://aka.ms/changeguard) to unblock your Ev2 deployment. Refer to documentation [here](https://eng.ms/docs/products/fcm-engineering-hub/safeflyccoaexceptions/r2dnonpilotev2)
+| Deploys with one of the following: <br>- AzDeployer <br>- ApStager<br>- Oaas<br>- PilotFish | - Submit [SafeFly](https://aka.ms/r2d) Request. Refer to documentation [here](https://eng.ms/docs/products/fcm-engineering-hub/safeflyccoaexceptions/pilotservices/submittingccoarequestspilot ) <br> - After R2D approval, run a Set-ScheduleException bypass. Guidance available [here](https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/onedeploy-absingh/onedeploy-azdeployer/azdeployer-v2/managedeployments/nfz/bypassnfz)|
+
+### Others
+**Your service will not appear in SafeFly if you are not onboarded to R2D or SafeFly
+
+| Criteria                                                                                                                                                                                                                                    | Exception Process                                                                                                                                                                                            |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Deploys with Ev2 | Submit Exception Request in [Change Guard](https://aka.ms/changeguard) to unblock your Ev2 deployment. Refer to documentation [here](https://eng.ms/docs/products/fcm-engineering-hub/safeflyccoaexceptions/r2dnonpilotev2)
+| Deploys with one of the following: <br>- AzDeployer <br>- ApStager<br>- Oaas<br>- PilotFish | - Submit [NFZ Exception](https://aka.ms/computenoflyexception). Refer to documentation [here](https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/onedeploy-absingh/onedeploy-azdeployer/azdeployer-v2/managedeployments/nfz/bypassnfz) <br> - After exception is approved, run a Set-ScheduleException bypass. Guidance available [here](https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/onedeploy-absingh/onedeploy-azdeployer/azdeployer-v2/managedeployments/nfz/bypassnfz)|
+
 
 #### All-Up User E2E experience
+
 
 ![alt text](media/E2E_1.png)
 
@@ -61,10 +68,31 @@ For a full list of SafeFly CCOA-enabled services who will submit CCOA exception 
 |[Change Guard](https://aka.ms/changeguard)|
 |[CCOA Wiki](https://aka.ms/ccoa)|
 |[R2D Wiki](https://eng.ms/docs/more/sre/engagements/r2d/readme)|
-|[NoFlyZone Schedule](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/3335/Platform-NoFlyZone-Scheduling?anchor=1.-how-to-bypass-noflyzone-schedule-for-critical-or-security-fixes)|
+|[NoFlyZone Schedule](https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/onedeploy-absingh/onedeploy-azdeployer/azdeployer-v2/managedeployments/nfz/bypassnfz)|
 |[API_Set_SchedulesException](https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/52501/API_Set_SchedulesException)|
 
 
 
 
-<!--| R2D AzDeployer/PilotFish/AP Stager Services (Non-Pilot)| [R2D AzD Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/R2DnonPilotAzD)| -->
+<!--| R2D AzDeployer/PilotFish/AP Stager Services (Non-Pilot)| [R2D AzD Services](https://eng.ms/docs/products/fcm-engineering-hub/SafeFlyCCOAExceptions/R2DnonPilotAzD)| 
+
+### Which Exception Process to Use for Ev2 Deployments
+
+| Quality Critical   Service (QCS)? | Onboarded to R2D | Appear in SafeFly CCOA Services List | Exception Process                                                                                                         |
+|-----------------------------------|------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Yes                               | Yes              | Yes                                  | Submit CCOA requests in SafeFly                                                                                           |
+| No                                | Yes              | Yes                                  | Submit CCOA requests in SafeFly                                                                                           |
+| Yes                               | Yes              | No                                   | Submit SafeFly request, proceed with approvals and R2D review in SafeFly,   submit CCOA exception request in Change Guard |
+| Yes                               | No               | No                                   | Submit CCOA exception request in Change Guard                                                                             |
+| No                                | No               | No                                   | Submit CCOA exception request in Change Guard                                                                             |
+
+### Which Exception Process to Use for AzDeployer and PilotFish Deployments
+
+| Quality Critical   Service (QCS)? | Onboarded to R2D | Appear in SafeFly CCOA Services List | Exception Process                                                                                                                                                                                                                                      |
+|-----------------------------------|------------------|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Yes                               | Yes              | Yes                                  | Submit CCOA requests in SafeFly                                                                                                                                                                                                                        |
+| No                                | Yes              | Yes                                  | Submit CCOA requests in SafeFly                                                                                                                                                                                                                        |
+| Yes                               | Yes              | No                                   | Submit SafeFly request, proceed with approvals and R2D review in SafeFly,   submit CCOA exception request following   [NoFlyZone](https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/onedeploy-absingh/onedeploy-azdeployer/azdeployer-v2/managedeployments/nfz/bypassnfz)   guidance |
+| Yes                               | No               | No                                   | Submit CCOA exception request following   [NoFlyZone](https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/onedeploy-absingh/onedeploy-azdeployer/azdeployer-v2/managedeployments/nfz/bypassnfz)   guidance                                                                             |
+| No                                | No               | No                                   | Submit CCOA exception request following   [NoFlyZone](https://eng.ms/docs/cloud-ai-platform/azure-core/one-fleet-platform/onedeploy-absingh/onedeploy-azdeployer/azdeployer-v2/managedeployments/nfz/bypassnfz)   guidance                                                                             | -->
+

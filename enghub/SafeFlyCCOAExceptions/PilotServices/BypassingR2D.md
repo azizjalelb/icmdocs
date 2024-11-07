@@ -6,7 +6,7 @@ For critical LiveSite deployments during a CCOA period, services will have the a
 
 ## How to Bypass R2D Review
 
-Create a new request by first going to the [R2D form](https://safeflywebapp.azurewebsites.net/safe-fly-request/r2d/new) in [SafeFly](https://safeflywebapp.azurewebsites.net/safe-fly-request/r2d).
+Create a new request by first going to the [R2D form](https://aka.ms/r2d) in [SafeFly](https://aka.ms/r2d).
 
 ![alt text](media/SF_7.png)
 

@@ -14,7 +14,6 @@ To see if your service qualifies, refer to the table below of the Service Tree I
 | d292201e-3a06-46e4-85e8-258e04a3921f     | Azure Allocator                                        | Ev2        |
 | 47fcb5f5-e402-4d00-9690-8054b5171d6c     | Azure Compute Artifacts                                | Below Arm  |
 | 3c737fd7-1389-4626-868f-c18df5790cb6     | Azure Container Registry                               | Ev2        |
-|     724c33bf-1ab8-4691-adb1-0e61932919c2 |     Azure CosmosDB                                     | Ev2        |
 | e02603c6-3469-498a-994c-b0df4ceae1d0     | Azure Data Explorer (Kusto)                            | Ev2        |
 | f76de4a1-629f-4651-9d76-1d7b56544f3c     | Azure Data Factory                                     | Ev2        |
 | 12635b84-e6ce-4936-8131-f6289ba575a3     | Azure Database for MySQL - Flexible Server             | Ev2        |
@@ -66,7 +65,6 @@ To see if your service qualifies, refer to the table below of the Service Tree I
 | be71dac7-9427-4621-8ba9-4edb1d54c072     | SQL Backup Restore                                     | Ev2        |
 | db348eb2-16db-44b3-b867-f60f7cfb87d4     | SQL Connectivity                                       | Ev2        |
 | a7a7c4d7-03e5-4816-add0-30646ccee978     | SQL Control Plane                                      | Ev2        |
-| 75828e43-32ec-42ff-9c45-c2220adda219     | SQL DB Prod Cluster                                    | Ev2        |
 | 47783edc-891b-428b-a408-bd9abe5b54a1     | SQL Security                                           | Ev2        |
 | e7878bfb-7270-4f29-804e-6983a4a60397     | SRP                                                    | Ev2        |
 | 0ddc420a-22da-4ab8-a65d-310d0b5b07ff     | SWAN                                                   | Ev2        |

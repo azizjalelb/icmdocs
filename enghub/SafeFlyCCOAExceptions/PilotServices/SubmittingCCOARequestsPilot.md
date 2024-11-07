@@ -22,15 +22,32 @@ There are a few ways you can obtain this information.
 
     ![alt text](media/SF_17.png)
 
-2. In ADO, click on *Artifacts*. In the pop-up, the build version will be available in the navigation at the top. See the images below where the build version is highlighted in yellow.
+2. In ADO, click on *Artifacts*. In the pop-up, the Build Number will be available in the navigation at the top. See the images below where the build version is highlighted in yellow.
 
     ![alt text](media/SF_15.png)
     
     ![alt text](media/SF_18.png)
 
-Once you have the build number, you can either select is from the drop down list or enter the number into the question.
+Once you have the build number, you can either select it from the drop down list or enter the number into the question.
 
 ![alt text](media/SF_19.png)
+
+3. For region agnostic rollouts for Classic Ev2, you will navigate to your deployment in https://ra.ev2portal.azure.net/#/. Click on All Details
+
+![alt text](media/SF_23.png)
+
+Under *Rollout Information* you will find your the ADO Build ID. 
+
+![alt text](media/SF_24.png)
+
+Under *Release Details* you will find your the ADO Build ID. **The Build ID will be between the parenthesis**
+
+![alt text](media/SF_22.png)
+
+Once you have the build number, you can either select it from the drop down list or enter the number into the question.
+
+![alt text](media/SF_25.png)
+
 
 ### If your Deployment System is AzDeployer
 
