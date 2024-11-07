@@ -18,7 +18,8 @@ In the *Deployment Details* Section, question 4-e will ask you to enter the buil
 
 There are a few ways you can obtain this information. 
 
-1. Navigate to Ev2 and under *Release Details* you will see the Build Number
+1. Navigate to Ev2 and under *Release Details* you will see the Build ID **The Build ID will be between the parenthesis** 
+
 
     ![alt text](media/SF_17.png)
 
@@ -28,7 +29,7 @@ There are a few ways you can obtain this information.
     
     ![alt text](media/SF_18.png)
 
-Once you have the build number, you can either select it from the drop down list or enter the number into the question.
+Once you have the build number, you can either select it from the drop down list or enter the number into the question. **The Build ID must be the exact one that appears in the drop down list. If not, please copy the string shown in yellow in steps 1 (within the brackets) and 2. Note if this is wrong, you will be blocked from deploying. If you are not sure, please contact the [SafeFly Team](mailto:SafeFlyTeam@microsoft.com?subject=BuildID%20Not%20Available%20in%20SafeFly%20[R2DID:%20]) for assistance**
 
 ![alt text](media/SF_19.png)
 
@@ -36,15 +37,15 @@ Once you have the build number, you can either select it from the drop down list
 
 ![alt text](media/SF_23.png)
 
-Under *Rollout Information* you will find your the ADO Build ID. 
+4. Under *Rollout Information* you will find your the ADO Build ID. 
 
 ![alt text](media/SF_24.png)
 
-Under *Release Details* you will find your the ADO Build ID. **The Build ID will be between the parenthesis**
+5. Under *Release Details* you will find your the ADO Build ID. **The Build ID will be between the parenthesis**
 
 ![alt text](media/SF_22.png)
 
-Once you have the build number, you can either select it from the drop down list or enter the number into the question.
+Once you have the build number, you can either select it from the drop down list or enter the number into the question. **The Build ID must be the exact one that appears in the drop down list. If not, please copy the string shown highlighted in step 5 (within the brackets) and 2. Note if this is wrong, you will be blocked from deploying. If you are not sure, please contact the [SafeFly Team](mailto:SafeFlyTeam@microsoft.com?subject=BuildID%20Not%20Available%20in%20SafeFly%20[R2DID:%20]) for assistance**
 
 ![alt text](media/SF_25.png)
 

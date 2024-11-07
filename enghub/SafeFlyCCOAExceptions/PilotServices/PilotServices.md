@@ -63,8 +63,6 @@ To see if your service qualifies, refer to the table below of the Service Tree I
 | 021d60de-795e-468a-953b-cb0067f8542e     | Software Load Balancer                                 | PilotFish  |
 | 61173952-2056-4f87-a4ad-809ba0db7528     | SQL Availability and GeoDR                             | Ev2        |
 | be71dac7-9427-4621-8ba9-4edb1d54c072     | SQL Backup Restore                                     | Ev2        |
-| db348eb2-16db-44b3-b867-f60f7cfb87d4     | SQL Connectivity                                       | Ev2        |
-| a7a7c4d7-03e5-4816-add0-30646ccee978     | SQL Control Plane                                      | Ev2        |
 | 47783edc-891b-428b-a408-bd9abe5b54a1     | SQL Security                                           | Ev2        |
 | e7878bfb-7270-4f29-804e-6983a4a60397     | SRP                                                    | Ev2        |
 | 0ddc420a-22da-4ab8-a65d-310d0b5b07ff     | SWAN                                                   | Ev2        |
