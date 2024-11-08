@@ -20,7 +20,6 @@ There are a few ways you can obtain this information.
 
 1. Navigate to Ev2 and under *Release Details* you will see the Build ID **The Build ID will be between the parenthesis** 
 
-
     ![alt text](media/SF_17.png)
 
 2. In ADO, click on *Artifacts*. In the pop-up, the Build Number will be available in the navigation at the top. See the images below where the build version is highlighted in yellow.
