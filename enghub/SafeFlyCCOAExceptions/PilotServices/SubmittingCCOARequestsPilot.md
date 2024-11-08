@@ -10,15 +10,15 @@ When submitting a CCOA exception, QCS services will navigate to the SafeFly home
 
 The *Deployment Details* Section will ask for details that are relevant to the deployment system you are using. 
 
-### If your Deployment System is Ev2 
+## If your Deployment System is Ev2 
 
-In the *Deployment Details* Section, question 4-e will ask you to enter the build number. It is critical to ensure this information is correct in order for SafeFly to be able to unblock your deployment. This question will show up if you select Ev2 as your deployment system in question 4-b
+In the *Deployment Details* Section, question 4-e will ask you to enter the build number. It is critical to ensure this information is correct in order for SafeFly to be able to unblock your deployment. This question will show up if you select Ev2 as your deployment system in question 4-b. *Build ID is synonymous with Build Number.*
 
 ![alt text](media/SF_16.png)
 
 There are a few ways you can obtain this information. 
 
-1. Navigate to Ev2 and under *Release Details* you will see the Build ID **The Build ID will be between the parenthesis** 
+1. Navigate to Ev2 and under *Release Details* you will see the Build ID **The Build ID will be between the parenthesis.** 
 
     ![alt text](media/SF_17.png)
 
@@ -32,30 +32,31 @@ Once you have the build number, you can either select it from the drop down list
 
 ![alt text](media/SF_19.png)
 
-3. For region agnostic rollouts for Classic Ev2, you will navigate to your deployment in https://ra.ev2portal.azure.net/#/. Click on All Details
+### Ev2 Region Agnostic Rollouts
 
-![alt text](media/SF_23.png)
+3. For Ev2 region agnostic rollouts, you will navigate to your deployment in https://ra.ev2portal.azure.net/#/. Click on All Details
 
-4. Under *Rollout Information* you will find your the ADO Build ID. 
+    ![alt text](media/SF_23.png)
 
-![alt text](media/SF_24.png)
+4. Under *Rollout Information* you will find your Service Group. 
 
-5. Under *Release Details* you will find your the ADO Build ID. **The Build ID will be between the parenthesis**
+    ![alt text](media/SF_24.png)
 
-![alt text](media/SF_22.png)
+5. Under *Release Details* you will find your ADO Build ID. **The Build ID will be between the parenthesis**
 
-Once you have the build number, you can either select it from the drop down list or enter the number into the question. **The Build ID must be the exact one that appears in the drop down list. If not, please copy the string shown highlighted in step 5 (within the brackets) and 2. Note if this is wrong, you will be blocked from deploying. If you are not sure, please contact the [SafeFly Team](mailto:SafeFlyTeam@microsoft.com?subject=BuildID%20Not%20Available%20in%20SafeFly%20[R2DID:%20]) for assistance**
+    ![alt text](media/SF_22.png)
+
+Once you have the build number, you can either select it from the drop down list or enter the number into the question. **The Build ID must be the exact one that appears in the drop down list. If not, please copy the string shown highlighted in step 5 (within the brackets). Note if this is wrong, you will be blocked from deploying. If you are not sure, please contact the [SafeFly Team](mailto:SafeFlyTeam@microsoft.com?subject=BuildID%20Not%20Available%20in%20SafeFly%20[R2DID:%20]) for assistance**
 
 ![alt text](media/SF_25.png)
 
-
-### If your Deployment System is AzDeployer
+## If your Deployment System is AzDeployer
 
 In the *Deployment Details* Section, you will have to provide the following information:
 
 ![alt text](media/SF_20.png)
 
-### If your Deployment System is PilotFish 
+## If your Deployment System is PilotFish 
 
 In the *Deployment Details* Section, you will have to provide the following information:
 
