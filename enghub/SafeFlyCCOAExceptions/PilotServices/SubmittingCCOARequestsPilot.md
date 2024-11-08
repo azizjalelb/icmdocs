@@ -34,19 +34,19 @@ Once you have the build number, you can either select it from the drop down list
 
 ### Ev2 Region Agnostic Rollouts
 
-3. For Ev2 region agnostic rollouts, you will navigate to your deployment in https://ra.ev2portal.azure.net/#/. Click on All Details
+1. For Ev2 region agnostic rollouts, you will navigate to your deployment in https://ra.ev2portal.azure.net/#/. Click on All Details
 
     ![alt text](media/SF_23.png)
 
-4. Under *Rollout Information* you will find your Service Group. 
+2. Under *Rollout Information* you will find your Service Group. 
 
     ![alt text](media/SF_24.png)
 
-5. Under *Release Details* you will find your ADO Build ID. **The Build ID will be between the parenthesis**
+3. Under *Release Details* you will find your ADO Build ID. **The Build ID will be between the parenthesis**
 
     ![alt text](media/SF_22.png)
 
-Once you have the build number, you can either select it from the drop down list or enter the number into the question. **The Build ID must be the exact one that appears in the drop down list. If not, please copy the string shown highlighted in step 5 (within the brackets). Note if this is wrong, you will be blocked from deploying. If you are not sure, please contact the [SafeFly Team](mailto:SafeFlyTeam@microsoft.com?subject=BuildID%20Not%20Available%20in%20SafeFly%20[R2DID:%20]) for assistance**
+Once you have the build number, you can either select it from the drop down list or enter the number into the question. **The Build ID must be the exact one that appears in the drop down list. If not, please copy the string shown highlighted in step 3 (within the brackets). Note if this is wrong, you will be blocked from deploying. If you are not sure, please contact the [SafeFly Team](mailto:SafeFlyTeam@microsoft.com?subject=BuildID%20Not%20Available%20in%20SafeFly%20[R2DID:%20]) for assistance**
 
 ![alt text](media/SF_25.png)
 
