@@ -20,9 +20,10 @@ Understanding the below monitor configuration - we have two expressions, one for
 
 ### Debugging zero change count 
 
-When an incident is triggered, it means that the metric has been reading **"Zero" Value** continuously for the given look back period. This can happen because of two reasons -
+When an incident is triggered, it means that the metric has been reading **"Zero" Value** continuously for the given look back period. This can happen because of two reasons - there is no data at source or we have issues pulling the data (KO job failure)
 
 - There has been no data ingested from the source for the given look back period. This can be analyzed as below -
+
      1. If this issue is happening with two or more of standard deployment systems, such as EV2, ADORelease, xstore-wadi etc... first check whether the changes are getting ingested into. 
          ```
          cluster('fcmdata.kusto.windows.net').database('FCMKustoStore').ChangeEvent
@@ -30,39 +31,21 @@ When an incident is triggered, it means that the metric has been reading **"Zero
          | where ExternalSourceName in ('expressv2', 'adorelease', 'xstore-wadi')
          | summarize count() by ExternalSourceName
          ```
-         If you see changes in these systems, proceed to next steps. If not, check whether there are any errors happening in the connectors in [Jarvis](https://jarvis-west.dc.ad.msft.net/7A9B9B20). If you see that, the connectors are failing due to 401 Unauthorized errors, it means that the certificates that the connectors are using a thumbprint from an expired cert we need to updated them to use the thumbprint from the new version. 
-         
-         Here is the list of our CloudServices:
-         ![alt text](media/CloudServices.png)
-
-         In order to rotate the certificates, 
-         1. You need to get JIT Access to MSG Starburst - CHM PROD subscription (fbc17084-a3a3-42bf-a9dc-8bc7f996a679).
-         1. Check if the certs have expired for each one of the running cloud services.
-         ![alt text](media/Certs.png)
-            - If the certs have expired, 
-               1. Go to the keyvault that those certs are in (you can find that in the image above.)
-               1. Rotate the certificates if they haven't been auto-rotated already and copy the thumbprint of the latest version of the certificate.
-                  ```
-                  IMPORTANT! Even if the certs are auto-rotated, cloud services won't pick the thumbprint from the new version of the cert automatically unless there was a deployment recently. 
-                  ```
-               1. Stop the cloud services that you're going to update the certificates of.
-                  - if the issue happens with webapi, stop connectors first and then webapi.
-               1. Update the configuration file of the cloudservice and set the thumbprints of the certificates to be the thumbprints of the new version of the certificate that you copied above and save your changes.
-               ![alt text](media/ConfigCerts.png)
-               1. Restart the cloud services, first the Web APIs and then the connectors.
-         
-     1. Try running the below query on the corresponding database to see if there has actually been no data for the given look back period.
+                 
+     2. Try running the below query on the corresponding database to see if there has actually been no data for the given look back period.
          ```
             EntityChangeEvents
             | where Source == "RedisCache_ControlPlane_V2" // This can be identified from the corresponding monitor under dimension values
             | where ingestion_time() > ago(2880m) // Set this to the lookback time
             | summarize count() by bin(Timestamp,15m) // Set this to the frequency. To decrease the frequency and get a higher level view of the data, you may also give 1h, 2h etc.,
          ```
-     1. If this returns zero values, in that case we should be looking at the following:
+
+     3. If this returns zero values, in that case we should be looking at the following:
         - Details like KO job links, QCS team contacts for each of the below steps may be found in the corresponding README.md files of the sources in [FCM-DataPlatform](https://msazure.visualstudio.com/One/_git/FCM-DataPlatform?version=GBdevelop&path=/src/Kusto%20Scripts/EntityModel/Functions/Ingestion) Repository.
         - Have there been any KO job failures for this source system. If there are any, we should have a corresponding Kusto Orchestrator failure incident too. Investigate this as mentioned in the [KO Failures TSG](./changeIngestionUsingKOJobs.md).
         - If there are no failures, please reach out to the corresponding QCS Team member listed in the README.md file to understand what happened on the other end. 
-     1. If the above command returns non zero values, that is we have data that was ingested from source periodically, this could possibly be a problem with Synthetics metrics being emitted.
+
+     4. If the above command returns non zero values, that is we have data that was ingested from source periodically, this could possibly be a problem with Synthetics metrics being emitted.
         - Check the logs mentioned here- https://portal.microsoftgeneva.com/s/F90C1424
         - Look for any errors in the logs.
         - To handle the errors, please refer to the [Synthetics and Monitor Issues TSG](./SyntheticsAndMonitorIssues.md)
