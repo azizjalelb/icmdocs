@@ -1,0 +1,60 @@
+name: Publish to Engineering Hub
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: 'eng.ms'
+  cancel-in-progress: true
+  
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    environment:
+      name: eng.ms
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.CLIENT_ID }}
+          tenant-id: ${{ vars.TENANT_ID }}
+          allow-no-subscriptions: true
+
+      - name: Get Access Token
+        id: get-token
+        shell: bash
+        run: |
+          ACCESSTOKEN=$(az account get-access-token --scope api://engineeringhubprod.ame.gbl/.default | jq -r .accessToken)
+          echo "::add-mask::$ACCESSTOKEN"
+          echo "ENGHUB_TOKEN=$ACCESSTOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Install docfx
+        run: |
+          choco install docfx --version=2.59.4 -y
+          docfx -v
+          if ($lastexitcode -ne 0){
+              throw ("Error installing docfx")
+          }
+
+      - name: Publish Docs
+        uses: 1es-actions/enghub@v1
+        with:
+          content-id: ${{vars.CONTENT_ID}}
+          client-id: ${{vars.CLIENT_ID}}
+          access-token: ${{ steps.get-token.outputs.ENGHUB_TOKEN }}
+        env:
+          BUILD_SOURCESDIRECTORY: ${{github.workspace}}
